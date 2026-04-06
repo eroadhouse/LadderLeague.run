@@ -51,6 +51,80 @@
 
 
 
+
+    /* ── LIVE MATCH ── */
+    .bracket-match.live {
+      border-color: #2a5a2a;
+      background: rgba(60,180,60,.04);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .bracket-match.live:hover {
+      border-color: #4caa4c;
+      background: rgba(60,180,60,.08);
+    }
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .6rem;
+      letter-spacing: 2px;
+      color: #4cff91;
+      text-transform: uppercase;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4cff91;
+      flex-shrink: 0;
+      animation: livePulse 1.2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(76,255,145,.5); }
+      50%       { opacity: .7; box-shadow: 0 0 0 4px rgba(76,255,145,0); }
+    }
+    .live-arrow {
+      font-size: .65rem;
+      margin-left: auto;
+      color: #4cff91;
+      opacity: .6;
+    }
+
+
+    /* ── WEEK QUALIFIED SLOT ── */
+    .week-qualified-slot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      margin: 1rem 12px 0;
+      padding: .4rem .75rem;
+      border: 1px solid #5a4010;
+      border-radius: 2px;
+      background: rgba(227,177,40,.05);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .7rem;
+      letter-spacing: 1px;
+      color: #e3b128;
+      width: calc(100% - 24px);
+      text-align: center;
+    }
+    .week-qualified-slot.empty {
+      border-color: var(--border);
+      background: transparent;
+      color: var(--dim);
+      font-weight: 400;
+    }
+    .week-qualified-slot .wqs-icon {
+      font-size: .65rem;
+      opacity: .7;
+    }
+    .week-qualified-slot.empty .wqs-icon { display: none; }
+
     /* ── STAR CANVAS ── */
     #starfield {
       position: fixed;
@@ -61,7 +135,7 @@
       filter: blur(5px);
     }
 
-    a[target="_blank"]::after {
+    a[target="_blank"]:not(.bracket-match)::after {
       content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
       display: inline-block;
       width: 16px;
@@ -250,67 +324,218 @@
     }
 
     /* ════════════════════════════
-       STANDINGS PAGE
+       STANDINGS / BRACKET PAGE
     ════════════════════════════ */
-    .standings-table {
+    .bracket-outer {
+      overflow-x: auto;
+      padding-bottom: 2rem;
+      margin-top: 0;
+    }
+    .bracket-scroll {
+      display: flex;
+      gap: 0;
+      min-width: max-content;
+      align-items: center;
+      padding: 2rem 1rem;
+      min-height: 70vh;
+    }
+
+    /* Week column */
+    .bracket-week {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 200px;
+      align-self: stretch;
+      justify-content: space-between;
+    }
+    .bracket-week-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 1.25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 2rem;
-      font-size: 1rem;
+      text-align: center;
     }
-    .standings-table thead tr {
-      border-bottom: 1px solid var(--accent);
+    .bracket-week-matches {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      flex: 1;
+      justify-content: top;
     }
-    .standings-table th {
+
+    /* Match card */
+    .bracket-match {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: .6rem .75rem;
+      margin: 0 12px;
+      transition: border-color .2s;
+      cursor: default;
+    }
+    .bracket-match:hover { border-color: var(--accent); }
+
+    /* Spacing between matches */
+    .bracket-match + .bracket-match { margin-top: 10px; }
+
+    .bracket-match-rung {
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
-      font-size: .7rem;
+      font-size: .6rem;
       letter-spacing: 2px;
-      color: var(--dim);
       text-transform: uppercase;
-      padding: .75rem 1rem;
-      text-align: center;
-    }
-    .standings-table td {
-      padding: .9rem 1rem;
-      border-bottom: 1px solid var(--border);
-      text-align: center;
-    }
-    .standings-table tbody tr {
-      transition: background .15s;
-    }
-    .standings-table tbody tr:hover { background: rgba(140,160,200,.04); }
-
-    .rank-num {
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.4rem;
       color: var(--dim);
+      margin-bottom: .35rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    
-    .rank-num.gold { color: #e3b128; }
-    .rank-num.silver { color: #a8b0bc; }
-    .rank-num.bronze   { color: #86a2cd; }
+    .rung-badge {
+      font-size: .55rem;
+      letter-spacing: 1px;
+      padding: 1px 5px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+    .rung-badge.qualified  { border-color: #8a6a20; color: #e3b128; }
+    .rung-badge.eliminated { border-color: #7a3040; color: #ff6080; }
 
-    .team-name {
+    .bracket-player {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .3rem 0;
       font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #fff;
+      font-weight: 900;
+      font-size: .75rem;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      border-bottom: 1px solid var(--border);
+    }
+    .bracket-player:last-child { border-bottom: none; }
+    .bracket-player.tbd { color: var(--dim); font-weight: 400; letter-spacing: 0; }
+    .bracket-player .bp-num {
+      font-size: .6rem;
+      color: var(--dim);
+      font-weight: 400;
+      width: 14px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Connector lines between weeks */
+    .bracket-connector {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 0;
+      position: relative;
+    }
+
+    /* Qualified sidebar */
+    .bracket-qualified {
+      min-width: 170px;
+      margin-left: 24px;
+      flex-shrink: 0;
+    }
+    .bracket-qualified-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e3b128;
+      margin-bottom: 1.25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #8a6a20;
+      width: 100%;
+      text-align: center;
+    }
+    .qualified-slot {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem .75rem;
+      background: rgba(227,177,40,.04);
+      border: 1px solid #5a4010;
+      border-radius: 2px;
+      margin-bottom: .5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .75rem;
+      letter-spacing: 1px;
+      color: #e3b128;
+    }
+    .qualified-slot .qs-week {
+      font-size: .55rem;
+      font-weight: 400;
+      color: #8a6a20;
+      margin-left: auto;
       letter-spacing: 1px;
     }
-    .team-tag {
-      font-family: 'Montserrat', sans-serif;
-      font-size: .7rem;
-      color: var(--accent);
-      margin-left: .5rem;
+    .qualified-slot.empty {
+      color: var(--dim);
+      border-color: var(--border);
+      background: transparent;
+      font-weight: 400;
     }
 
-    .wins   { color: #4cff91; font-weight: 700; }
-    .losses { color: var(--accent2); font-weight: 700; }
-    .points-val {
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.3rem;
-      color: var(--accent);
+    /* Eliminated sidebar */
+    .bracket-eliminated {
+      min-width: 170px;
+      margin-left: 24px;
+      flex-shrink: 0;
+    }
+    .bracket-eliminated-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff6080;
+      margin-bottom: 1.25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #7a3040;
+      width: 100%;
+      text-align: center;
+    }
+    .eliminated-slot {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem .75rem;
+      background: rgba(255,96,128,.04);
+      border: 1px solid #3a1a20;
+      border-radius: 2px;
+      margin-bottom: .5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .75rem;
+      letter-spacing: 1px;
+      color: #ff6080;
+    }
+    .eliminated-slot .es-week {
+      font-size: .55rem;
+      font-weight: 400;
+      color: #7a3040;
+      margin-left: auto;
+      letter-spacing: 1px;
+    }
+    .eliminated-slot.empty {
+      color: var(--dim);
+      border-color: var(--border);
+      background: transparent;
+      font-weight: 400;
     }
 
     /* ════════════════════════════
@@ -773,40 +998,8 @@
 
   <!-- ══ STANDINGS ══ -->
   <div class="page" id="standings">
-    <div class="section">
-      <div class="page-title reveal">STAND<span>INGS</span></div>
-      <div class="page-subtitle reveal" style="transition-delay:.15s">Season 03 · Coming Soon</div>
-      <div class="divider"></div>
-      <table class="standings-table reveal" style="transition-delay:.3s">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Team / Player</th>
-            <th>W</th>
-            <th>L</th>
-            <th>Win %</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <script>
-            (function() {
-              const rankClass = ['gold','silver','bronze'];
-              for (let i = 1; i <= 21; i++) {
-                const n = String(i).padStart(2,'0');
-                const rc = i <= 3 ? rankClass[i-1] : '';
-                document.write(`
-                  <tr>
-                    <td><span class="rank-num ${rc}">${n}</span></td>
-                    <td><span class="team-name">USER ${i}</span><span class="team-tag">[U${n}]</span></td>
-                    <td class="wins">0</td><td class="losses">0</td>
-                    <td>—</td><td><span class="points-val">0</span></td>
-                  </tr>`);
-              }
-            })();
-          </script>
-        </tbody>
-      </table>
+    <div class="bracket-outer reveal" style="transition-delay:.1s">
+      <div class="bracket-scroll" id="bracket-scroll"></div>
     </div>
   </div>
 
@@ -1185,6 +1378,179 @@
       const upObs = new IntersectionObserver(loadUpcoming, { threshold: 0.12 });
       upObs.observe(upcomingSection);
     })();
+
+    // ── LADDER BRACKET ──
+    (function() {
+
+      // ┌──────────────────────────────────────────────────────────┐
+      // │  LIVE MATCH CONFIG                                       │
+      // │  Set week + rung to mark a match live.                  │
+      // │  Set to null for no live match.                         │
+      // │  Example:  { week: 1, rung: 3 }   or   null            │
+      // └──────────────────────────────────────────────────────────┘
+      const LIVE_MATCH = { week: 1, rung: 2 };
+
+      // ┌──────────────────────────────────────────────────────────┐
+      // │  QUALIFIED CONFIG                                        │
+      // │  One entry per week. Use null if not yet decided.       │
+      // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
+      // └──────────────────────────────────────────────────────────┘
+      const QUALIFIED = [
+        "ZacMuffin",   // Week 1
+        null,   // Week 2
+        null,   // Week 3
+        null,   // Week 4
+        null,   // Week 5
+        null,   // Week 6
+        null,   // Week 7
+      ];
+
+      // ┌──────────────────────────────────────────────────────────┐
+      // │  ELIMINATED CONFIG                                       │
+      // │  Two entries per week (2 players eliminated each week). │
+      // │  Use null if not yet decided.                           │
+      // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
+      // └──────────────────────────────────────────────────────────┘
+      const ELIMINATED = [
+        [null, null],   // Week 1
+        [null, null],   // Week 2
+        [null, null],   // Week 3
+        [null, null],   // Week 4
+        [null, null],   // Week 5
+        [null, null],   // Week 6
+        [null, null],   // Week 7
+      ];
+
+      // Week structure: week i has (8 - i) matches, 7 weeks total
+      // Week 1: 7 matches (rungs 1-7), Week 2: 6 matches, ... Week 7: 1 match
+      // Rung 1 = top (winner qualifies), bottom rung = 2 losers eliminated
+
+      const WEEKS = 7;
+      const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1];
+
+      // Generate placeholder players for each match slot
+      // Each match has 3 players
+      function getPlayers(week, rung) {
+        if (week === 1) {
+          const base = (rung - 1) * 3;
+          return [
+            `User ${base + 1}`,
+            `User ${base + 2}`,
+            `User ${base + 3}`,
+          ];
+        }
+        return ['—', '—', '—'];
+      }
+
+      const container = document.getElementById('bracket-scroll');
+      if (!container) return;
+
+      // Build weeks
+      for (let w = 1; w <= WEEKS; w++) {
+        const matchCount = weekMatchCounts[w - 1];
+        const weekEl = document.createElement('div');
+        weekEl.className = 'bracket-week';
+
+        const label = document.createElement('div');
+        label.className = 'bracket-week-label';
+        label.textContent = `Week ${w}`;
+        weekEl.appendChild(label);
+
+        const matchesWrap = document.createElement('div');
+        matchesWrap.className = 'bracket-week-matches';
+
+        for (let r = 1; r <= matchCount; r++) {
+          const isTop    = r === 1;
+          const isBottom = r === matchCount;
+          const players  = getPlayers(w, r);
+
+          const isLive = LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
+          let card;
+          if (isLive) {
+            card = document.createElement('a');
+            card.href = 'https://twitch.tv/legospeedruns';
+            card.target = '_blank';
+            card.rel = 'noopener';
+          } else {
+            card = document.createElement('div');
+          }
+          card.className = 'bracket-match' + (isLive ? ' live' : '');
+
+          // Rung header
+          const rungRow = document.createElement('div');
+          rungRow.className = 'bracket-match-rung';
+          const rungLabel = document.createElement('span');
+          rungLabel.textContent = `Rung ${r}`;
+          rungRow.appendChild(rungLabel);
+
+          if (isLive) {
+            const liveInd = document.createElement('span');
+            liveInd.className = 'live-indicator';
+            liveInd.innerHTML = '<span class="live-dot"></span>LIVE<span class="live-arrow">↗</span>';
+            rungRow.appendChild(liveInd);
+          } else if (isTop) {
+            const badge = document.createElement('span');
+            badge.className = 'rung-badge qualified';
+            badge.textContent = 'Qualifies';
+            rungRow.appendChild(badge);
+          } else if (isBottom) {
+            const badge = document.createElement('span');
+            badge.className = 'rung-badge eliminated';
+            badge.textContent = 'Elim ×2';
+            rungRow.appendChild(badge);
+          }
+          card.appendChild(rungRow);
+
+          // Players
+          players.forEach((p, pi) => {
+            const pEl = document.createElement('div');
+            pEl.className = 'bracket-player' + (p === '—' ? ' tbd' : '');
+            pEl.innerHTML = `<span class="bp-num">${p === '—' ? '' : pi + 1}</span>${p}`;
+            card.appendChild(pEl);
+          });
+
+          matchesWrap.appendChild(card);
+        }
+
+        weekEl.appendChild(matchesWrap);
+
+        // Qualified slot below this week
+        const qualName = QUALIFIED[w - 1];
+        const qualSlot = document.createElement('div');
+        qualSlot.className = 'week-qualified-slot' + (qualName ? '' : ' empty');
+        qualSlot.innerHTML = qualName
+          ? `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span>`
+          : `<span class="wqs-name">—</span>`;
+        weekEl.appendChild(qualSlot);
+
+        container.appendChild(weekEl);
+      }
+
+      // Eliminated sidebar on the right
+      const elimCol = document.createElement('div');
+      elimCol.className = 'bracket-eliminated';
+      const elabel = document.createElement('div');
+      elabel.className = 'bracket-eliminated-label';
+      elabel.textContent = '✕ Eliminated';
+      elimCol.appendChild(elabel);
+      for (let w = 1; w <= WEEKS; w++) {
+        const pair = ELIMINATED[w - 1] || [null, null];
+        for (let e = 0; e < 2; e++) {
+          const name = pair[e];
+          const slot = document.createElement('div');
+          slot.className = 'eliminated-slot' + (name ? '' : ' empty');
+          slot.innerHTML = name
+            ? `${name}<span class="es-week">Wk ${w}</span>`
+            : `—<span class="es-week">Wk ${w}</span>`;
+          elimCol.appendChild(slot);
+        }
+      }
+      container.appendChild(elimCol);
+
+
+
+    })();
+
   </script>
 </body>
 </html>
