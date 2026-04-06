@@ -1448,9 +1448,11 @@
     (function() {
 
       // ┌──────────────────────────────────────────────────────────┐
-      // │  LIVE MATCH CONFIG                                       │
-      // │  Set week + rung to mark a match live.                  │
-      // │  Set to null for no live match.                         │
+      // │  LIVE MATCH CONFIG  (manual override)                   │
+      // │  Matches with a SCHEDULE entry go live automatically    │
+      // │  once their timestamp is reached.                       │
+      // │  Use this only for matches without a schedule entry.   │
+      // │  Set to null to disable.                                │
       // │  Example:  { week: 1, rung: 3 }   or   null            │
       // └──────────────────────────────────────────────────────────┘
       const LIVE_MATCH = { week: 1, rung: 2 };
@@ -1489,75 +1491,24 @@
       ];
 
       // ┌────────────────────────────────────────────────────────────────┐
-      // │  RESULTS CONFIG                                                │
+      // │  RESULTS  — loaded from results.json (auto-refreshes every   │
+      // │  30 seconds). Edit results.json to publish match outcomes.   │
       // │  Key: "week_rung"                                             │
       // │  places[] = finish order (1st → last), each entry:           │
-      // │    { name: "PlayerName", time: "H:MM:SS" }                   │
-      // │  time is optional — omit or set null if not recorded         │
-      // │  status (optional):                                           │
-      // │    "leapfrogging" — winner of lower rung who leapfrogged up  │
-      // │    "leapfrogged"  — 2nd place who got leapfrogged (stays)    │
+      // │    { "name": "PlayerName", "time": "H:MM:SS" }               │
+      // │  status (optional): "leapfrogging" | "leapfrogged"           │
       // └────────────────────────────────────────────────────────────────┘
-      const RESULTS = {
-        "1_1": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "ZacMuffin", time: "2:18:45" },
-            { name: "Dragon67", time: "2:22:10" },
-            { name: "AnorakDT", time: "2:26:00" },
-          ]
-        },
-        "1_3": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "WiiSuper", time: "2:20:00" },
-            { name: "Scynor",   time: "2:21:10" },
-            { name: "Wazzip",   time: "2:24:30" },
-          ]
-        },
-        "1_5": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "TheCrazedCap", time: "2:25:30", status: "leapfrogging" },
-            { name: "kwazrr",       time: "2:28:15" },
-            { name: "ejpman",       time: "2:30:00" },
-          ]
-        },
-        "1_4": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "FlamingLazer", time: "2:23:00" },
-            { name: "Dimei",        time: "2:25:45", status: "leapfrogged" },
-            { name: "Colten",       time: "2:27:00" },
-          ]
-        },
-        "1_7": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "ChessWiz",    time: "2:39:00" },
-            { name: "CaptainPaxo", time: "2:41:45" },
-            { name: "Gamer_Olive", time: "2:47:30" }
-          ]
-        },
-        "8_1": {
-          vod: "https://www.youtube.com/@TCSSpeedrunning",
-          places: [
-            { name: "WiiSuper", time: "2:20:30" },
-            { name: "Scynor",   time: "2:20:31" },
-          ]
-        }
-      };
+      let RESULTS = {};
 
       // ┌────────────────────────────────────────────────────────────────┐
       // │  SCHEDULE CONFIG                                               │
-      // │  Key: "week_rung"  →  ISO 8601 datetime string               │
-      // │  Displayed in each viewer's local time automatically.        │
-      // │  Format: "YYYY-MM-DDTHH:MM:SS±HH:MM"                        │
-      // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00" │
-      // │  Example (3PM Eastern Daylight):  "2025-05-13T15:00:00-04:00"│
+      // │  Key: "week_rung"  →  ISO 8601 datetime string                 │
+      // │  Displayed in each viewer's local time automatically.          │
+      // │  Format: "YYYY-MM-DDTHH:MM:SS±HH:MM"                           │
+      // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00"   │
       // └────────────────────────────────────────────────────────────────┘
       const SCHEDULE = {
-        "1_6": "2025-05-13T15:00:00-04:00",
+        "1_6": "2026-04-06T16:59:30-04:00",
       };
 
       function formatSchedule(isoStr) {
@@ -1638,8 +1589,10 @@
         }
       }
 
+      function buildBracket() {
       const container = document.getElementById('bracket-scroll');
       if (!container) return;
+      container.innerHTML = '';
 
       // Build weeks
       for (let w = 1; w <= WEEKS; w++) {
@@ -1661,11 +1614,13 @@
           const isBottom = r === matchCount && !isWildcard;
           const players  = getPlayers(w, r);
 
-          const isLive     = LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
-          const result     = RESULTS[`${w}_${r}`];
-          const isDone     = !!result;
-          const scheduleRaw = !isLive && !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
-          const scheduleAt  = scheduleRaw ? formatSchedule(scheduleRaw) : null;
+          const result      = RESULTS[`${w}_${r}`];
+          const isDone      = !!result;
+          const scheduleRaw = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
+          const isAutoLive  = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
+          const isManualLive = !isDone && LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
+          const isLive      = isAutoLive || isManualLive;
+          const scheduleAt  = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
           let card;
           if (isLive) {
             card = document.createElement('a');
@@ -1783,8 +1738,42 @@
         }
       }
       container.appendChild(elimCol);
+      } // end buildBracket
 
+      function scheduleAutoLive() {
+        const now = Date.now();
+        Object.values(SCHEDULE).forEach(isoStr => {
+          const ms = new Date(isoStr).getTime() - now;
+          if (ms > 0) setTimeout(buildBracket, ms);
+        });
+      }
 
+      async function loadResults() {
+        const res = await fetch('results.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      }
+
+      async function init() {
+        try {
+          RESULTS = await loadResults();
+        } catch (e) {
+          console.error('Could not load results.json — make sure you are serving via HTTP, not file://', e);
+        }
+        buildBracket();
+        scheduleAutoLive();
+        setInterval(async () => {
+          try {
+            const data = await loadResults();
+            if (JSON.stringify(data) !== JSON.stringify(RESULTS)) {
+              RESULTS = data;
+              buildBracket();
+            }
+          } catch (e) { /* network blip, try again next poll */ }
+        }, 30_000);
+      }
+
+      init();
 
     })();
 
