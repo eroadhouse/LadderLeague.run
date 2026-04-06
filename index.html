@@ -21,7 +21,7 @@
       --accent2:   #c0cad8;
       --gold:      #d8dde8;
       --text:      #7a8899;
-      --dim:       #333a4a;
+      --dim:       #5a6478;
       --nav-h:     64px;
     }
 
@@ -93,6 +93,59 @@
       opacity: .6;
     }
 
+    /* ── DONE MATCH ── */
+    .bracket-match.done {
+      border-color: #1e2535;
+      opacity: .85;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .done-indicator {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .6rem;
+      letter-spacing: 2px;
+      color: var(--dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .bracket-match.done:hover .done-indicator { color: var(--accent); }
+    .scheduled-indicator {
+      font-size: .55rem;
+      font-weight: 900;
+      letter-spacing: .5px;
+      color: var(--dim);
+      opacity: .75;
+      white-space: nowrap;
+    }
+    .done-check {
+      font-size: .65rem;
+      opacity: .7;
+    }
+    .done-arrow {
+      font-size: .65rem;
+      margin-left: auto;
+      opacity: .5;
+    }
+    .bp-move {
+      font-size: .85rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+    .bp-move.up          { color: #4caa6c; }
+    .bp-move.down        { color: #aa4c5c; }
+    .bp-move.leapfrogged { color: #9b6bd4; }
+    .bp-move.leapfrogging{ color: #3096d4; }
+    .bp-move.qualified   { color: #d4b84a; }
+    .bp-move.eliminated  { color: #cc3a3a; }
+
 
     /* ── WEEK QUALIFIED SLOT ── */
     .week-qualified-slot {
@@ -100,7 +153,7 @@
       align-items: center;
       justify-content: center;
       gap: .4rem;
-      margin: 1rem 12px 0;
+      margin: .35rem 6px .35rem;
       padding: .4rem .75rem;
       border: 1px solid #5a4010;
       border-radius: 2px;
@@ -110,7 +163,7 @@
       font-size: .7rem;
       letter-spacing: 1px;
       color: #e3b128;
-      width: calc(100% - 24px);
+      width: calc(100% - 12px);
       text-align: center;
     }
     .week-qualified-slot.empty {
@@ -344,7 +397,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-width: 200px;
+      width: 230px;
+      flex-shrink: 0;
       align-self: stretch;
       justify-content: space-between;
     }
@@ -355,7 +409,7 @@
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--dim);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0;
       padding-bottom: .5rem;
       border-bottom: 1px solid var(--border);
       width: 100%;
@@ -377,7 +431,9 @@
       border: 1px solid var(--border);
       border-radius: 2px;
       padding: .6rem .75rem;
-      margin: 0 12px;
+      margin: 0 6px;
+      width: calc(100% - 12px);
+      box-sizing: border-box;
       transition: border-color .2s;
       cursor: default;
     }
@@ -394,6 +450,7 @@
       text-transform: uppercase;
       color: var(--dim);
       margin-bottom: .35rem;
+      height: 1.4rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -405,14 +462,15 @@
       border: 1px solid var(--border);
       border-radius: 2px;
     }
-    .rung-badge.qualified  { border-color: #8a6a20; color: #e3b128; }
-    .rung-badge.eliminated { border-color: #7a3040; color: #ff6080; }
+    .rung-badge.qualified  { border-color: #ac8427; color: #e3b128; }
+    .rung-badge.eliminated { border-color: #972e45; color: #ff6080; }
 
     .bracket-player {
       display: flex;
       align-items: center;
       gap: .5rem;
-      padding: .3rem 0;
+      height: 1.85rem;
+      overflow: hidden;
       font-family: 'Montserrat', sans-serif;
       font-weight: 900;
       font-size: .75rem;
@@ -421,7 +479,15 @@
       border-bottom: 1px solid var(--border);
     }
     .bracket-player:last-child { border-bottom: none; }
-    .bracket-player.tbd { color: var(--dim); font-weight: 400; letter-spacing: 0; }
+    .bracket-player.tbd  { color: var(--dim); font-weight: 400; letter-spacing: 0; }
+    .bracket-player.lost { color: var(--dim); font-weight: 550; }
+    .bp-time {
+      margin-left: auto;
+      font-size: .65rem;
+      font-weight: 400;
+      color: var(--dim);
+      letter-spacing: 0;
+    }
     .bracket-player .bp-num {
       font-size: .6rem;
       color: var(--dim);
@@ -1402,6 +1468,7 @@
         null,   // Week 5
         null,   // Week 6
         null,   // Week 7
+        "WiiSuper",   // Wildcard
       ];
 
       // ┌──────────────────────────────────────────────────────────┐
@@ -1418,27 +1485,157 @@
         [null, null],   // Week 5
         [null, null],   // Week 6
         [null, null],   // Week 7
+        [null, null],   // Wildcard
       ];
+
+      // ┌────────────────────────────────────────────────────────────────┐
+      // │  RESULTS CONFIG                                                │
+      // │  Key: "week_rung"                                             │
+      // │  places[] = finish order (1st → last), each entry:           │
+      // │    { name: "PlayerName", time: "H:MM:SS" }                   │
+      // │  time is optional — omit or set null if not recorded         │
+      // │  status (optional):                                           │
+      // │    "leapfrogging" — winner of lower rung who leapfrogged up  │
+      // │    "leapfrogged"  — 2nd place who got leapfrogged (stays)    │
+      // └────────────────────────────────────────────────────────────────┘
+      const RESULTS = {
+        "1_1": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "ZacMuffin", time: "2:18:45" },
+            { name: "Dragon67", time: "2:22:10" },
+            { name: "AnorakDT", time: "2:26:00" },
+          ]
+        },
+        "1_3": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "WiiSuper", time: "2:20:00" },
+            { name: "Scynor",   time: "2:21:10" },
+            { name: "Wazzip",   time: "2:24:30" },
+          ]
+        },
+        "1_5": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "TheCrazedCap", time: "2:25:30", status: "leapfrogging" },
+            { name: "kwazrr",       time: "2:28:15" },
+            { name: "ejpman",       time: "2:30:00" },
+          ]
+        },
+        "1_4": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "FlamingLazer", time: "2:23:00" },
+            { name: "Dimei",        time: "2:25:45", status: "leapfrogged" },
+            { name: "Colten",       time: "2:27:00" },
+          ]
+        },
+        "1_7": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "ChessWiz",    time: "2:39:00" },
+            { name: "CaptainPaxo", time: "2:41:45" },
+            { name: "Gamer_Olive", time: "2:47:30" }
+          ]
+        },
+        "8_1": {
+          vod: "https://www.youtube.com/@TCSSpeedrunning",
+          places: [
+            { name: "WiiSuper", time: "2:20:30" },
+            { name: "Scynor",   time: "2:20:31" },
+          ]
+        }
+      };
+
+      // ┌────────────────────────────────────────────────────────────────┐
+      // │  SCHEDULE CONFIG                                               │
+      // │  Key: "week_rung"  →  ISO 8601 datetime string               │
+      // │  Displayed in each viewer's local time automatically.        │
+      // │  Format: "YYYY-MM-DDTHH:MM:SS±HH:MM"                        │
+      // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00" │
+      // │  Example (3PM Eastern Daylight):  "2025-05-13T15:00:00-04:00"│
+      // └────────────────────────────────────────────────────────────────┘
+      const SCHEDULE = {
+        "1_6": "2025-05-13T15:00:00-04:00",
+      };
+
+      function formatSchedule(isoStr) {
+        const d = new Date(isoStr);
+        const date = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        return `${date} · ${time}`;
+      }
 
       // Week structure: week i has (8 - i) matches, 7 weeks total
       // Week 1: 7 matches (rungs 1-7), Week 2: 6 matches, ... Week 7: 1 match
       // Rung 1 = top (winner qualifies), bottom rung = 2 losers eliminated
 
-      const WEEKS = 7;
-      const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1];
+      const WEEKS = 8;
+      const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1, 1];
+      const WILDCARD_WEEK = 8;
 
       // Generate placeholder players for each match slot
       // Each match has 3 players
       function getPlayers(week, rung) {
+        // if (week === 1) {
+        //   const base = (rung - 1) * 3;
+        //   return [
+        //     `User ${base + 1}`,
+        //     `User ${base + 2}`,
+        //     `User ${base + 3}`,
+        //   ];
+        // }
+        // return ['—', '—', '—'];
         if (week === 1) {
-          const base = (rung - 1) * 3;
-          return [
-            `User ${base + 1}`,
-            `User ${base + 2}`,
-            `User ${base + 3}`,
-          ];
+          if (rung === 1){
+            return [
+              "ZacMuffin",
+              "Dragon67",
+              "AnorakDT"
+            ];
+          } else if (rung === 2){
+            return [
+              "itsjared97",
+              "ERoadhouse",
+              "Bricko"
+            ];
+          } else if (rung === 3){
+            return [
+              "WiiSuper",
+              "Scynor",
+              "Wazzip"
+            ];
+          } else if (rung === 4){
+            return [
+              "FlamingLazer",
+              "Dimei",
+              "Colten"
+            ];
+          } else if (rung === 5){
+            return [
+              "TheCrazedCap",
+              "kwazrr",
+              "ejpman"
+            ];
+          } else if (rung === 6){
+            return [
+              "Charzight",
+              "Coolisen",
+              "MelloVro"
+            ];
+          } else if (rung === 7){
+            return [
+              "Gamer_Olive",
+              "ChessWiz",
+              "CaptainPaxo"
+            ];
+          }
+        } else if (week === WILDCARD_WEEK) {
+          return ['—', '—'];
+        } else {
+          return ['—', '—', '—'];
         }
-        return ['—', '—', '—'];
       }
 
       const container = document.getElementById('bracket-scroll');
@@ -1452,34 +1649,47 @@
 
         const label = document.createElement('div');
         label.className = 'bracket-week-label';
-        label.textContent = `Week ${w}`;
+        label.textContent = w === WILDCARD_WEEK ? 'Wildcard' : `Week ${w}`;
         weekEl.appendChild(label);
 
         const matchesWrap = document.createElement('div');
         matchesWrap.className = 'bracket-week-matches';
 
         for (let r = 1; r <= matchCount; r++) {
+          const isWildcard = w === WILDCARD_WEEK;
           const isTop    = r === 1;
-          const isBottom = r === matchCount;
+          const isBottom = r === matchCount && !isWildcard;
           const players  = getPlayers(w, r);
 
-          const isLive = LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
+          const isLive     = LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
+          const result     = RESULTS[`${w}_${r}`];
+          const isDone     = !!result;
+          const scheduleRaw = !isLive && !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
+          const scheduleAt  = scheduleRaw ? formatSchedule(scheduleRaw) : null;
           let card;
           if (isLive) {
             card = document.createElement('a');
             card.href = 'https://twitch.tv/legospeedruns';
             card.target = '_blank';
             card.rel = 'noopener';
+          } else if (isDone) {
+            card = document.createElement('a');
+            card.href = result.vod;
+            card.target = '_blank';
+            card.rel = 'noopener';
           } else {
             card = document.createElement('div');
           }
-          card.className = 'bracket-match' + (isLive ? ' live' : '');
+          card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
 
           // Rung header
           const rungRow = document.createElement('div');
           rungRow.className = 'bracket-match-rung';
           const rungLabel = document.createElement('span');
-          rungLabel.textContent = `Rung ${r}`;
+          const rungName = isWildcard ? 'Wildcard' : `Rung ${r}`;
+          rungLabel.innerHTML = rungName + (isDone ? ' <span class="done-check">✓</span>' : '');
+          if (isTop)    rungLabel.style.color = '#ac8427';
+          else if (isBottom)           rungLabel.style.color = '#972e45';
           rungRow.appendChild(rungLabel);
 
           if (isLive) {
@@ -1487,40 +1697,68 @@
             liveInd.className = 'live-indicator';
             liveInd.innerHTML = '<span class="live-dot"></span>LIVE<span class="live-arrow">↗</span>';
             rungRow.appendChild(liveInd);
-          } else if (isTop) {
-            const badge = document.createElement('span');
-            badge.className = 'rung-badge qualified';
-            badge.textContent = 'Qualifies';
-            rungRow.appendChild(badge);
-          } else if (isBottom) {
-            const badge = document.createElement('span');
-            badge.className = 'rung-badge eliminated';
-            badge.textContent = 'Elim ×2';
-            rungRow.appendChild(badge);
+          } else if (isDone) {
+            const doneInd = document.createElement('span');
+            doneInd.className = 'done-indicator';
+            doneInd.innerHTML = 'VOD<span class="done-arrow">↗</span>';
+            rungRow.appendChild(doneInd);
+          } else if (scheduleAt) {
+            const sched = document.createElement('span');
+            sched.className = 'scheduled-indicator';
+            sched.textContent = scheduleAt;
+            rungRow.appendChild(sched);
+          } else {
+            const tbd = document.createElement('span');
+            tbd.className = 'scheduled-indicator';
+            tbd.textContent = 'TBD';
+            rungRow.appendChild(tbd);
           }
           card.appendChild(rungRow);
 
           // Players
-          players.forEach((p, pi) => {
+          const displayPlayers = isDone ? result.places : players;
+          displayPlayers.forEach((entry, pi) => {
+            const p              = isDone ? entry.name : entry;
+            const time           = isDone ? entry.time : null;
+            const status         = isDone ? (entry.status || null) : null;
+            const place          = pi + 1;
+            const isTbd          = p === '—';
+            const qualifies      = isDone && isTop && place === 1;
+            const eliminated     = isDone && isBottom && place > 1;
+            const dropsDown      = isDone && !isBottom && place === displayPlayers.length;
+            const movesUp        = isDone && !qualifies && !eliminated && !dropsDown;
+            const isLeapfrogging = status === 'leapfrogging';
+            const isLeapfrogged  = status === 'leapfrogged';
+
+            let moveArrow = '';
+            if (qualifies)           moveArrow = `<span class="bp-move qualified">★</span>`;
+            else if (eliminated)     moveArrow = `<span class="bp-move eliminated">✖</span>`;
+            else if (dropsDown)      moveArrow = `<span class="bp-move down">↓</span>`;
+            else if (isLeapfrogging) moveArrow = `<span class="bp-move leapfrogging">⇑</span>`;
+            else if (isLeapfrogged)  moveArrow = `<span class="bp-move leapfrogged">↔</span>`;
+            else if (movesUp)        moveArrow = `<span class="bp-move up">↑</span>`;
+
             const pEl = document.createElement('div');
-            pEl.className = 'bracket-player' + (p === '—' ? ' tbd' : '');
-            pEl.innerHTML = `<span class="bp-num">${p === '—' ? '' : pi + 1}</span>${p}`;
+            pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (dropsDown || eliminated ? ' lost' : '');
+            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${p}`
+              + (time ? `<span class="bp-time">${time}</span>` : '')
+              + moveArrow;
             card.appendChild(pEl);
           });
 
           matchesWrap.appendChild(card);
         }
 
-        weekEl.appendChild(matchesWrap);
-
-        // Qualified slot below this week
+        // Qualified slot below week label
         const qualName = QUALIFIED[w - 1];
         const qualSlot = document.createElement('div');
         qualSlot.className = 'week-qualified-slot' + (qualName ? '' : ' empty');
         qualSlot.innerHTML = qualName
           ? `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span>`
-          : `<span class="wqs-name">—</span>`;
+          : `<span class="wqs-name">SEED ${w}</span>`;
         weekEl.appendChild(qualSlot);
+
+        weekEl.appendChild(matchesWrap);
 
         container.appendChild(weekEl);
       }
