@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simple ladder icon optimized for favicon use -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="8" fill="#0f111c"/>
+  <g fill="none" stroke="#9aaabb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- rails -->
+    <path d="M18 8v48" />
+    <path d="M46 8v48" />
+    <!-- rungs -->
+    <path d="M18 14h28" />
+    <path d="M18 24h28" />
+    <path d="M18 34h28" />
+    <path d="M18 44h28" />
+  </g>
+</svg>
