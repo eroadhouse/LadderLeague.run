@@ -7,6 +7,14 @@
       { "name": "AnorakDT",  "time": "2:26:00" }
     ]
   },
+  "1_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97", "time": "2:19:45" },
+      { "name": "ERoadhouse",  "time": "2:20:10" },
+      { "name": "Bricko",  "time": "2:21:00" }
+    ]
+  },
   "1_3": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
@@ -47,11 +55,20 @@
       { "name": "Gamer_Olive", "time": "2:47:30" }
     ]
   },
-  "8_1": {
+  "2_1": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
-      { "name": "WiiSuper", "time": "2:20:30" },
-      { "name": "Scynor",   "time": "2:20:31" }
+      { "name": "Dragon67", "time": "2:19:05" },
+      { "name": "itsjared97",  "time": "2:22:10" },
+      { "name": "ERoadhouse",  "time": "2:23:00" }
+    ]
+  },
+  "2_6": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ChessWiz", "time": "2:29:00" },
+      { "name": "ejpman",    "time": "2:30:00" },
+      { "name": "MelloVro",   "time": "2:32:45" }
     ]
   }
 }
