@@ -55,60 +55,80 @@
       { "name": "Gamer_Olive", "time": "2:47:30" }
     ]
   },
-  "qf_1": {
+  "2_1": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
-      { "name": "ZacMuffin", "time": "2:16:00" },
-      { "name": "itsjared97",  "time": "2:18:30" }
+      { "name": "Dragon67", "time": "2:17:30" },
+      { "name": "itsjared97",  "time": "2:19:00" },
+      { "name": "ERoadhouse",  "time": "2:21:45" }
+    ]
+  },
+  "3_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ERoadhouse", "time": "2:16:30" },
+      { "name": "itsjared97",  "time": "2:18:00" },
+      { "name": "Scynor",    "time": "2:20:15" }
+    ]
+  },
+  "4_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Wazzip", "time": "2:15:45" },
+      { "name": "Scynor",  "time": "2:17:00" },
+      { "name": "Bricko",  "time": "2:19:30" }
+    ]
+  },
+  "5_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Scynor", "time": "2:16:00" },
+      { "name": "Bricko",  "time": "2:18:30" },
+      { "name": "kwazrr",  "time": "2:22:00" }
+    ]
+  },
+  "6_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Bricko",  "time": "2:15:30" },
+      { "name": "kwazrr",  "time": "2:18:00" },
+      { "name": "Dimei",   "time": "2:20:45" }
+    ]
+  },
+  "7_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "kwazrr",  "time": "2:16:15" },
+      { "name": "Dimei",   "time": "2:18:30" },
+      { "name": "TheCrazedCap",  "time": "2:21:00" }
+    ]
+  },
+  "8_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97",  "time": "2:24:00" },
+      { "name": "WiiSuper", "time": "2:26:30" }
     ]
   },
   "qf_2": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
-      { "name": "ERoadhouse", "time": "2:17:45" },
-      { "name": "FlamingLazer",  "time": "2:21:00" }
+      { "name": "Wazzip",  "time": "2:15:45" },
+      { "name": "Scynor",  "time": "2:17:30" }
     ]
   },
   "qf_3": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
-      { "name": "Scynor", "time": "2:18:15" },
-      { "name": "Bricko",  "time": "2:20:30" }
+      { "name": "ERoadhouse",  "time": "2:16:45" },
+      { "name": "Bricko",  "time": "2:17:00" }
     ]
   },
   "qf_4": {
     "vod": "https://www.youtube.com/@TCSSpeedrunning",
     "places": [
-      { "name": "WiiSuper", "time": "2:17:30" },
-      { "name": "Dragon67",  "time": "2:22:45" }
+      { "name": "Dragon67",  "time": "2:15:30" },
+      { "name": "kwazrr",  "time": "2:15:31" }
     ]
-  },
-  "sf_1": {
-    "vod": "https://www.youtube.com/@TCSSpeedrunning",
-    "places": [
-      { "name": "ZacMuffin", "time": "2:15:30" },
-      { "name": "ERoadhouse",  "time": "2:18:00" }
-    ]
-   },
-   "sf_2": {
-    "vod": "https://www.youtube.com/@TCSSpeedrunning",
-    "places": [
-      { "name": "WiiSuper", "time": "2:16:15" },
-      { "name": "Scynor",  "time": "2:19:45" }
-    ]
-   },
-   "tp_1": {
-    "vod": "https://www.youtube.com/@TCSSpeedrunning",
-    "places": [
-      { "name": "ERoadhouse", "time": "2:18:30" },
-      { "name": "Scynor",  "time": "2:20:00" }
-     ]
-   },
-  "gf_1": {
-    "vod": "https://www.youtube.com/@TCSSpeedrunning",
-    "places": [
-      { "name": "ZacMuffin", "time": "2:15:00" },
-      { "name": "WiiSuper",  "time": "2:16:30" }
-    ]
-   }
+  }
 }
