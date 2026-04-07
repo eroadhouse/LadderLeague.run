@@ -138,6 +138,9 @@
       flex-shrink: 0;
       letter-spacing: 0;
       line-height: 1;
+      width: 1.1rem;
+      text-align: center;
+      display: inline-block;
     }
     .bp-move.up          { color: #4caa6c; }
     .bp-move.down        { color: #aa4c5c; }
@@ -188,13 +191,6 @@
       filter: blur(5px);
     }
 
-    a[target="_blank"]:not(.bracket-match)::after {
-      content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      margin-left: 5px;
-    }
 
     /* ── NAV ── */
     nav {
@@ -291,6 +287,35 @@
     /* ════════════════════════════
        HOME PAGE
     ════════════════════════════ */
+    #home .hero-scroll-cta {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--dim);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .65rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: .5rem 1rem;
+      transition: color .2s;
+      animation: scrollCtaBob 2.2s ease-in-out infinite;
+    }
+    #home .hero-scroll-cta:hover { color: var(--accent); }
+    #home .hero-scroll-cta svg { display: block; }
+    @keyframes scrollCtaBob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(5px); }
+    }
+
     #home .hero {
       min-height: calc(100vh - var(--nav-h));
       display: flex;
@@ -316,7 +341,7 @@
 
     #home .hero-title {
       font-family: 'Rubik', sans-serif;
-      font-size: clamp(5rem, 14vw, 11rem);
+      font-size: clamp(3.4rem, 11.9vw, 9.35rem);
       line-height: .9;
       letter-spacing: 4px;
       color: #fff;
@@ -335,7 +360,9 @@
     }
 
     #home .hero-cta {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
       margin-top: 2rem;
       padding: .75rem 2.5rem;
       font-family: 'Rubik', sans-serif;
@@ -367,11 +394,55 @@
       font-size: 2.5rem;
       color: var(--accent);
       line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
     .stat-label {
       font-size: .75rem;
       letter-spacing: 2px;
       color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    /* ════════════════════════════
+       STANDINGS TABS
+    ════════════════════════════ */
+    .standings-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1rem 0;
+      background: var(--bg);
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 10;
+    }
+    .standings-tab {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: .6rem 1.4rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+      user-select: none;
+    }
+    .standings-tab:hover { color: var(--text); }
+    .standings-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .standings-tab-panel { display: none; }
+    .standings-tab-panel.active { display: block; }
+    .standings-tab-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40vh;
+      color: var(--dim);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .8rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
     }
 
@@ -390,6 +461,25 @@
       align-items: center;
       padding: 2rem 1rem;
       min-height: 70vh;
+    }
+
+    /* ─ Top 8 Bracket Container ─ */
+    .top8-bracket-outer {
+      overflow-x: auto;
+      padding: 1rem 1rem;
+      height: calc(100vh - var(--nav-h) - 28px);
+      display: flex;
+      flex-direction: column;
+    }
+    .top8-bracket-scroll {
+      display: flex;
+      gap: 0;
+      min-width: max-content;
+      align-items: flex-start;
+      flex: 1;
+      padding: 1rem 0 2rem 0;
+      position: relative;
+      z-index: 1;
     }
 
     /* Week column */
@@ -422,6 +512,310 @@
       width: 100%;
       flex: 1;
       justify-content: top;
+    }
+
+    /* ─ Top 8 Bracket Round ─ */
+    .bracket-round {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 537px;
+      flex-shrink: 0;
+      align-self: stretch;
+    }
+    .bracket-round-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      text-align: center;
+    }
+    .bracket-round-matches {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      flex: 1;
+      justify-content: space-around;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    /* ─ Top 8 Match Box ─ */
+    .top8-match {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1.2rem 1.5rem;
+      margin: 0 6px;
+      width: 70%;
+      box-sizing: border-box;
+      transition: border-color .2s;
+      cursor: default;
+    }
+    .top8-match:hover { border-color: var(--accent); }
+
+    /* ─ Top 8 Live Match ─ */
+    .top8-match.live {
+      border-color: #2a5a2a;
+      background: rgba(60,180,60,.04);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .top8-match.live:hover {
+      border-color: #4caa4c;
+      background: rgba(60,180,60,.08);
+    }
+
+    /* ─ Top 8 Done Match ─ */
+    .top8-match.done {
+      border-color: #1e2535;
+      opacity: .85;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .top8-match.done:hover .top8-done-indicator { color: var(--accent); }
+
+    /* ─ Top 8 Indicators ─ */
+    .top8-live-indicator {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .75rem;
+      letter-spacing: 2px;
+      color: #4cff91;
+      text-transform: uppercase;
+    }
+    .top8-live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4cff91;
+      flex-shrink: 0;
+      animation: livePulse 1.2s ease-in-out infinite;
+    }
+    .top8-live-arrow {
+      font-size: .8rem;
+      margin-left: auto;
+      color: #4cff91;
+      opacity: .6;
+    }
+
+    .top8-done-indicator {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .75rem;
+      letter-spacing: 2px;
+      color: var(--dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .top8-done-check {
+      font-size: .8rem;
+      opacity: .7;
+    }
+    .top8-done-arrow {
+      font-size: .8rem;
+      margin-left: auto;
+      opacity: .5;
+    }
+
+    .top8-scheduled-indicator {
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .5px;
+      color: var(--dim);
+      opacity: .75;
+      white-space: nowrap;
+    }
+
+    /* ─ Top 8 Player Styles ─ */
+    .top8-bracket-player {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      height: 2.2rem;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .9rem;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      border-bottom: 1px solid var(--border);
+    }
+    .top8-bracket-player:last-child { border-bottom: none; }
+    .top8-bracket-player.tbd  { color: var(--dim); font-weight: 400; letter-spacing: 0; }
+    .top8-bracket-player.lost       { color: #a23e3e; font-weight: 550; }
+    .top8-bracket-player.runner-up  { color: #b7bdc5; font-weight: 550; }
+    .top8-bracket-player.won        { color: #6ec88a; }
+    .top8-bracket-player.champion  { color: #d4b84a; }
+
+    /* ─ Top 8 Champion Box ─ */
+    .top8-results-stack {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      width: 100%;
+      align-items: stretch;
+      justify-content: center;
+      flex: 1;
+      padding: 1rem 0;
+    }
+    .bracket-round-results {
+      width: 228px;
+    }
+    .top8-champion-box,
+    .top8-runnerup-box,
+    .top8-bronze-box {
+      background: var(--surface);
+      border-radius: 2px;
+      padding: .75rem 1.5rem 1rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .top8-champion-box  { border: 1px solid #ac8427; }
+    .top8-runnerup-box  { border: 1px solid #b7bdc5; }
+    .top8-bronze-box    { border: 1px solid #7a4e2d; }
+    .top8-champion-box.visible,
+    .top8-runnerup-box.visible,
+    .top8-bronze-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .top8-champion-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ac8427;
+      margin-bottom: .4rem;
+    }
+    .top8-champion-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      color: #d4b84a;
+    }
+    .top8-runnerup-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #9aa8b8;
+      margin-bottom: .4rem;
+    }
+    .top8-runnerup-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #9aa8b8;
+    }
+    .top8-bronze-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #7a4e2d;
+      margin-bottom: .4rem;
+    }
+    .top8-bronze-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #b07040;
+    }
+    .top8-rest-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1rem 1.5rem 1.2rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .top8-rest-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .top8-rest-row {
+      display: flex;
+      align-items: baseline;
+      gap: .6rem;
+      padding: .3rem 0;
+    }
+    .top8-rest-place {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem;
+      font-weight: 900;
+      color: var(--dim);
+      width: 1.4rem;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .top8-rest-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: var(--dim);
+    }
+    .top8-bracket-player .bp-num {
+      font-size: .75rem;
+      color: var(--dim);
+      font-weight: 400;
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .top8-bracket-player .bp-time {
+      margin-left: auto;
+      font-size: .8rem;
+      font-weight: 400;
+      color: var(--dim);
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ─ Top 8 Match Rung Header ─ */
+    .top8-match-rung {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: .75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: .5rem;
+      height: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     /* Match card */
@@ -487,14 +881,10 @@
       font-weight: 400;
       color: var(--dim);
       letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
     }
     .bracket-player .bp-num {
-      font-size: .6rem;
-      color: var(--dim);
-      font-weight: 400;
-      width: 14px;
-      text-align: right;
-      flex-shrink: 0;
+      display: none;
     }
 
     /* Connector lines between weeks */
@@ -607,6 +997,7 @@
       font-size: .65rem;
       color: var(--dim);
       font-weight: 400;
+      font-variant-numeric: tabular-nums;
     }
     .wcs-divider { height: .5rem; }
 
@@ -1134,12 +1525,13 @@
         <span class="accent">LEA</span><span class="accent2">GUE</span>
       </h1>
       <p class="hero-desc reveal" style="transition-delay:.4s">
-        LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions, follow along, and learn about the participants
+        LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions and follow along
         as the season unfolds.
       </p>
-      <a href="https://youtube.com/playlist?list=PLaoVS_ComfptPxoMS_10q7cxi0R9UfCh4&si=4pSv4zzBkFcQPJcC" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS
+      <a href="https://youtube.com/playlist?list=PLaoVS_ComfptPxoMS_10q7cxi0R9UfCh4&si=4pSv4zzBkFcQPJcC" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
       </a>
-      <div class="stat-row reveal" style="transition-delay:.7s">
+      <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
+      <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
         <div class="stat-item">
           <div class="stat-value" id="cd-days">0</div>
           <div class="stat-label">Days</div>
@@ -1157,6 +1549,10 @@
           <div class="stat-label">Seconds</div>
         </div>
       </div>
+      <button class="hero-scroll-cta" onclick="document.getElementById('upcoming-section').scrollIntoView({behavior:'smooth'})">
+        See Upcoming Matches
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 16.5l-8-8 1.41-1.41L12 13.67l6.59-6.58L20 8.5z"/></svg>
+      </button>
     </div>
     <!-- UPCOMING MATCHES (reveals when scrolled into view) -->
     <div class="upcoming-section reveal" id="upcoming-section">
@@ -1172,8 +1568,23 @@
 
   <!-- ══ STANDINGS ══ -->
   <div class="page" id="standings">
-    <div class="bracket-outer reveal" style="transition-delay:.1s">
-      <div class="bracket-scroll" id="bracket-scroll"></div>
+    <div class="standings-tabs">
+      <div class="standings-tab" data-tab="lcq">LCQ</div>
+      <div class="standings-tab active" data-tab="ladder">Ladder</div>
+      <div class="standings-tab" data-tab="top8">Top 8</div>
+    </div>
+    <div class="standings-tab-panel" id="standings-tab-lcq">
+      <div class="standings-tab-empty">Coming Soon</div>
+    </div>
+    <div class="standings-tab-panel active" id="standings-tab-ladder">
+      <div class="bracket-outer reveal" style="transition-delay:.1s">
+        <div class="bracket-scroll" id="bracket-scroll"></div>
+      </div>
+    </div>
+    <div class="standings-tab-panel" id="standings-tab-top8">
+      <div class="top8-bracket-outer reveal" style="transition-delay:.1s">
+        <div class="top8-bracket-scroll" id="bracket-scroll-top8"></div>
+      </div>
     </div>
   </div>
 
@@ -1343,6 +1754,27 @@
       predictions[idx] = side;
       btn.classList.add(side === 'right' ? 'selected-right' : 'selected');
     }
+
+    // ── STANDINGS TABS ──
+    document.querySelectorAll('.standings-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const name = tab.dataset.tab;
+        document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`standings-tab-${name}`).classList.add('active');
+        if (name === 'top8') {
+          const boxIds = ['top8-champion-box','top8-runnerup-box','top8-bronze-box','top8-rest-box'];
+          boxIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.classList.contains('visible')) {
+              el.classList.remove('visible');
+              requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+            }
+          });
+        }
+      });
+    });
 
     // ── NAVIGATION ──
     document.querySelectorAll('[data-page]').forEach(link => {
@@ -1601,7 +2033,9 @@
       // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00"   │
       // └────────────────────────────────────────────────────────────────┘
       const SCHEDULE = {
-        "1_6": "2026-04-06T16:59:30-04:00",
+        "2_2": "2026-04-06T22:38:00-04:00",
+        "2_3": "2026-04-06T23:38:00-04:00",
+        "2_4": "2026-04-06T23:38:00-04:00"
       };
 
       function ordinal(n) {
@@ -1639,67 +2073,67 @@
 
       let wildcardParticipants = ['—', '—'];
 
-      // Generate placeholder players for each match slot
-      // Each match has 3 players
-      function getPlayers(week, rung) {
-        // if (week === 1) {
-        //   const base = (rung - 1) * 3;
-        //   return [
-        //     `User ${base + 1}`,
-        //     `User ${base + 2}`,
-        //     `User ${base + 3}`,
-        //   ];
-        // }
-        // return ['—', '—', '—'];
-        if (week === 1) {
-          if (rung === 1){
-            return [
-              "ZacMuffin",
-              "Dragon67",
-              "AnorakDT"
-            ];
-          } else if (rung === 2){
-            return [
-              "itsjared97",
-              "ERoadhouse",
-              "Bricko"
-            ];
-          } else if (rung === 3){
-            return [
-              "WiiSuper",
-              "Scynor",
-              "Wazzip"
-            ];
-          } else if (rung === 4){
-            return [
-              "FlamingLazer",
-              "Dimei",
-              "Colten"
-            ];
-          } else if (rung === 5){
-            return [
-              "TheCrazedCap",
-              "kwazrr",
-              "ejpman"
-            ];
-          } else if (rung === 6){
-            return [
-              "Charzight",
-              "Coolisen",
-              "MelloVro"
-            ];
-          } else if (rung === 7){
-            return [
-              "Gamer_Olive",
-              "ChessWiz",
-              "CaptainPaxo"
-            ];
-          }
-        } else if (week === WILDCARD_WEEK) {
-          return wildcardParticipants;
-        } else {
-          return ['—', '—', '—'];
+      // Week 1 lineup (manually set)
+      const WEEK1_LINEUP = {
+        1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
+        2: ["itsjared97",   "ERoadhouse","Bricko"],
+        3: ["WiiSuper",     "Scynor",    "Wazzip"],
+        4: ["FlamingLazer", "Dimei",     "Colten"],
+        5: ["TheCrazedCap", "kwazrr",    "ejpman"],
+        6: ["Charzight",    "Coolisen",  "MelloVro"],
+        7: ["Gamer_Olive",  "ChessWiz",  "CaptainPaxo"],
+      };
+
+      // Derive the expected lineup for a given week by simulating player movements
+      // from the previous week's results.
+      // Movement rules:
+      //   - Rung 1, 1st place  → qualified (removed from ladder)
+      //   - Rung 1, 2nd place  → stays in rung 1
+      //   - Any rung, 3rd place (loser) → drops to rung below (clamped to bottom rung)
+      //   - Bottom rung, 2nd & 3rd → eliminated
+      //   - All other 1st & 2nd place → move up one rung
+      function computeLineup(week) {
+        if (week === 1) return WEEK1_LINEUP;
+        const prevWeek = week - 1;
+        const prevMatchCount = weekMatchCounts[prevWeek - 1];
+        const thisMatchCount = weekMatchCounts[week - 1];
+
+        const nextRung = {};
+        for (let r = 1; r <= prevMatchCount; r++) {
+          const result = RESULTS[`${prevWeek}_${r}`];
+          if (!result) continue;
+          const isTop    = r === 1;
+          const isBottom = r === prevMatchCount;
+          result.places.forEach((entry, i) => {
+            const place = i + 1;
+            const name  = entry.name;
+            if (isTop    && place === 1) return;           // qualified
+            if (isBottom && place  >  1) return;           // eliminated
+            if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays
+            if (place === 3)             { nextRung[name] = r + 1; return; } // drops
+            nextRung[name] = r - 1;                        // 1st or 2nd moves up
+          });
         }
+
+        // Bucket players into their new rungs, clamping to valid range
+        const lineup = {};
+        for (let r = 1; r <= thisMatchCount; r++) lineup[r] = [];
+        Object.entries(nextRung).forEach(([name, r]) => {
+          const clamped = Math.max(1, Math.min(thisMatchCount, r));
+          lineup[clamped].push(name);
+        });
+
+        // Pad any under-filled rungs with placeholders
+        for (let r = 1; r <= thisMatchCount; r++) {
+          while (lineup[r].length < 3) lineup[r].push('—');
+        }
+        return lineup;
+      }
+
+      // Return the expected players for a match (used when no results exist yet)
+      function getPlayers(week, rung) {
+        if (week === WILDCARD_WEEK) return wildcardParticipants;
+        return computeLineup(week)[rung] || ['—', '—', '—'];
       }
 
       function buildBracket() {
@@ -1797,7 +2231,7 @@
           rungRow.className = 'bracket-match-rung';
           const rungLabel = document.createElement('span');
           const rungName = isWildcard ? 'Wildcard' : `Rung ${r}`;
-          rungLabel.innerHTML = rungName + (isDone ? ' <span class="done-check">✓</span>' : '');
+          rungLabel.textContent = rungName;
           if (isTop)    rungLabel.style.color = '#ac8427';
           else if (isBottom)           rungLabel.style.color = '#972e45';
           rungRow.appendChild(rungLabel);
@@ -1805,12 +2239,12 @@
           if (isLive) {
             const liveInd = document.createElement('span');
             liveInd.className = 'live-indicator';
-            liveInd.innerHTML = '<span class="live-dot"></span>LIVE<span class="live-arrow">↗</span>';
+            liveInd.innerHTML = '<span class="live-dot"></span>LIVE<span class="live-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></span>';
             rungRow.appendChild(liveInd);
           } else if (isDone) {
             const doneInd = document.createElement('span');
             doneInd.className = 'done-indicator';
-            doneInd.innerHTML = 'VOD<span class="done-arrow">↗</span>';
+            doneInd.innerHTML = 'VOD<span class="done-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></span>';
             rungRow.appendChild(doneInd);
           } else if (scheduleAt) {
             const sched = document.createElement('span');
@@ -1886,7 +2320,7 @@
       wcsEl.className = 'wildcard-standings';
       wcsEl.innerHTML = `<div class="wildcard-standings-label">Wildcard Standings</div>`;
 
-      function wcsSection(title, rows) {
+      function wcsSection(title, rows, highlightName) {
         const frag = document.createDocumentFragment();
         const lbl = document.createElement('div');
         lbl.className = 'wcs-section-label';
@@ -1895,7 +2329,8 @@
         for (let i = 0; i < 3; i++) {
           const row = document.createElement('div');
           const entry = rows[i];
-          row.className = 'wcs-row' + (entry ? (i === 0 ? ' leader' : '') : ' empty');
+          const isLeader = entry && entry[0] === highlightName;
+          row.className = 'wcs-row' + (entry ? (isLeader ? ' leader' : '') : ' empty');
           row.innerHTML = entry
             ? `<span class="wcs-rank">${ordinal(i + 1)}</span>${entry[0]}<span class="wcs-time">${fmtTime(entry[1])}</span>`
             : `<span class="wcs-rank">${ordinal(i + 1)}</span>—`;
@@ -1904,9 +2339,9 @@
         return frag;
       }
 
-      wcsEl.appendChild(wcsSection('Fastest Time', top3Best));
+      wcsEl.appendChild(wcsSection('Fastest Time', top3Best, wcFastest));
       const div = document.createElement('div'); div.className = 'wcs-divider'; wcsEl.appendChild(div);
-      wcsEl.appendChild(wcsSection('Fastest Average', top3Avg));
+      wcsEl.appendChild(wcsSection('Fastest Average', top3Avg, wcAvg));
 
       // WCS sits below week 7 (which has only 1 card), landing it at the ~rung-2 vertical position
       const week7Group = document.createElement('div');
@@ -1988,6 +2423,393 @@
       }
 
       init();
+
+    })();
+
+    // ── TOP 8 BRACKET ──
+    (function() {
+
+      let TOP8_RESULTS = {};
+      // Seeds 1–8 derived from weekly rung-1 winners (weeks 1–7) + wildcard (week 8)
+      let TOP8_SEEDS = Array(8).fill(null);
+
+      // ┌────────────────────────────────────────────────────────────────┐
+      // │  TOP 8 SCHEDULE CONFIG                                         │
+      // │  Key: "round_match"  →  ISO 8601 datetime string               │
+      // │  Rounds: "qf" (quarterfinals), "sf" (semifinals), "gf" (finals)│
+      // │  Match numbers start at 1 for each round                       │
+      // │  Example: "qf_1", "sf_1", "gf_1"                              │
+      // └────────────────────────────────────────────────────────────────┘
+      const TOP8_SCHEDULE = {
+        "qf_1": "2026-07-10T10:00:00-04:00",
+        "qf_4": "2026-07-10T13:00:00-04:00",
+        "qf_3": "2026-07-10T16:00:00-04:00",
+        "qf_2": "2026-07-10T19:00:00-04:00",
+        "sf_1": "2026-07-11T12:30:00-04:00",
+        "sf_2": "2026-07-11T16:00:00-04:00",
+        "gf_1": "2026-04-06T21:46:00-04:00",
+      };
+
+      const ROUNDS_CONFIG = [
+        { id: 'qf', name: 'Quarterfinals', matches: 4 },
+        { id: 'sf', name: 'Semifinals', matches: 2 },
+        { id: 'gf', name: 'Grand Finals', matches: 1 },
+      ];
+
+      const ROUND_LABEL_PREFIX = {
+        qf: 'Quarterfinal',
+        sf: 'Semifinal',
+        gf: 'Grand Final',
+      };
+
+      function seedOf(name) {
+        const i = TOP8_SEEDS.indexOf(name);
+        return i >= 0 ? i + 1 : null;
+      }
+
+      function winnerOf(key) {
+        return TOP8_RESULTS[key]?.places?.[0]?.name || null;
+      }
+
+      function getTop8Players(roundId, matchNum) {
+        const tbd = { name: '—', seed: null };
+        const player = name => name ? { name, seed: seedOf(name) } : tbd;
+
+        if (roundId === 'qf') {
+          // Standard seeding: 1v8, 4v5, 3v6, 2v7
+          const pairings = [[0,7],[3,4],[2,5],[1,6]];
+          const [i, j] = pairings[matchNum - 1];
+          return [
+            { name: TOP8_SEEDS[i] || '—', seed: i + 1 },
+            { name: TOP8_SEEDS[j] || '—', seed: j + 1 },
+          ];
+        }
+        if (roundId === 'sf') {
+          // SF1: winners of QF1 & QF2 — SF2: winners of QF3 & QF4
+          const base = (matchNum - 1) * 2 + 1;
+          return [player(winnerOf(`qf_${base}`)), player(winnerOf(`qf_${base + 1}`))];
+        }
+        if (roundId === 'gf') {
+          return [player(winnerOf('sf_1')), player(winnerOf('sf_2'))];
+        }
+        return [tbd, tbd];
+      }
+
+      function parseTime(t) {
+        if (!t) return null;
+        const [h, m, s] = t.split(':').map(Number);
+        return h * 3600 + m * 60 + s;
+      }
+
+      function formatSchedule(isoStr) {
+        const d = new Date(isoStr);
+        const date = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        return `${date} · ${time}`;
+      }
+
+      function buildTop8Bracket() {
+        const container = document.getElementById('bracket-scroll-top8');
+        if (!container) return;
+        container.innerHTML = '';
+
+        ROUNDS_CONFIG.forEach((roundConfig, roundIndex) => {
+          const roundEl = document.createElement('div');
+          roundEl.className = 'bracket-round';
+
+          const label = document.createElement('div');
+          label.className = 'bracket-round-label';
+          label.textContent = roundConfig.name;
+          roundEl.appendChild(label);
+
+          const matchesWrap = document.createElement('div');
+          matchesWrap.className = 'bracket-round-matches';
+
+          for (let m = 1; m <= roundConfig.matches; m++) {
+            const players = getTop8Players(roundConfig.id, m);
+            const result = TOP8_RESULTS[`${roundConfig.id}_${m}`];
+            const isDone = !!result;
+            const scheduleRaw = !isDone ? (TOP8_SCHEDULE[`${roundConfig.id}_${m}`] || null) : null;
+            const isAutoLive = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
+            const isLive = isAutoLive;
+            const scheduleAt = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
+
+            let card;
+            if (isLive) {
+              card = document.createElement('a');
+              card.href = 'https://twitch.tv/legospeedruns';
+              card.target = '_blank';
+              card.rel = 'noopener';
+            } else if (isDone) {
+              card = document.createElement('a');
+              card.href = result.vod || '#';
+              card.target = '_blank';
+              card.rel = 'noopener';
+            } else {
+              card = document.createElement('div');
+            }
+            card.className = 'top8-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
+            card.id = `top8-card-${roundConfig.id}-${m}`;
+
+            // Match header
+            const matchRow = document.createElement('div');
+            matchRow.className = 'top8-match-rung';
+            const matchLabel = document.createElement('span');
+            const roundLabel = ROUND_LABEL_PREFIX[roundConfig.id] || 'Match';
+            matchLabel.textContent = roundConfig.matches === 1 ? roundConfig.name : `${roundLabel} ${m}`;
+            matchRow.appendChild(matchLabel);
+
+            if (isLive) {
+              const liveInd = document.createElement('span');
+              liveInd.className = 'top8-live-indicator';
+              liveInd.innerHTML = '<span class="top8-live-dot"></span>LIVE<span class="top8-live-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></span>';
+              matchRow.appendChild(liveInd);
+            } else if (isDone) {
+              const doneInd = document.createElement('span');
+              doneInd.className = 'top8-done-indicator';
+              doneInd.innerHTML = 'VOD<span class="top8-done-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></span>';
+              matchRow.appendChild(doneInd);
+            } else if (scheduleAt) {
+              const sched = document.createElement('span');
+              sched.className = 'top8-scheduled-indicator';
+              sched.textContent = scheduleAt;
+              matchRow.appendChild(sched);
+            } else {
+              const tbd = document.createElement('span');
+              tbd.className = 'top8-scheduled-indicator';
+              tbd.textContent = 'TBD';
+              matchRow.appendChild(tbd);
+            }
+            card.appendChild(matchRow);
+
+            // Players
+            // Always use bracket-position order; look up result by name for done matches
+            const winner = isDone ? result.places[0]?.name : null;
+            players.forEach((entry) => {
+              const p     = entry.name;
+              const isTbd = p === '—';
+              const seed  = entry.seed;
+              const resultEntry = isDone && !isTbd ? result.places.find(r => r.name === p) : null;
+              const time  = resultEntry?.time || null;
+
+              const pEl = document.createElement('div');
+              const isGF = roundConfig.id === 'gf';
+              const winClass  = isGF ? ' champion' : ' won';
+              const lossClass = isGF ? ' runner-up' : ' lost';
+              const resultClass = isDone && !isTbd ? (p === winner ? winClass : lossClass) : '';
+              pEl.className = 'top8-bracket-player' + (isTbd ? ' tbd' : '') + resultClass;
+              pEl.innerHTML = `<span class="bp-num">${seed || ''}</span>${p}`
+                + (time ? `<span class="bp-time">${time}</span>` : '');
+              card.appendChild(pEl);
+            });
+
+            matchesWrap.appendChild(card);
+          }
+
+          roundEl.appendChild(matchesWrap);
+          container.appendChild(roundEl);
+        });
+
+        // Results column
+        const resultsCol = document.createElement('div');
+        resultsCol.className = 'bracket-round bracket-round-results';
+        const resultsLabel = document.createElement('div');
+        resultsLabel.className = 'bracket-round-label';
+        resultsLabel.textContent = 'Results';
+        resultsCol.appendChild(resultsLabel);
+        const resultsStack = document.createElement('div');
+        resultsStack.className = 'top8-results-stack';
+        const champBoxEl = document.createElement('div');
+        champBoxEl.id = 'top8-champion-box';
+        champBoxEl.className = 'top8-champion-box';
+        champBoxEl.innerHTML = '<div class="top8-champion-label">★ Champion ★</div><div class="top8-champion-name" id="top8-champion-name"></div>';
+        resultsStack.appendChild(champBoxEl);
+        const ruBoxEl = document.createElement('div');
+        ruBoxEl.id = 'top8-runnerup-box';
+        ruBoxEl.className = 'top8-runnerup-box';
+        ruBoxEl.innerHTML = '<div class="top8-runnerup-label">Runner-Up</div><div class="top8-runnerup-name" id="top8-runnerup-name"></div>';
+        resultsStack.appendChild(ruBoxEl);
+        const bronzeBoxEl = document.createElement('div');
+        bronzeBoxEl.id = 'top8-bronze-box';
+        bronzeBoxEl.className = 'top8-bronze-box';
+        bronzeBoxEl.innerHTML = '<div class="top8-bronze-label">3rd Place</div><div class="top8-bronze-name" id="top8-bronze-name"></div>';
+        resultsStack.appendChild(bronzeBoxEl);
+        const restBoxEl = document.createElement('div');
+        restBoxEl.id = 'top8-rest-box';
+        restBoxEl.className = 'top8-rest-box';
+        restBoxEl.innerHTML = '<div id="top8-rest-list"></div>';
+        resultsStack.appendChild(restBoxEl);
+        resultsCol.appendChild(resultsStack);
+        container.appendChild(resultsCol);
+
+        // Champion / runner-up / 3rd place boxes — set content and visibility state (no animation here)
+        const champion   = TOP8_RESULTS['gf_1']?.places?.[0]?.name || null;
+        const runnerUp   = TOP8_RESULTS['gf_1']?.places?.[1]?.name || null;
+        const thirdPlace = TOP8_RESULTS['tp_1']?.places?.[0]?.name || null;
+        const champBox  = document.getElementById('top8-champion-box');
+        const champName = document.getElementById('top8-champion-name');
+        if (champBox && champName) {
+          champName.textContent = champion || '';
+          champBox.classList.toggle('visible', !!champion);
+        }
+        const ruBox  = document.getElementById('top8-runnerup-box');
+        const ruName = document.getElementById('top8-runnerup-name');
+        if (ruBox && ruName) {
+          ruName.textContent = runnerUp || '';
+          ruBox.classList.toggle('visible', !!runnerUp);
+        }
+        const bronzeBox  = document.getElementById('top8-bronze-box');
+        const bronzeName = document.getElementById('top8-bronze-name');
+        if (bronzeBox && bronzeName) {
+          bronzeName.textContent = thirdPlace || '';
+          bronzeBox.classList.toggle('visible', !!thirdPlace);
+        }
+        // 4th–8th box
+        // 4th = tp_1 runner-up; 5th–8th = QF losers sorted by fastest time
+        function parseTime(t) {
+          if (!t) return Infinity;
+          const parts = t.split(':').map(Number);
+          return parts[0] * 3600 + parts[1] * 60 + (parts[2] || 0);
+        }
+        const qfLosers = ['qf_1','qf_2','qf_3','qf_4']
+          .map(key => {
+            const loser = TOP8_RESULTS[key]?.places?.[1];
+            return loser ? { name: loser.name, time: loser.time } : null;
+          })
+          .filter(Boolean)
+          .sort((a, b) => parseTime(a.time) - parseTime(b.time));
+        const restPlaces = [
+          { place: '4th', name: TOP8_RESULTS['tp_1']?.places?.[1]?.name || null },
+          ...qfLosers.map((p, i) => ({ place: `${5 + i}th`, name: p.name })),
+          ...(qfLosers.length < 4
+            ? Array.from({ length: 4 - qfLosers.length }, (_, i) => ({ place: `${5 + qfLosers.length + i}th`, name: null }))
+            : []),
+        ];
+        const restBox  = document.getElementById('top8-rest-box');
+        const restList = document.getElementById('top8-rest-list');
+        if (restBox && restList) {
+          const anyKnown = restPlaces.some(p => p.name);
+          restList.innerHTML = restPlaces.map(p =>
+            `<div class="top8-rest-row">
+               <span class="top8-rest-place">${p.place}</span>
+               <span class="top8-rest-name">${p.name || '—'}</span>
+             </div>`
+          ).join('');
+          restBox.classList.toggle('visible', anyKnown);
+        }
+
+        requestAnimationFrame(drawTop8Connectors);
+      }
+
+      function drawTop8Connectors() {
+        const container = document.getElementById('bracket-scroll-top8');
+        if (!container) return;
+
+        const old = container.querySelector('.top8-connectors-svg');
+        if (old) old.remove();
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('top8-connectors-svg');
+        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible;';
+        svg.setAttribute('width', container.scrollWidth);
+        svg.setAttribute('height', container.scrollHeight);
+
+        const cr = container.getBoundingClientRect();
+
+        // [top source id, bottom source id] → target id
+        const groups = [
+          [['top8-card-qf-1', 'top8-card-qf-2'], 'top8-card-sf-1'],
+          [['top8-card-qf-3', 'top8-card-qf-4'], 'top8-card-sf-2'],
+          [['top8-card-sf-1', 'top8-card-sf-2'], 'top8-card-gf-1'],
+        ];
+
+        groups.forEach(([[id1, id2], tgtId]) => {
+          const el1 = document.getElementById(id1);
+          const el2 = document.getElementById(id2);
+          const elT = document.getElementById(tgtId);
+          if (!el1 || !el2 || !elT) return;
+
+          const r1 = el1.getBoundingClientRect();
+          const r2 = el2.getBoundingClientRect();
+          const rt = elT.getBoundingClientRect();
+
+          const y1   = (r1.top + r1.bottom) / 2 - cr.top;
+          const y2   = (r2.top + r2.bottom) / 2 - cr.top;
+          const yt   = (rt.top + rt.bottom) / 2 - cr.top;
+          const xSrc = r1.right - cr.left;
+          const xTgt = rt.left  - cr.left;
+          const midX = (xSrc + xTgt) / 2;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d',
+            `M${xSrc},${y1} H${midX} V${y2} M${xSrc},${y2} H${midX} M${midX},${yt} H${xTgt}`
+          );
+          path.setAttribute('stroke', 'rgba(255,255,255,0.13)');
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('fill', 'none');
+          svg.appendChild(path);
+        });
+
+        container.insertBefore(svg, container.firstChild);
+      }
+
+      async function loadTop8Results() {
+        try {
+          const res = await fetch('results.json', { cache: 'no-store' });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+
+          // Derive seeds: weeks 1–7 use rung 1 winner; week 8 is the wildcard
+          TOP8_SEEDS = Array.from({ length: 8 }, (_, i) => {
+            const week = i + 1;
+            return data[`${week}_1`]?.places?.[0]?.name || null;
+          });
+
+          // Filter for Top 8 bracket results (qf_1, sf_1, gf_1, etc.)
+          return Object.keys(data).reduce((acc, key) => {
+            if (key.match(/^(qf|sf|gf|tp)_\d+$/)) {
+              acc[key] = data[key];
+            }
+            return acc;
+          }, {});
+        } catch (e) {
+          console.error('Could not load Top 8 results:', e);
+          return {};
+        }
+      }
+
+      function scheduleTop8AutoLive() {
+        const now = Date.now();
+        Object.values(TOP8_SCHEDULE).forEach(isoStr => {
+          const ms = new Date(isoStr).getTime() - now;
+          if (ms > 0) setTimeout(buildTop8Bracket, ms);
+        });
+      }
+
+      async function initTop8() {
+        try {
+          TOP8_RESULTS = await loadTop8Results();
+        } catch (e) {
+          console.error('Could not initialize Top 8:', e);
+        }
+        buildTop8Bracket();
+        scheduleTop8AutoLive();
+        const container = document.getElementById('bracket-scroll-top8');
+        if (container && window.ResizeObserver) {
+          new ResizeObserver(() => drawTop8Connectors()).observe(container);
+        }
+        setInterval(async () => {
+          try {
+            const data = await loadTop8Results();
+            if (JSON.stringify(data) !== JSON.stringify(TOP8_RESULTS)) {
+              TOP8_RESULTS = data;
+              buildTop8Bracket();
+            }
+          } catch (e) { /* network blip, try again next poll */ }
+        }, 30_000);
+      }
+
+      initTop8();
 
     })();
 
