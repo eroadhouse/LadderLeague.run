@@ -92,6 +92,13 @@
       color: #4cff91;
       opacity: .6;
     }
+    .live-elapsed {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+      margin-right: .1rem;
+      opacity: 1;
+      font-weight: 500;
+    }
 
     /* ── DONE MATCH ── */
     .bracket-match.done {
@@ -175,6 +182,17 @@
       color: var(--dim);
       font-weight: 400;
     }
+    .week-qualified-slot:not(.empty) {
+      position: relative;
+      cursor: default;
+    }
+    .wqs-tooltip {
+      right: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      top: calc(100% + 8px) !important;
+    }
+    .week-qualified-slot:not(.empty):hover .wqs-tooltip { display: block; }
     .week-qualified-slot .wqs-icon {
       font-size: .65rem;
       opacity: .7;
@@ -504,6 +522,17 @@
       border-bottom: 1px solid var(--border);
       width: 100%;
       text-align: center;
+    }
+    .bracket-week-dates {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .75rem;
+      letter-spacing: .5px;
+      color: #555F72;
+      opacity: 1;
+      text-align: center;
+      width: 100%;
+      margin-bottom: .2rem;
     }
     .bracket-week-matches {
       display: flex;
@@ -886,6 +915,26 @@
     .bracket-player .bp-num {
       display: none;
     }
+    .bp-name {
+      cursor: pointer;
+      transition: text-shadow .15s ease;
+    }
+    .bracket-player:not(.tbd) .bp-name:hover {
+      text-shadow: 0 0 10px rgba(255,255,255,.55);
+    }
+    #bp-shared-tooltip {
+      display: none;
+      position: fixed;
+      background: #12161f;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .7rem .9rem;
+      min-width: 190px;
+      z-index: 100;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+      pointer-events: none;
+    }
 
     /* Connector lines between weeks */
     .bracket-connector {
@@ -985,6 +1034,8 @@
     }
     .wcs-row.empty { color: var(--dim); }
     .wcs-row.leader { color: #c47220; font-weight: 900; }
+    .wcs-row .bp-name:hover { text-shadow: 0 0 10px rgba(255,255,255,.55); }
+    .wcs-row.leader .bp-name:hover { text-shadow: 0 0 10px rgba(196,114,32,.8); }
     .wcs-rank {
       font-size: .55rem;
       font-weight: 900;
@@ -1101,6 +1152,50 @@
       border-color: var(--border);
       background: transparent;
       font-weight: 400;
+    }
+    .eliminated-slot:not(.empty) {
+      position: relative;
+      cursor: default;
+    }
+    .elim-tooltip {
+      display: none;
+      position: absolute;
+      right: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: #12161f;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .7rem .9rem;
+      min-width: 190px;
+      z-index: 20;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+    }
+    .eliminated-slot:not(.empty):hover .elim-tooltip { display: block; }
+    .elim-tip-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .8rem;
+      letter-spacing: 1px;
+      color: #ff6080;
+      margin-bottom: .45rem;
+    }
+    .elim-tip-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .7rem;
+      letter-spacing: .5px;
+      color: var(--dim);
+      margin-top: .25rem;
+    }
+    .elim-tip-row span:last-child {
+      color: var(--text);
+      font-weight: 700;
     }
 
     /* ════════════════════════════
@@ -1495,6 +1590,113 @@
     .upcoming-card .meta { display:flex; justify-content:space-between; color:var(--dim); font-size:.85rem; }
     .upcoming-cta { margin-top:.5rem; align-self:flex-end; padding:.45rem .8rem; background:transparent; border:1px solid var(--border); color:var(--accent); font-weight:700; cursor:pointer; }
 
+    /* ════════════════════════════
+       LCQ PAGE
+    ════════════════════════════ */
+    .lcq-outer {
+      overflow-x: auto;
+      padding: 2.6rem 0 3.9rem;
+    }
+    .ladder-top8-btn {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      background: #07080f;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: .5rem 1.2rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s, color .15s;
+    }
+    .ladder-top8-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    .lcq-ladder-btn {
+      display: block;
+      margin: 2rem auto 0;
+      width: fit-content;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: .5rem 1.2rem;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .lcq-ladder-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    .lcq-container {
+      display: flex;
+      justify-content: center;
+      gap: 3.9rem;
+      min-width: max-content;
+      padding: 0 3.9rem;
+    }
+    .lcq-week {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 364px;
+    }
+    .lcq-week-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .91rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding-bottom: .65rem;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .lcq-week .bracket-match {
+      margin: 0;
+      width: 100%;
+      padding: .78rem .98rem;
+    }
+    .lcq-week .bracket-match-rung {
+      font-size: .78rem;
+      height: 1.82rem;
+    }
+    .lcq-week .bracket-player {
+      font-size: .975rem;
+    }
+    .lcq-week .bp-time {
+      font-size: .845rem;
+    }
+    .lcq-week .bp-move {
+      font-size: 1rem;
+    }
+    .lcq-week .bracket-player {
+      height: auto;
+      min-height: 2.4rem;
+      padding: .2rem 0;
+      overflow: visible;
+    }
+    .lcq-week .bracket-player .bp-num {
+      display: inline-block;
+      width: 1.82rem;
+      flex-shrink: 0;
+      color: var(--dim);
+      font-weight: 400;
+    }
+
   </style>
 </head>
 <body>
@@ -1574,7 +1776,9 @@
       <div class="standings-tab" data-tab="top8">Top 8</div>
     </div>
     <div class="standings-tab-panel" id="standings-tab-lcq">
-      <div class="standings-tab-empty">Coming Soon</div>
+      <div class="lcq-outer reveal" style="transition-delay:.1s">
+        <div id="lcq-scroll"></div>
+      </div>
     </div>
     <div class="standings-tab-panel active" id="standings-tab-ladder">
       <div class="bracket-outer reveal" style="transition-delay:.1s">
@@ -1763,6 +1967,8 @@
         document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(`standings-tab-${name}`).classList.add('active');
+        const top8Btn = document.getElementById('ladder-top8-btn');
+        if (top8Btn) top8Btn.style.display = name === 'ladder' ? '' : 'none';
         if (name === 'top8') {
           const boxIds = ['top8-champion-box','top8-runnerup-box','top8-bronze-box','top8-rest-box'];
           boxIds.forEach(id => {
@@ -1985,6 +2191,9 @@
       upObs.observe(upcomingSection);
     })();
 
+    // LCQ results — populated at runtime from results.json (keys: "lcq_1", "lcq_2")
+    let LCQ_RESULTS = {};
+
     // ── LADDER BRACKET ──
     (function() {
 
@@ -2033,9 +2242,6 @@
       // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00"   │
       // └────────────────────────────────────────────────────────────────┘
       const SCHEDULE = {
-        "2_2": "2026-04-06T22:38:00-04:00",
-        "2_3": "2026-04-06T23:38:00-04:00",
-        "2_4": "2026-04-06T23:38:00-04:00"
       };
 
       function ordinal(n) {
@@ -2074,14 +2280,21 @@
       let wildcardParticipants = ['—', '—'];
 
       // Week 1 lineup (manually set)
+      // Rungs 6 and 7 are filled by the top 3 finishers of LCQ 1 and LCQ 2
+      function lcqWinners(matchKey) {
+        const r = LCQ_RESULTS[matchKey];
+        if (!r || !r.places) return ['—', '—', '—'];
+        return [0, 1, 2].map(i => (r.places[i] ? r.places[i].name : '—'));
+      }
+
       const WEEK1_LINEUP = {
         1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
         2: ["itsjared97",   "ERoadhouse","Bricko"],
         3: ["WiiSuper",     "Scynor",    "Wazzip"],
         4: ["FlamingLazer", "Dimei",     "Colten"],
         5: ["TheCrazedCap", "kwazrr",    "ejpman"],
-        6: ["Charzight",    "Coolisen",  "MelloVro"],
-        7: ["Gamer_Olive",  "ChessWiz",  "CaptainPaxo"],
+        6: lcqWinners("lcq_1"),
+        7: lcqWinners("lcq_2"),
       };
 
       // Derive the expected lineup for a given week by simulating player movements
@@ -2105,13 +2318,16 @@
           const isTop    = r === 1;
           const isBottom = r === prevMatchCount;
           result.places.forEach((entry, i) => {
-            const place = i + 1;
-            const name  = entry.name;
+            const place  = i + 1;
+            const name   = entry.name;
+            const status = entry.status || null;
             if (isTop    && place === 1) return;           // qualified
             if (isBottom && place  >  1) return;           // eliminated
-            if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays
+            if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays at top
             if (place === 3)             { nextRung[name] = r + 1; return; } // drops
-            nextRung[name] = r - 1;                        // 1st or 2nd moves up
+            if (place === 1 && status === 'leapfrogging') { nextRung[name] = r - 2; return; } // moves up 2
+            if (place === 2 && status === 'leapfrogged')  { nextRung[name] = r;     return; } // stays
+            nextRung[name] = r - 1;                        // 1st or 2nd moves up normally
           });
         }
 
@@ -2149,27 +2365,41 @@
       Object.entries(RESULTS).forEach(([key, result]) => {
         const [wStr, rStr] = key.split('_');
         const w = parseInt(wStr), r = parseInt(rStr);
-        const isWC = w === WILDCARD_WEEK;
+        if (!(w >= 1 && w < WILDCARD_WEEK)) return; // only weeks 1–7
         const matchCount = weekMatchCounts[w - 1];
         const isTop = r === 1;
-        const isBot = r === matchCount && !isWC;
+        const isBot = r === matchCount;
         (result.places || []).forEach((entry, i) => {
           const place = i + 1;
           if (isTop && place === 1) qualifiedPlayers.add(entry.name);
-          if ((isBot || isWC) && place > 1) eliminatedPlayers.add(entry.name);
+          if (isBot && place > 1) eliminatedPlayers.add(entry.name);
         });
       });
 
-      const playerBest = {}, playerAllTimes = {};
+      // Build stats for ALL players (weeks 1–7) — used for tooltips on both qualified & eliminated slots
+      const playerStats = {};
       Object.entries(RESULTS).forEach(([key, result]) => {
+        const [wStr] = key.split('_');
+        const w = parseInt(wStr);
+        if (!(w >= 1 && w < WILDCARD_WEEK)) return; // only weeks 1–7, no top 8
         (result.places || []).forEach(entry => {
-          if (qualifiedPlayers.has(entry.name)) return;
           const secs = parseTime(entry.time);
           if (secs === null) return;
-          if (!playerBest[entry.name] || secs < playerBest[entry.name]) playerBest[entry.name] = secs;
-          if (!playerAllTimes[entry.name]) playerAllTimes[entry.name] = [];
-          playerAllTimes[entry.name].push(secs);
+          if (!playerStats[entry.name]) playerStats[entry.name] = { best: secs, times: [secs] };
+          else {
+            if (secs < playerStats[entry.name].best) playerStats[entry.name].best = secs;
+            playerStats[entry.name].times.push(secs);
+          }
         });
+      });
+
+      // Wildcard standings exclude qualified players
+      const playerBest = {}, playerAllTimes = {};
+      Object.entries(playerStats).forEach(([name, s]) => {
+        if (!qualifiedPlayers.has(name)) {
+          playerBest[name] = s.best;
+          playerAllTimes[name] = s.times;
+        }
       });
 
       const top3Best = Object.entries(playerBest).sort((a, b) => a[1] - b[1]).slice(0, 3);
@@ -2183,11 +2413,71 @@
       const wcAvg = wcAvgPlayer ? wcAvgPlayer[0] : null;
       wildcardParticipants = [wcFastest || '—', wcAvg || '—'];
 
+      // Build week-1 seed lookup: global seed = (rung-1)*3 + position in rung
+      const week1Seed = {};
+      Object.entries(WEEK1_LINEUP).forEach(([rung, players]) => {
+        players.forEach((name, i) => {
+          week1Seed[name] = (parseInt(rung) - 1) * 3 + (i + 1);
+        });
+      });
+
+      // Shared tooltip for player names inside match cards
+      const bpTooltipEl = document.createElement('div');
+      bpTooltipEl.id = 'bp-shared-tooltip';
+      document.body.appendChild(bpTooltipEl);
+      document.addEventListener('click', () => { bpTooltipEl.style.display = 'none'; });
+
+      // Hover tooltip for move icons
+      function showIconTip(icon) {
+        bpTooltipEl.style.minWidth = '0';
+        bpTooltipEl.style.padding = '.25rem .55rem';
+        bpTooltipEl.innerHTML = `<div style="font-size:.78rem;color:var(--text);white-space:nowrap">${icon.dataset.tip}</div>`;
+        bpTooltipEl.style.display = 'block';
+        bpTooltipEl.style.left = '0px';
+        bpTooltipEl.style.top = '0px';
+        const tipRect  = bpTooltipEl.getBoundingClientRect();
+        const iconRect = icon.getBoundingClientRect();
+        const top = iconRect.top - tipRect.height - 6 >= 0
+          ? iconRect.top - tipRect.height - 6
+          : iconRect.bottom + 6;
+        let left = iconRect.left + iconRect.width / 2 - tipRect.width / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - tipRect.width - 8));
+        bpTooltipEl.style.left = `${left}px`;
+        bpTooltipEl.style.top = `${top}px`;
+      }
+      document.addEventListener('mouseover', e => {
+        const icon = e.target.closest('.bp-move[data-tip]');
+        if (icon) showIconTip(icon);
+      });
+      document.addEventListener('mouseout', e => {
+        const icon = e.target.closest('.bp-move[data-tip]');
+        if (icon && !icon.contains(e.relatedTarget)) bpTooltipEl.style.display = 'none';
+      });
+
+      // Live elapsed-time ticker — updates all .live-elapsed spans every second
+      function tickElapsed() {
+        document.querySelectorAll('.live-elapsed[data-start]').forEach(el => {
+          const elapsed = Math.max(0, Math.floor((Date.now() - new Date(el.dataset.start)) / 1000));
+          const h = Math.floor(elapsed / 3600);
+          const m = Math.floor((elapsed % 3600) / 60);
+          const s = elapsed % 60;
+          el.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        });
+      }
+      tickElapsed();
+      setInterval(tickElapsed, 1000);
+
       // Build weeks
       for (let w = 1; w <= WEEKS; w++) {
         const matchCount = weekMatchCounts[w - 1];
         const weekEl = document.createElement('div');
         weekEl.className = 'bracket-week';
+
+        const WEEK_DATES = ['May 11–17', 'May 18–24', 'May 25–31', 'June 1–7', 'June 8–14', 'June 15–21', 'June 15–21', 'June 21–22'];
+        const dateRange = document.createElement('div');
+        dateRange.className = 'bracket-week-dates';
+        dateRange.textContent = WEEK_DATES[w - 1] || '';
+        weekEl.appendChild(dateRange);
 
         const label = document.createElement('div');
         label.className = 'bracket-week-label';
@@ -2203,10 +2493,12 @@
           const isBottom = r === matchCount && !isWildcard;
           const players  = getPlayers(w, r);
 
-          const result      = RESULTS[`${w}_${r}`];
-          const isDone      = !!result;
-          const scheduleRaw = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
-          const isAutoLive  = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
+          const result        = RESULTS[`${w}_${r}`];
+          const isDone        = !!result;
+          const scheduleEntry = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
+          const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.start) : null;
+          const timerStartRaw = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
+          const isAutoLive    = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
           const isManualLive = !isDone && LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
           const isLive      = isAutoLive || isManualLive;
           const scheduleAt  = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
@@ -2239,7 +2531,8 @@
           if (isLive) {
             const liveInd = document.createElement('span');
             liveInd.className = 'live-indicator';
-            liveInd.innerHTML = '<span class="live-dot"></span>LIVE<span class="live-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></span>';
+            const elapsedHtml = timerStartRaw ? `<span class="live-elapsed" data-start="${timerStartRaw}">0:00:00</span>` : '';
+            liveInd.innerHTML = elapsedHtml + '<span class="live-dot"></span>LIVE<span class="live-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></span>';
             rungRow.appendChild(liveInd);
           } else if (isDone) {
             const doneInd = document.createElement('span');
@@ -2274,20 +2567,60 @@
             const isLeapfrogging = status === 'leapfrogging';
             const isLeapfrogged  = status === 'leapfrogged';
 
+            let leapfrogPartner = null;
+            if (isLeapfrogging) {
+              // jumped over the 2nd-place finisher in the rung above
+              const aboveResult = RESULTS[`${w}_${r - 1}`];
+              leapfrogPartner = aboveResult?.places?.[1]?.name ?? null;
+            } else if (isLeapfrogged) {
+              // jumped over by the 1st-place finisher in the rung below
+              const belowResult = RESULTS[`${w}_${r + 1}`];
+              leapfrogPartner = belowResult?.places?.find(e => e.status === 'leapfrogging')?.name ?? null;
+            }
+
             let moveArrow = '';
-            if (qualifies)           moveArrow = `<span class="bp-move qualified">★</span>`;
-            else if (eliminated)     moveArrow = `<span class="bp-move eliminated">✖</span>`;
-            else if (dropsDown)      moveArrow = `<span class="bp-move down">↓</span>`;
-            else if (isLeapfrogging) moveArrow = `<span class="bp-move leapfrogging">⇑</span>`;
-            else if (isLeapfrogged)  moveArrow = `<span class="bp-move leapfrogged">↔</span>`;
-            else if (movesUp && isTop) moveArrow = `<span class="bp-move" style="color:var(--dim)">–</span>`;
-            else if (movesUp)        moveArrow = `<span class="bp-move up">↑</span>`;
+            if (qualifies)           moveArrow = `<span class="bp-move qualified"   data-tip="Qualified for Top 8">★</span>`;
+            else if (eliminated)     moveArrow = `<span class="bp-move eliminated"  data-tip="Eliminated">✖</span>`;
+            else if (dropsDown)      moveArrow = `<span class="bp-move down"        data-tip="Demoted">↓</span>`;
+            else if (isLeapfrogging) moveArrow = `<span class="bp-move leapfrogging" data-tip="Leapfrogging${leapfrogPartner ? ' ' + leapfrogPartner : ''}">⇑</span>`;
+            else if (isLeapfrogged)  moveArrow = `<span class="bp-move leapfrogged"  data-tip="Leapfrogged by${leapfrogPartner ? ' ' + leapfrogPartner : ''}">↔</span>`;
+            else if (movesUp && isTop) moveArrow = `<span class="bp-move" style="color:var(--dim)" data-tip="Remaining in top rung">–</span>`;
+            else if (movesUp)        moveArrow = `<span class="bp-move up"          data-tip="Promoted">↑</span>`;
 
             const pEl = document.createElement('div');
             pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (dropsDown || eliminated ? ' lost' : '');
-            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${p}`
+            const nameHtml = isTbd ? p : `<span class="bp-name">${p}</span>`;
+            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${nameHtml}`
               + (time ? `<span class="bp-time">${time}</span>` : '')
               + moveArrow;
+            if (!isTbd) {
+              const tipSeed  = week1Seed[p] != null ? `#${week1Seed[p]}` : '—';
+              const tipStats = playerStats[p];
+              const tipBest  = tipStats ? fmtTime(tipStats.best) : '—';
+              const tipAvg   = tipStats ? fmtTime(tipStats.times.reduce((a, b) => a + b, 0) / tipStats.times.length) : '—';
+              pEl.querySelector('.bp-name').addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                bpTooltipEl.style.minWidth = '190px';
+                bpTooltipEl.style.padding = '.7rem .9rem';
+                bpTooltipEl.innerHTML = `<div class="elim-tip-name" style="color:var(--text)">${p}</div>`
+                  + `<div class="elim-tip-row"><span>Starting Seed</span><span>${tipSeed}</span></div>`
+                  + `<div class="elim-tip-row"><span>Ladder PB</span><span>${tipBest}</span></div>`
+                  + `<div class="elim-tip-row"><span>Ladder Avg</span><span>${tipAvg}</span></div>`;
+                bpTooltipEl.style.display = 'block';
+                bpTooltipEl.style.left = '0px';
+                bpTooltipEl.style.top = '0px';
+                const tipRect  = bpTooltipEl.getBoundingClientRect();
+                const nameRect = e.currentTarget.getBoundingClientRect();
+                const top = nameRect.top - tipRect.height - 8 >= 0
+                  ? nameRect.top - tipRect.height - 8
+                  : nameRect.bottom + 8;
+                let left = nameRect.left;
+                if (left + tipRect.width > window.innerWidth - 8) left = window.innerWidth - tipRect.width - 8;
+                bpTooltipEl.style.left = `${left}px`;
+                bpTooltipEl.style.top = `${top}px`;
+              });
+            }
             card.appendChild(pEl);
           });
 
@@ -2299,9 +2632,23 @@
         const qualName = topRungResult ? (topRungResult.places[0] || {}).name : null;
         const qualSlot = document.createElement('div');
         qualSlot.className = 'week-qualified-slot' + (qualName ? '' : ' empty');
-        qualSlot.innerHTML = qualName
-          ? `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span>`
-          : `<span class="wqs-name">SEED ${w}</span>`;
+        if (qualName) {
+          const seed  = week1Seed[qualName] != null ? `#${week1Seed[qualName]}` : '—';
+          const top8seed = `#${w}`;
+          const stats = playerStats[qualName];
+          const best  = stats ? fmtTime(stats.best) : '—';
+          const avg   = stats ? fmtTime(stats.times.reduce((a, b) => a + b, 0) / stats.times.length) : '—';
+          qualSlot.innerHTML = `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span>`
+            + `<div class="elim-tooltip wqs-tooltip">`
+            +   `<div class="elim-tip-name" style="color:#e3b128">${qualName}</div>`
+            +   `<div class="elim-tip-row"><span>Top 8 Seed</span><span>${top8seed}</span></div>`
+            +   `<div class="elim-tip-row"><span>Starting Seed</span><span>${seed}</span></div>`
+            +   `<div class="elim-tip-row"><span>Ladder PB</span><span>${best}</span></div>`
+            +   `<div class="elim-tip-row"><span>Ladder Avg</span><span>${avg}</span></div>`
+            + `</div>`;
+        } else {
+          qualSlot.innerHTML = `<span class="wqs-name">SEED ${w}</span>`;
+        }
         weekEl.appendChild(qualSlot);
 
         weekEl.appendChild(matchesWrap);
@@ -2332,8 +2679,34 @@
           const isLeader = entry && entry[0] === highlightName;
           row.className = 'wcs-row' + (entry ? (isLeader ? ' leader' : '') : ' empty');
           row.innerHTML = entry
-            ? `<span class="wcs-rank">${ordinal(i + 1)}</span>${entry[0]}<span class="wcs-time">${fmtTime(entry[1])}</span>`
+            ? `<span class="wcs-rank">${ordinal(i + 1)}</span><span class="bp-name">${entry[0]}</span><span class="wcs-time">${fmtTime(entry[1])}</span>`
             : `<span class="wcs-rank">${ordinal(i + 1)}</span>—`;
+          if (entry) {
+            const n = entry[0];
+            const tipSeed  = week1Seed[n] != null ? `#${week1Seed[n]}` : '—';
+            const tipStats = playerStats[n];
+            const tipBest  = tipStats ? fmtTime(tipStats.best) : '—';
+            const tipAvg   = tipStats ? fmtTime(tipStats.times.reduce((a, b) => a + b, 0) / tipStats.times.length) : '—';
+            row.querySelector('.bp-name').addEventListener('click', e => {
+              e.stopPropagation();
+              bpTooltipEl.innerHTML = `<div class="elim-tip-name" style="color:var(--text)">${n}</div>`
+                + `<div class="elim-tip-row"><span>Starting Seed</span><span>${tipSeed}</span></div>`
+                + `<div class="elim-tip-row"><span>Ladder PB</span><span>${tipBest}</span></div>`
+                + `<div class="elim-tip-row"><span>Ladder Avg</span><span>${tipAvg}</span></div>`;
+              bpTooltipEl.style.display = 'block';
+              bpTooltipEl.style.left = '0px';
+              bpTooltipEl.style.top = '0px';
+              const tipRect  = bpTooltipEl.getBoundingClientRect();
+              const nameRect = e.currentTarget.getBoundingClientRect();
+              const top = nameRect.top - tipRect.height - 8 >= 0
+                ? nameRect.top - tipRect.height - 8
+                : nameRect.bottom + 8;
+              let left = nameRect.left;
+              if (left + tipRect.width > window.innerWidth - 8) left = window.innerWidth - tipRect.width - 8;
+              bpTooltipEl.style.left = `${left}px`;
+              bpTooltipEl.style.top = `${top}px`;
+            });
+          }
           frag.appendChild(row);
         }
         return frag;
@@ -2349,6 +2722,24 @@
       if (week7El) week7Group.appendChild(week7El);
       wcsEl.style.marginTop = '60px';
       week7Group.appendChild(wcsEl);
+
+      // Button lives on document.body to escape the `transform` on .bracket-outer.reveal
+      // which would otherwise break position:fixed. Created once; subsequent buildBracket calls skip it.
+      if (!document.getElementById('ladder-top8-btn')) {
+        const top8Btn = document.createElement('div');
+        top8Btn.id = 'ladder-top8-btn';
+        top8Btn.className = 'ladder-top8-btn';
+        top8Btn.textContent = 'View Top 8 Bracket →';
+        top8Btn.addEventListener('click', () => {
+          document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector('.standings-tab[data-tab="top8"]').classList.add('active');
+          document.getElementById('standings-tab-top8').classList.add('active');
+          top8Btn.style.display = 'none';
+        });
+        document.body.appendChild(top8Btn);
+      }
+
       container.appendChild(week7Group);
 
       // Eliminated list
@@ -2377,7 +2768,23 @@
         const name = result ? (result.places[s.place - 1] || {}).name : null;
         const slotEl = document.createElement('div');
         slotEl.className = 'eliminated-slot' + (name ? '' : ' empty');
-        slotEl.innerHTML = `<span class="es-ord">${ordinal(placement)}</span>${name || '—'}`;
+
+        if (name) {
+          const seed  = week1Seed[name] != null ? `#${week1Seed[name]}` : '—';
+          const stats = playerStats[name];
+          const best  = stats ? fmtTime(stats.best) : '—';
+          const avg   = stats ? fmtTime(stats.times.reduce((a, b) => a + b, 0) / stats.times.length) : '—';
+          slotEl.innerHTML = `<span class="es-ord">${ordinal(placement)}</span>${name}`
+            + `<div class="elim-tooltip">`
+            +   `<div class="elim-tip-name">${name}</div>`
+            +   `<div class="elim-tip-row"><span>Seed</span><span>${seed}</span></div>`
+            +   `<div class="elim-tip-row"><span>Ladder PB</span><span>${best}</span></div>`
+            +   `<div class="elim-tip-row"><span>Ladder Avg</span><span>${avg}</span></div>`
+            + `</div>`;
+        } else {
+          slotEl.innerHTML = `<span class="es-ord">${ordinal(placement)}</span>—`;
+        }
+
         elimCol.appendChild(slotEl);
       });
 
@@ -2403,9 +2810,14 @@
         return res.json();
       }
 
+      function applyResults(data) {
+        RESULTS = data;
+        LCQ_RESULTS = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
+      }
+
       async function init() {
         try {
-          RESULTS = await loadResults();
+          applyResults(await loadResults());
         } catch (e) {
           console.error('Could not load results.json — make sure you are serving via HTTP, not file://', e);
         }
@@ -2415,7 +2827,7 @@
           try {
             const data = await loadResults();
             if (JSON.stringify(data) !== JSON.stringify(RESULTS)) {
-              RESULTS = data;
+              applyResults(data);
               buildBracket();
             }
           } catch (e) { /* network blip, try again next poll */ }
@@ -2453,7 +2865,7 @@
       const ROUNDS_CONFIG = [
         { id: 'qf', name: 'Quarterfinals', matches: 4 },
         { id: 'sf', name: 'Semifinals', matches: 2 },
-        { id: 'gf', name: 'Grand Finals', matches: 1 },
+        { id: 'gf', name: 'Finals', matchName: 'Grand Finals', matches: 1 },
       ];
 
       const ROUND_LABEL_PREFIX = {
@@ -2469,6 +2881,10 @@
 
       function winnerOf(key) {
         return TOP8_RESULTS[key]?.places?.[0]?.name || null;
+      }
+
+      function loserOf(key) {
+        return TOP8_RESULTS[key]?.places?.[1]?.name || null;
       }
 
       function getTop8Players(roundId, matchNum) {
@@ -2491,6 +2907,9 @@
         }
         if (roundId === 'gf') {
           return [player(winnerOf('sf_1')), player(winnerOf('sf_2'))];
+        }
+        if (roundId === 'tp') {
+          return [player(loserOf('sf_1')), player(loserOf('sf_2'))];
         }
         return [tbd, tbd];
       }
@@ -2556,7 +2975,7 @@
             matchRow.className = 'top8-match-rung';
             const matchLabel = document.createElement('span');
             const roundLabel = ROUND_LABEL_PREFIX[roundConfig.id] || 'Match';
-            matchLabel.textContent = roundConfig.matches === 1 ? roundConfig.name : `${roundLabel} ${m}`;
+            matchLabel.textContent = roundConfig.matches === 1 ? (roundConfig.matchName || roundConfig.name) : `${roundLabel} ${m}`;
             matchRow.appendChild(matchLabel);
 
             if (isLive) {
@@ -2604,6 +3023,78 @@
             });
 
             matchesWrap.appendChild(card);
+          }
+
+          // For the GF round, also render the 3rd place match below
+          if (roundConfig.id === 'gf') {
+            const tpPlayers = getTop8Players('tp', 1);
+            const tpResult = TOP8_RESULTS['tp_1'];
+            const tpIsDone = !!tpResult;
+            const tpScheduleRaw = !tpIsDone ? (TOP8_SCHEDULE['tp_1'] || null) : null;
+            const tpIsLive = !tpIsDone && tpScheduleRaw && new Date() >= new Date(tpScheduleRaw);
+            const tpScheduleAt = tpScheduleRaw && !tpIsLive ? formatSchedule(tpScheduleRaw) : null;
+            let tpCard;
+            if (tpIsLive) {
+              tpCard = document.createElement('a');
+              tpCard.href = 'https://twitch.tv/legospeedruns';
+              tpCard.target = '_blank';
+              tpCard.rel = 'noopener';
+            } else if (tpIsDone) {
+              tpCard = document.createElement('a');
+              tpCard.href = tpResult.vod || '#';
+              tpCard.target = '_blank';
+              tpCard.rel = 'noopener';
+            } else {
+              tpCard = document.createElement('div');
+            }
+            tpCard.className = 'top8-match' + (tpIsLive ? ' live' : '') + (tpIsDone ? ' done' : '');
+            tpCard.id = 'top8-card-tp-1';
+            const tpMatchRow = document.createElement('div');
+            tpMatchRow.className = 'top8-match-rung';
+            const tpMatchLabel = document.createElement('span');
+            tpMatchLabel.textContent = '3rd Place Match';
+            tpMatchRow.appendChild(tpMatchLabel);
+            if (tpIsLive) {
+              const liveInd = document.createElement('span');
+              liveInd.className = 'top8-live-indicator';
+              liveInd.innerHTML = '<span class="top8-live-dot"></span>LIVE<span class="top8-live-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg></span>';
+              tpMatchRow.appendChild(liveInd);
+            } else if (tpIsDone) {
+              const doneInd = document.createElement('span');
+              doneInd.className = 'top8-done-indicator';
+              doneInd.innerHTML = 'VOD<span class="top8-done-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></span>';
+              tpMatchRow.appendChild(doneInd);
+            } else if (tpScheduleAt) {
+              const sched = document.createElement('span');
+              sched.className = 'top8-scheduled-indicator';
+              sched.textContent = tpScheduleAt;
+              tpMatchRow.appendChild(sched);
+            } else {
+              const tbd2 = document.createElement('span');
+              tbd2.className = 'top8-scheduled-indicator';
+              tbd2.textContent = 'TBD';
+              tpMatchRow.appendChild(tbd2);
+            }
+            tpCard.appendChild(tpMatchRow);
+            const tpWinner = tpIsDone ? tpResult.places[0]?.name : null;
+            tpPlayers.forEach(entry => {
+              const p = entry.name;
+              const isTbd = p === '—';
+              const resultEntry = tpIsDone && !isTbd ? tpResult.places.find(r => r.name === p) : null;
+              const time = resultEntry?.time || null;
+              const pEl = document.createElement('div');
+              const resultClass = tpIsDone && !isTbd ? (p === tpWinner ? ' won' : ' lost') : '';
+              pEl.className = 'top8-bracket-player' + (isTbd ? ' tbd' : '') + resultClass;
+              pEl.innerHTML = `<span class="bp-num">${entry.seed || ''}</span>${p}` + (time ? `<span class="bp-time">${time}</span>` : '');
+              tpCard.appendChild(pEl);
+            });
+            // Absolutely position the 3rd place card so it can align independently with SF2
+            roundEl.style.position = 'relative';
+            const tpWrapper = document.createElement('div');
+            tpWrapper.id = 'tp-match-wrapper';
+            tpWrapper.style.cssText = 'position:absolute;left:0;width:100%;display:flex;justify-content:center;transform:scale(0.85);transform-origin:center;';
+            tpWrapper.appendChild(tpCard);
+            roundEl.appendChild(tpWrapper);
           }
 
           roundEl.appendChild(matchesWrap);
@@ -2698,7 +3189,19 @@
           restBox.classList.toggle('visible', anyKnown);
         }
 
-        requestAnimationFrame(drawTop8Connectors);
+        requestAnimationFrame(() => { positionThirdPlaceMatch(); drawTop8Connectors(); });
+      }
+
+      function positionThirdPlaceMatch() {
+        const sf2 = document.getElementById('top8-card-sf-2');
+        const tpWrapper = document.getElementById('tp-match-wrapper');
+        if (!sf2 || !tpWrapper) return;
+        const roundEl = tpWrapper.parentElement;
+        const sf2Rect = sf2.getBoundingClientRect();
+        const roundRect = roundEl.getBoundingClientRect();
+        const tpH = tpWrapper.getBoundingClientRect().height;
+        const sf2CenterY = (sf2Rect.top + sf2Rect.bottom) / 2;
+        tpWrapper.style.top = `${sf2CenterY - roundRect.top - tpH / 2}px`;
       }
 
       function drawTop8Connectors() {
@@ -2796,7 +3299,7 @@
         scheduleTop8AutoLive();
         const container = document.getElementById('bracket-scroll-top8');
         if (container && window.ResizeObserver) {
-          new ResizeObserver(() => drawTop8Connectors()).observe(container);
+          new ResizeObserver(() => { positionThirdPlaceMatch(); drawTop8Connectors(); }).observe(container);
         }
         setInterval(async () => {
           try {
@@ -2810,6 +3313,208 @@
       }
 
       initTop8();
+
+    })();
+
+    // ══ LCQ ══
+    (function() {
+
+      // LCQ_RESULTS is defined at script level (shared with ladder)
+
+      // ┌────────────────────────────────────────────────────────────────┐
+      // │  LCQ SCHEDULE  (ISO 8601, auto-goes-live at timestamp)        │
+      // └────────────────────────────────────────────────────────────────┘
+      const LCQ_SCHEDULE = {
+        "lcq_1": {"start": "2026-04-07T13:00:00-04:00", "timerStart": "2026-04-07T13:03:00-04:00"},
+        "lcq_2": "2026-05-10T13:00:00-04:00",
+      };
+
+      // Force a match live (set to 1 or 2), or null to disable
+      const LCQ_LIVE_MATCH = null;
+
+      // LCQ_PLAYERS is populated from participants.json (entries with lcq: true)
+      let LCQ_PLAYERS = [];
+
+      const LCQ_PLAYERS_PER_MATCH = 9; // fallback placeholder count when participants not yet loaded
+      const LCQ_WINNERS = 3;            // top N get green arrows
+      const LIVE_STREAM = 'https://twitch.tv/legospeedruns';
+
+      const LIVE_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>';
+      const VOD_SVG  = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>';
+
+      function fmtSchedule(isoStr) {
+        const d = new Date(isoStr);
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+          + ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      }
+
+      function buildLCQ() {
+        const container = document.getElementById('lcq-scroll');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const lcqContainer = document.createElement('div');
+        lcqContainer.className = 'lcq-container';
+
+        for (let m = 1; m <= 2; m++) {
+          const key           = `lcq_${m}`;
+          const result        = LCQ_RESULTS[key] || null;
+          const isDone        = !!result;
+          const scheduleEntry = !isDone ? (LCQ_SCHEDULE[key] || null) : null;
+          const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.start) : null;
+          const timerStartRaw = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
+          const isLive   = (!isDone && scheduleRaw && new Date() >= new Date(scheduleRaw))
+                        || (!isDone && LCQ_LIVE_MATCH === m);
+          const scheduleAt = scheduleRaw && !isLive ? fmtSchedule(scheduleRaw) : null;
+
+          const weekEl = document.createElement('div');
+          weekEl.className = 'lcq-week';
+
+          const label = document.createElement('div');
+          label.className = 'lcq-week-label';
+          label.textContent = `LCQ ${m}`;
+          weekEl.appendChild(label);
+
+          // Card element (link if live/done, div otherwise)
+          let card;
+          if (isLive) {
+            card = document.createElement('a');
+            card.href = LIVE_STREAM; card.target = '_blank'; card.rel = 'noopener';
+          } else if (isDone) {
+            card = document.createElement('a');
+            card.href = result.vod; card.target = '_blank'; card.rel = 'noopener';
+          } else {
+            card = document.createElement('div');
+          }
+          card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
+
+          // Card header row
+          const rungRow = document.createElement('div');
+          rungRow.className = 'bracket-match-rung';
+          const matchLabel = document.createElement('span');
+          matchLabel.textContent = `LCQ ${m}`;
+          rungRow.appendChild(matchLabel);
+
+          if (isLive) {
+            const ind = document.createElement('span');
+            ind.className = 'live-indicator';
+            const elapsedHtml = timerStartRaw ? `<span class="live-elapsed" data-start="${timerStartRaw}">0:00:00</span>` : '';
+            ind.innerHTML = elapsedHtml + `<span class="live-dot"></span>LIVE<span class="live-arrow">${LIVE_SVG}</span>`;
+            rungRow.appendChild(ind);
+          } else if (isDone) {
+            const ind = document.createElement('span');
+            ind.className = 'done-indicator';
+            ind.innerHTML = `VOD<span class="done-arrow">${VOD_SVG}</span>`;
+            rungRow.appendChild(ind);
+          } else if (scheduleAt) {
+            const ind = document.createElement('span');
+            ind.className = 'scheduled-indicator';
+            ind.textContent = scheduleAt;
+            rungRow.appendChild(ind);
+          } else {
+            const ind = document.createElement('span');
+            ind.className = 'scheduled-indicator';
+            ind.textContent = 'TBD';
+            rungRow.appendChild(ind);
+          }
+          card.appendChild(rungRow);
+
+          // Player rows
+          let players;
+          if (isDone) {
+            players = result.places;
+          } else if (m === 1) {
+            // LCQ 1: all participants with lcq: true
+            players = LCQ_PLAYERS.length
+              ? LCQ_PLAYERS.map(n => ({ name: n }))
+              : Array(LCQ_PLAYERS_PER_MATCH).fill(null);
+          } else {
+            // LCQ 2: populated from LCQ 1 losers once LCQ 1 is finished; blank until then
+            const lcq1 = LCQ_RESULTS['lcq_1'];
+            if (lcq1 && lcq1.places) {
+              players = lcq1.places.slice(LCQ_WINNERS).map(e => ({ name: e.name }));
+            } else {
+              const blanks = Math.max(0, LCQ_PLAYERS.length - LCQ_WINNERS);
+              players = Array(blanks).fill(null);
+            }
+          }
+          players.forEach((entry, pi) => {
+            const place    = pi + 1;
+            const name     = entry ? entry.name : '—';
+            const time     = entry ? (entry.time || null) : null;
+            const isTbd    = !entry;
+            const isWinner = place <= LCQ_WINNERS;
+
+            let moveArrow = '';
+            if (isDone) {
+              if (isWinner)     moveArrow = `<span class="bp-move qualified" data-tip="Qualified to Rung ${m === 1 ? 6 : 7}">↑</span>`;
+              else if (m === 2) moveArrow = `<span class="bp-move eliminated" data-tip="Eliminated">✖</span>`;
+              else              moveArrow = `<span class="bp-move" style="color:var(--dim)">–</span>`;
+            }
+
+            const pEl = document.createElement('div');
+            pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (!isWinner && isDone ? ' lost' : '');
+            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${name}`
+              + (time ? `<span class="bp-time">${time}</span>` : '')
+              + moveArrow;
+            card.appendChild(pEl);
+          });
+
+          weekEl.appendChild(card);
+          lcqContainer.appendChild(weekEl);
+        }
+
+        container.appendChild(lcqContainer);
+
+        const ladderBtn = document.createElement('div');
+        ladderBtn.className = 'lcq-ladder-btn';
+        ladderBtn.textContent = 'See Ladder Standings →';
+        ladderBtn.addEventListener('click', () => {
+          document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector('.standings-tab[data-tab="ladder"]').classList.add('active');
+          document.getElementById('standings-tab-ladder').classList.add('active');
+          const top8Btn = document.getElementById('ladder-top8-btn');
+          if (top8Btn) top8Btn.style.display = '';
+        });
+        container.appendChild(ladderBtn);
+      }
+
+      async function loadLCQData() {
+        const [pRes, rRes] = await Promise.all([
+          fetch('participants.json', { cache: 'no-store' }),
+          fetch('results.json',      { cache: 'no-store' }),
+        ]);
+        if (pRes.ok) {
+          const data = await pRes.json();
+          LCQ_PLAYERS = data.filter(p => p.lcq).map(p => p.name);
+        }
+        if (rRes.ok) {
+          const data = await rRes.json();
+          LCQ_RESULTS = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
+        }
+      }
+
+      (async () => {
+        try {
+          await loadLCQData();
+        } catch (e) {
+          console.error('Could not load LCQ data', e);
+        }
+        buildLCQ();
+        setInterval(async () => {
+          try {
+            const res = await fetch('results.json', { cache: 'no-store' });
+            if (!res.ok) return;
+            const data = await res.json();
+            const fresh = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
+            if (JSON.stringify(fresh) !== JSON.stringify(LCQ_RESULTS)) {
+              LCQ_RESULTS = fresh;
+              buildLCQ();
+            }
+          } catch (e) { /* network blip */ }
+        }, 30_000);
+      })();
 
     })();
 
