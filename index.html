@@ -138,7 +138,11 @@
     .done-arrow {
       font-size: .65rem;
       margin-left: auto;
-      opacity: .5;
+      opacity: 1;
+      flex-shrink: 0;
+    }
+    .done-arrow svg {
+      overflow: visible; 
     }
     .bp-move {
       font-size: .85rem;
@@ -151,11 +155,11 @@
       display: inline-block;
     }
     .bp-move.up          { color: #4caa6c; }
-    .bp-move.down        { color: #aa4c5c; }
+    .bp-move.down        { color: #ca4646; }
     .bp-move.leapfrogged { color: #9b6bd4; }
     .bp-move.leapfrogging{ color: #3096d4; }
     .bp-move.qualified   { color: #d4b84a; }
-    .bp-move.eliminated  { color: #cc3a3a; }
+    .bp-move.eliminated  { color: #ca4646; }
 
 
     /* ── WEEK QUALIFIED SLOT ── */
@@ -278,6 +282,14 @@
 
     /* ── SECTION WRAPPER ── */
     .section { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; text-align: center; }
+
+    /* ── LADDER PAGE: slightly brighter greys ── */
+    #standings { --dim: #6e7e92; }
+
+    /* ── TOP 8 PAGE: brighter greys in bracket, not in placement boxes ── */
+    #standings-tab-top8 .top8-bracket-scroll { --dim: #8090a8; }
+    #standings-tab-top8 .bracket-week-dates { color: var(--dim); }
+    #standings-tab-top8 .bracket-round-results { --dim: #5a6478; }
 
     .page-title {
       font-family: 'Rubik', sans-serif;
@@ -653,6 +665,7 @@
       text-transform: uppercase;
       text-decoration: none;
       transition: color .2s;
+      line-height: 1;
     }
     .top8-done-check {
       font-size: .8rem;
@@ -661,8 +674,11 @@
     .top8-done-arrow {
       font-size: .8rem;
       margin-left: auto;
-      opacity: .5;
+      opacity: 1;
+      display: inline-flex;
+      align-items: center;
     }
+    .top8-done-arrow svg { overflow: visible; display: block; }
 
     .top8-scheduled-indicator {
       font-size: .7rem;
@@ -689,7 +705,7 @@
     }
     .top8-bracket-player:last-child { border-bottom: none; }
     .top8-bracket-player.tbd  { color: var(--dim); font-weight: 400; letter-spacing: 0; }
-    .top8-bracket-player.lost       { color: #a23e3e; font-weight: 550; }
+    .top8-bracket-player.lost       { color: #d65757; font-weight: 550; }
     .top8-bracket-player.runner-up  { color: #b7bdc5; font-weight: 550; }
     .top8-bracket-player.won        { color: #6ec88a; }
     .top8-bracket-player.champion  { color: #d4b84a; }
@@ -887,7 +903,7 @@
       border-radius: 2px;
     }
     .rung-badge.qualified  { border-color: #ac8427; color: #e3b128; }
-    .rung-badge.eliminated { border-color: #972e45; color: #ff6080; }
+    .rung-badge.eliminated { border-color: #b54060; color: #ff8099; }
 
     .bracket-player {
       display: flex;
@@ -1822,7 +1838,7 @@
   <div class="page" id="standings">
     <div class="standings-tabs">
       <div class="standings-tab" data-tab="lcq">LCQ</div>
-      <div class="standings-tab active" data-tab="ladder">Ladder</div>
+      <div class="standings-tab" data-tab="ladder">Ladder</div>
       <div class="standings-tab" data-tab="top8">Top 8</div>
     </div>
     <div class="standings-tab-panel" id="standings-tab-lcq">
@@ -1830,7 +1846,7 @@
         <div id="lcq-scroll"></div>
       </div>
     </div>
-    <div class="standings-tab-panel active" id="standings-tab-ladder">
+    <div class="standings-tab-panel" id="standings-tab-ladder">
       <div class="bracket-outer reveal" style="transition-delay:.1s">
         <div class="bracket-scroll" id="bracket-scroll"></div>
       </div>
@@ -2160,13 +2176,6 @@
           if (pl === 2) return '#c0c0c0';
           if (pl === 3) return '#cd7f32';
           if (pl === 4) return '#4a90d4';
-          if (pl <= 10) {
-            const t = (pl - 5) / 5; // 0 at rank 5, 1 at rank 10
-            const r = Math.round(255 - 100 * t);
-            const g = Math.round(105 -  16 * t);
-            const b = Math.round(180 +   2 * t);
-            return `rgb(${r},${g},${b})`;
-          }
           return '';
         })();
         const nameStyle = (srcEntry?.colorFrom && srcEntry?.colorTo)
@@ -2180,7 +2189,7 @@
         const activeStage = top8ActiveStatus[p.name];
         let statusHtml = '';
         if (top8Place != null) {
-          const color = top8PlacementColors[top8Place] || 'var(--dim)';
+          const color = top8PlacementColors[top8Place] || '#aebdd9';
           const placeLabel = top8Place === 1 ? '★ Champion ★' : top8Place === 2 ? 'Runner-Up' : `${pOrdinal(top8Place)} Place`;
           statusHtml = `<div class="p-stat-status" style="color:${color}">${placeLabel}</div>`;
         } else if (activeStage) {
@@ -2281,6 +2290,19 @@
     }
 
     // ── STANDINGS TABS ──
+    // Set default tab based on date:
+    //   before midnight EST May 11 → LCQ
+    //   midnight EST May 11 through midnight EST Jun 25 → Ladder
+    //   after midnight EST Jun 25 → Ladder (fallback)
+    (function setDefaultStandingsTab() {
+      const now = new Date();
+      const lcqEnd    = new Date('2026-05-11T05:00:00Z'); // 11 PM EST Apr 7 (testing)
+      const ladderEnd = new Date('2026-06-25T05:00:00Z'); // midnight EST Jun 25
+      const defaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
+      document.querySelector(`.standings-tab[data-tab="${defaultTab}"]`).classList.add('active');
+      document.getElementById(`standings-tab-${defaultTab}`).classList.add('active');
+    })();
+
     document.querySelectorAll('.standings-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const name = tab.dataset.tab;
@@ -2867,7 +2889,7 @@
           const rungName = isWildcard ? 'Wildcard' : `Rung ${r}`;
           rungLabel.textContent = rungName;
           if (isTop)    rungLabel.style.color = '#ac8427';
-          else if (isBottom)           rungLabel.style.color = '#972e45';
+          else if (isBottom)           rungLabel.style.color = '#ff8099';
           rungRow.appendChild(rungLabel);
 
           if (isLive) {
@@ -2980,7 +3002,7 @@
           const stats = playerStats[qualName];
           const best  = stats ? fmtTime(stats.best) : '—';
           const avg   = stats ? fmtTime(stats.times.reduce((a, b) => a + b, 0) / stats.times.length) : '—';
-          qualSlot.innerHTML = `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span>`
+          qualSlot.innerHTML = `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span><span class="wqs-icon">★</span>`
             + `<div class="elim-tooltip wqs-tooltip">`
             +   `<div class="elim-tip-name" style="color:#e3b128">${qualName}</div>`
             +   `<div class="elim-tip-row"><span>Top 8 Seed</span><span>${top8seed}</span></div>`
@@ -3792,7 +3814,7 @@
 
             let moveArrow = '';
             if (isDone) {
-              if (isWinner)     moveArrow = `<span class="bp-move qualified" data-tip="Qualified to Rung ${m === 1 ? 6 : 7}">↑</span>`;
+              if (isWinner)     moveArrow = `<span class="bp-move qualified" data-tip="Qualified to Rung ${m === 1 ? 6 : 7}">★</span>`;
               else if (m === 2) moveArrow = `<span class="bp-move eliminated" data-tip="Eliminated">✖</span>`;
               else              moveArrow = `<span class="bp-move" style="color:var(--dim)">–</span>`;
             }
