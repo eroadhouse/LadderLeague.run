@@ -1750,7 +1750,7 @@
   <!-- ══ HOME ══ -->
   <div class="page active" id="home">
     <div class="hero">
-      <p class="hero-eyebrow reveal" style="transition-delay:.1s">Season 03 · Coming Soon</p>
+      <p class="hero-eyebrow reveal" id="hero-status-eyebrow" style="transition-delay:.1s">Season 03 · Coming Soon</p>
       <h1 class="hero-title reveal" style="transition-delay:.25s">
         LADDER<br>
         <span class="accent">LEA</span><span class="accent2">GUE</span>
@@ -1761,26 +1761,28 @@
       </p>
       <a href="https://youtube.com/playlist?list=PLaoVS_ComfptPxoMS_10q7cxi0R9UfCh4&si=4pSv4zzBkFcQPJcC" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
       </a>
-      <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
-      <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
-        <div class="stat-item">
-          <div class="stat-value" id="cd-days">0</div>
-          <div class="stat-label">Days</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value" id="cd-hours">00</div>
-          <div class="stat-label">Hours</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value" id="cd-minutes">00</div>
-          <div class="stat-label">Minutes</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value" id="cd-seconds">00</div>
-          <div class="stat-label">Seconds</div>
+      <div id="countdown-container">
+        <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
+        <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
+          <div class="stat-item">
+            <div class="stat-value" id="cd-days">0</div>
+            <div class="stat-label">Days</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cd-hours">00</div>
+            <div class="stat-label">Hours</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cd-minutes">00</div>
+            <div class="stat-label">Minutes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cd-seconds">00</div>
+            <div class="stat-label">Seconds</div>
+          </div>
         </div>
       </div>
-      <button class="hero-scroll-cta" onclick="document.getElementById('upcoming-section').scrollIntoView({behavior:'smooth'})">
+      <button class="hero-scroll-cta" onclick="scrollToUpcoming()">
         See Upcoming Matches
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 16.5l-8-8 1.41-1.41L12 13.67l6.59-6.58L20 8.5z"/></svg>
       </button>
@@ -1789,7 +1791,6 @@
     <div class="upcoming-section reveal" id="upcoming-section">
       <div class="section">
         <div class="upcoming-title">Upcoming Matches</div>
-        <div class="upcoming-sub">Scroll to reveal the next scheduled matchups</div>
         <div class="upcoming-grid" id="upcoming-list">
           <!-- populated by JS when section is visible -->
         </div>
@@ -1902,7 +1903,7 @@
 
   <!-- STATUS BAR -->
   <div class="status-bar">
-    <span class="status-item"><span class="status-dot"></span>Coming Soon</span>
+    <span class="status-item"><span class="status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
     <span class="status-item">Season 03</span>
     <div class="status-bar-right">
       <a class="social-link" href="https://twitch.tv/legospeedruns" target="_blank" rel="noopener">
@@ -1925,6 +1926,9 @@
   </div>
 
   <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
     // ── PARTICIPANTS DATA ──
     const grid = document.getElementById('p-grid');
 
@@ -2177,8 +2181,8 @@
               <div class="p-stat-row">
                 <div class="p-stat"><span class="p-stat-label">PB</span><span class="p-stat-value">${srcPb}</span></div>
                 <div class="p-stat"><span class="p-stat-label">Rank</span><span class="p-stat-value" ${srcPlaceColor ? `style="color:${srcPlaceColor};"` : ''}>${srcPlace}</span></div>
-                <div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}"` : ''}>${pb}</span></div>
-                <div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${avg}</span></div>
+                ${playerPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}"` : ''}>${pb}</span></div>` : ''}
+                ${playerPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${avg}</span></div>` : ''}
               </div>
               ${statusHtml}
             </div>
@@ -2410,16 +2414,7 @@
     (function() {
       // 1:00 PM Eastern Time (ET) on May 9 -> convert to UTC.
       // For May the US observes DST (EDT = UTC-4), so 13:00 ET = 17:00 UTC.
-      function getTargetUtc() {
-        const now = new Date();
-        let year = now.getFullYear();
-        // build UTC timestamp for May 9 at 17:00 UTC (which corresponds to 13:00 ET in May)
-        let target = new Date(Date.UTC(year, 4, 9, 17, 0, 0, 0));
-        if (now >= target) {
-          target = new Date(Date.UTC(year + 1, 4, 9, 17, 0, 0, 0));
-        }
-        return target;
-      }
+      const target = new Date(Date.UTC(new Date().getFullYear(), 3, 8, 1, 35, 0, 0));
 
       const elDays = document.getElementById('cd-days');
       const elHours = document.getElementById('cd-hours');
@@ -2427,16 +2422,35 @@
       const elSeconds = document.getElementById('cd-seconds');
       if (!elDays || !elHours || !elMinutes || !elSeconds) return;
 
-      let target = getTargetUtc();
+      let countdownInterval;
+
+      function goLive() {
+        clearInterval(countdownInterval);
+        const cdContainer = document.getElementById('countdown-container');
+        if (cdContainer) cdContainer.style.display = 'none';
+        const eyebrow = document.getElementById('hero-status-eyebrow');
+        if (eyebrow) eyebrow.textContent = 'Season 03 · Live';
+        const footerStatus = document.getElementById('footer-status-text');
+        if (footerStatus) footerStatus.textContent = 'Live';
+        const footerStatusItem = document.getElementById('footer-status-item');
+        if (footerStatusItem) footerStatusItem.style.color = '#4caf50';
+        const footerStatusDot = document.getElementById('footer-status-dot');
+        if (footerStatusDot) footerStatusDot.style.background = '#4caf50';
+      }
+
+      // If already past the target, go live immediately with no flash
+      if (new Date() >= target) {
+        goLive();
+        return;
+      }
 
       function updateCountdown() {
         const now = new Date();
-        let diff = Math.max(0, target.getTime() - now.getTime());
+        const diff = Math.max(0, target.getTime() - now.getTime());
 
-        // if target passed (shouldn't happen often), recompute for next year
         if (diff === 0) {
-          target = getTargetUtc();
-          diff = Math.max(0, target.getTime() - now.getTime());
+          goLive();
+          return;
         }
 
         const totalSec = Math.floor(diff / 1000);
@@ -2452,37 +2466,49 @@
       }
 
       updateCountdown();
-      setInterval(updateCountdown, 1000);
+      countdownInterval = setInterval(updateCountdown, 1000);
     })();
 
     // ── LAZY LOAD UPCOMING MATCHES ON SCROLL ──
+    var upcomingLoaded = false;
+    function loadUpcomingContent() {
+      if (upcomingLoaded) return;
+      upcomingLoaded = true;
+      const upcomingList = document.getElementById('upcoming-list');
+      if (!upcomingList) return;
+      const data = (typeof matchups !== 'undefined' ? matchups : []).slice(0, 6);
+      if (!data || data.length === 0) {
+        upcomingList.innerHTML = '<div class="upcoming-card">No matches scheduled</div>';
+      } else {
+        upcomingList.innerHTML = data.map(m => `
+          <div class="upcoming-card reveal">
+            <div class="teams"><div class="team">${m.a}</div><div class="team">${m.b}</div></div>
+            <div class="meta"><span>${m.date}</span><span>${m.oddsA} • ${m.oddsB}</span></div>
+            <button class="upcoming-cta" onclick="goToPredictions()">Predict</button>
+          </div>
+        `).join('');
+      }
+      document.querySelectorAll('#upcoming-list .reveal').forEach(el => observer.observe(el));
+    }
+
+    function scrollToUpcoming() {
+      loadUpcomingContent();
+      const upcomingSection = document.getElementById('upcoming-section');
+      if (!upcomingSection) return;
+      upcomingSection.classList.add('visible');
+      setTimeout(() => upcomingSection.scrollIntoView({ behavior: 'smooth' }), 100);
+    }
+
     (function() {
       const upcomingSection = document.getElementById('upcoming-section');
       if (!upcomingSection) return;
-      const upcomingList = document.getElementById('upcoming-list');
-
-      const loadUpcoming = (entries, obs) => {
+      const upObs = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
-          const data = (typeof matchups !== 'undefined' ? matchups : []).slice(0, 6);
-          if (!data || data.length === 0) {
-            upcomingList.innerHTML = '<div class="upcoming-card">No matches scheduled</div>';
-          } else {
-            upcomingList.innerHTML = data.map(m => `
-              <div class="upcoming-card reveal">
-                <div class="teams"><div class="team">${m.a}</div><div class="team">${m.b}</div></div>
-                <div class="meta"><span>${m.date}</span><span>${m.oddsA} • ${m.oddsB}</span></div>
-                <button class="upcoming-cta" onclick="goToPredictions()">Predict</button>
-              </div>
-            `).join('');
-          }
-          // start observing reveal elements we just injected
-          document.querySelectorAll('#upcoming-list .reveal').forEach(el => observer.observe(el));
+          loadUpcomingContent();
           obs.unobserve(entry.target);
         });
-      };
-
-      const upObs = new IntersectionObserver(loadUpcoming, { threshold: 0.12 });
+      }, { threshold: 0.12 });
       upObs.observe(upcomingSection);
     })();
 
