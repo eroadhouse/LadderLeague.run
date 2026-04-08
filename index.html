@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
   <link rel="icon" href="ladder.svg" type="image/svg+xml">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1218,13 +1219,16 @@
       padding: 0 2rem;
       height: 40vh;
       min-height: 200px;
+      text-decoration: none;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: .6rem;
+      padding-top: 3rem;
+      padding-bottom: 1.5rem;
       transition: background .2s;
       opacity: 0;
       transform: translateY(30px);
@@ -1236,14 +1240,46 @@
     }
     .participant-card:first-child { border-top: 1px solid var(--border); }
     .participant-card:hover { background: rgba(140,160,200,.04); }
-    .participant-card::before {
-      content: attr(data-num);
-      position: absolute;
-      left: 2rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .7rem;
-      color: var(--dim);
+
+    .p-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .6rem;
+    }
+    .p-stat-status {
+      font-size: .82rem;
+      font-weight: 700;
       letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+    .p-stat-status.qualified  { color: #d4b84a; }
+    .p-stat-status.eliminated { color: #cc3a3a; }
+    .p-stat-row {
+      display: flex;
+      gap: 2rem;
+    }
+    .p-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .15rem;
+    }
+    .p-stat-label {
+      font-size: .72rem;
+      color: var(--dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .p-stat-value {
+      font-size: 1rem;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    .p-stat-tip {
+      cursor: default;
     }
 
     .p-avatar {
@@ -1255,13 +1291,28 @@
       font-size: 1.5rem;
       color: var(--accent2);
       margin-bottom: .5rem;
-      border: 1px solid var(--dim);
+      border: 3px solid var(--dim);
+      overflow: hidden;
+    }
+    .p-avatar img {
+      width: calc(100% + 4px); height: calc(100% + 4px);
+      margin: -2px;
+      object-fit: cover;
+      border-radius: 50%;
     }
     .p-handle {
       font-family: 'Rubik', sans-serif;
       font-size: 2rem;
       color: #fff;
       letter-spacing: 4px;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .p-handle .fi {
+      width: 1.4em;
+      height: 1.05em;
+      flex-shrink: 0;
     }
     .p-role {
       font-family: 'Montserrat', sans-serif;
@@ -1597,29 +1648,7 @@
       overflow-x: auto;
       padding: 2.6rem 0 3.9rem;
     }
-    .ladder-top8-btn {
-      position: fixed;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: .85rem;
-      letter-spacing: 1.5px;
-      color: var(--accent);
-      background: #07080f;
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      padding: .5rem 1.2rem;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background .15s, color .15s;
-    }
-    .ladder-top8-btn:hover {
-      background: var(--accent);
-      color: #000;
-    }
+
     .lcq-ladder-btn {
       display: block;
       margin: 2rem auto 0;
@@ -1897,25 +1926,293 @@
 
   <script>
     // ── PARTICIPANTS DATA ──
-    const participants = Array.from({ length: 21 }, (_, i) => ({
-      handle: `USER ${i + 1}`,
-      tag: `U${String(i + 1).padStart(2, '0')}`,
-      role: '—',
-      w: 0,
-      l: 0,
-    }));
-
     const grid = document.getElementById('p-grid');
-    participants.forEach((p, i) => {
-      const initials = p.handle.split(' ').map(w => w[0]).join('').slice(0,2);
-      grid.innerHTML += `
-        <div class="participant-card" data-num="${String(i+1).padStart(2,'0')}">
-          <div class="p-avatar">${initials}</div>
-          <div class="p-handle">${p.handle}</div>
-          <div class="p-role">[${p.tag}] · ${p.role}</div>
-          <div class="p-record"><strong>${p.w}W</strong> — <strong>${p.l}L</strong></div>
-        </div>`;
-    });
+
+    function pOrdinal(n) {
+      const s = ['th','st','nd','rd'], v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+    function pParseTime(t) {
+      if (!t) return null;
+      const [h, m, s] = t.split(':').map(Number);
+      return h * 3600 + m * 60 + s;
+    }
+    function pFmtTime(secs) {
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = Math.round(secs % 60);
+      return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    Promise.all([
+      fetch('participants.json', { cache: 'no-store' }).then(r => r.json()),
+      fetch('results.json',      { cache: 'no-store' }).then(r => r.json()),
+      fetch('https://www.speedrun.com/api/v1/leaderboards/46w33l1r/category/9d8p7ylk?embed=players&platform=PC&top=150&var-j84pew89=0q5v2grl').then(r => r.json()).catch(() => null),
+    ]).then(([participants, ladderResults, lbData]) => {
+      const subtitle = document.querySelector('#participants .page-subtitle');
+      if (subtitle) subtitle.textContent = `${participants.length} competitors · Season 03`;
+
+      const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1, 1];
+
+      function pMatchLabel(key) {
+        if (!key) return '';
+        if (key.startsWith('lcq_')) return `LCQ ${key.split('_')[1]}`;
+        const [w, r] = key.split('_');
+        return `Week ${w} Rung ${r}`;
+      }
+
+      // Per-player PB and times (ladder weeks 1–7 only, no LCQ or Top 8)
+      const playerPB = {}, playerPBKey = {}, playerTimes = {};
+      Object.entries(ladderResults).forEach(([key, result]) => {
+        if (!result || !result.places) return;
+        const w = parseInt(key.split('_')[0]);
+        if (isNaN(w) || w < 1 || w > 7) return;
+        result.places.forEach(entry => {
+          const secs = pParseTime(entry.time);
+          if (secs === null) return;
+          if (playerPB[entry.name] == null) {
+            playerPB[entry.name] = secs; playerPBKey[entry.name] = key; playerTimes[entry.name] = [secs];
+          } else {
+            if (secs < playerPB[entry.name]) { playerPB[entry.name] = secs; playerPBKey[entry.name] = key; }
+            playerTimes[entry.name].push(secs);
+          }
+        });
+      });
+
+      // Qualification: rung 1 place 1 each ladder week + wildcard week 8
+      const playerQualSeed = {};
+      for (let w = 1; w <= 8; w++) {
+        const r = ladderResults[`${w}_1`];
+        const name = r ? (r.places[0] || {}).name : null;
+        if (name) playerQualSeed[name] = w;
+      }
+
+      // Elimination placements (9th onward)
+      // Wildcard loser stays at their original ladder slot; wildcard winner is
+      // removed from the eliminated list and everyone below them shifts up.
+      const playerPlacement = {};
+      const elimSlots = [];
+      for (let w = 7; w >= 1; w--) {
+        const mc = weekMatchCounts[w - 1];
+        for (let place = 2; place <= 3; place++) elimSlots.push({ week: w, rung: mc, place });
+      }
+      // Compute wildcard participants (same logic as bracket page):
+      // fastest time + fastest average among non-qualified players.
+      const pWcBest = {}, pWcAllTimes = {};
+      Object.entries(playerPB).forEach(([name, best]) => {
+        if (!playerQualSeed[name]) { pWcBest[name] = best; pWcAllTimes[name] = playerTimes[name]; }
+      });
+      const pWcFastest = Object.entries(pWcBest).sort((a, b) => a[1] - b[1])[0]?.[0] || null;
+      const pWcAvg = Object.entries(pWcAllTimes)
+        .filter(([name]) => name !== pWcFastest)
+        .map(([name, times]) => [name, times.reduce((a, b) => a + b, 0) / times.length])
+        .sort((a, b) => a[1] - b[1])[0]?.[0] || null;
+      const wcParticipants = new Set([pWcFastest, pWcAvg].filter(Boolean));
+
+      // Wildcard exclusion: during wildcard limbo both participants are hidden;
+      // after the match only the winner is excluded (loser naturally sits at their original week slot).
+      const wcMatchWinner = (ladderResults['8_1']?.places?.[0] || {}).name || null;
+      const pExcludeFromElim = new Set();
+      if (wcMatchWinner) {
+        pExcludeFromElim.add(wcMatchWinner);
+      } else {
+        wcParticipants.forEach(p => pExcludeFromElim.add(p));
+      }
+      let elimPlace = 9;
+      elimSlots.forEach(s => {
+        const r = ladderResults[`${s.week}_${s.rung}`];
+        const name = r ? (r.places[s.place - 1] || {}).name : null;
+        if (!name || pExcludeFromElim.has(name)) return;
+        playerPlacement[name] = elimPlace++;
+      });
+
+      // Top 8 final placements (mirrors the bracket page logic)
+      const top8Placement = {};
+      const top8PlacementColors = { 1: '#d4b84a', 2: '#9aa8b8', 3: '#b07040' };
+      (() => {
+        if (ladderResults['gf_1']?.places?.[0]?.name) top8Placement[ladderResults['gf_1'].places[0].name] = 1;
+        if (ladderResults['gf_1']?.places?.[1]?.name) top8Placement[ladderResults['gf_1'].places[1].name] = 2;
+        if (ladderResults['tp_1']?.places?.[0]?.name) top8Placement[ladderResults['tp_1'].places[0].name] = 3;
+        if (ladderResults['tp_1']?.places?.[1]?.name) top8Placement[ladderResults['tp_1'].places[1].name] = 4;
+        const qfLosers = ['qf_1','qf_2','qf_3','qf_4']
+          .map(key => { const l = ladderResults[key]?.places?.[1]; return l ? { name: l.name, secs: pParseTime(l.time) ?? Infinity } : null; })
+          .filter(Boolean)
+          .sort((a, b) => a.secs - b.secs);
+        qfLosers.forEach((p, i) => { top8Placement[p.name] = 5 + i; });
+      })();
+
+      // Active top 8 stage (for players still competing)
+      const top8ActiveStatus = {};
+      (() => {
+        const gfDone = !!ladderResults['gf_1']?.places?.length;
+        const tpDone = !!ladderResults['tp_1']?.places?.length;
+
+        // Grand finals participants (SF winners)
+        if (!gfDone) {
+          ['sf_1','sf_2'].forEach(key => {
+            const w = ladderResults[key]?.places?.[0]?.name;
+            if (w) top8ActiveStatus[w] = 'IN GRAND FINALS';
+          });
+        }
+        // Third place match participants (SF losers)
+        if (!tpDone) {
+          ['sf_1','sf_2'].forEach(key => {
+            const l = ladderResults[key]?.places?.[1]?.name;
+            if (l) top8ActiveStatus[l] = '3rd–4th Place';
+          });
+        }
+        // Semifinals participants (QF winners who haven't played SF yet)
+        const sfDone = new Set(['sf_1','sf_2'].filter(k => ladderResults[k]?.places?.length).map(k => {
+          return [ladderResults[k].places[0]?.name, ladderResults[k].places[1]?.name];
+        }).flat().filter(Boolean));
+        ['qf_1','qf_2','qf_3','qf_4'].forEach(key => {
+          const w = ladderResults[key]?.places?.[0]?.name;
+          if (w && !sfDone.has(w) && !top8ActiveStatus[w]) top8ActiveStatus[w] = 'IN SEMIFINALS';
+        });
+      })();
+
+      // LCQ eliminations — players who ran an LCQ but didn't finish top 3 in either
+      const lcqQualifiers = new Set();
+      const lcqBestTime   = {};
+      Object.entries(ladderResults).forEach(([key, result]) => {
+        if (!key.startsWith('lcq_') || !result || !result.places) return;
+        result.places.forEach((entry, idx) => {
+          if (idx < 3) lcqQualifiers.add(entry.name);
+          const secs = pParseTime(entry.time);
+          if (secs !== null && (lcqBestTime[entry.name] == null || secs < lcqBestTime[entry.name]))
+            lcqBestTime[entry.name] = secs;
+        });
+      });
+      const lcqEliminated = Object.entries(lcqBestTime)
+        .filter(([name]) => !lcqQualifiers.has(name))
+        .sort((a, b) => a[1] - b[1]); // best time first → highest placement
+      const lcqStartPlace = participants.length - lcqEliminated.length + 1;
+      lcqEliminated.forEach(([name], i) => { playerPlacement[name] = lcqStartPlace + i; });
+
+      // Build SRC leaderboard PB map: lowercased username → seconds
+      const srcPBMap = {};
+      if (lbData && lbData.data) {
+        const playerIndex = {};
+        (lbData.data.players?.data || []).forEach(pl => {
+          const slug  = (pl.weblink || '').replace(/.*\//, '').toLowerCase();
+          const intl  = (pl.names?.international || '').toLowerCase();
+          const style = pl['name-style'] || {};
+          const colorFrom = (style['color-from']?.dark) || null;
+          const colorTo   = (style['color-to']?.dark)   || null;
+          const colorSolid = (style['color']?.dark)     || null;
+          const imageUri   = pl.assets?.image?.uri     || null;
+          playerIndex[pl.id] = { slug, intl, colorFrom, colorTo, colorSolid, imageUri };
+        });
+        // Runs are ordered by place; first-write-wins so best placement sticks
+        lbData.data.runs.forEach(entry => {
+          const pid  = entry.run?.players?.[0]?.id;
+          const info = pid ? playerIndex[pid] : null;
+          const t    = entry.run?.times?.realtime_t;
+          if (!info || t == null) return;
+          const val = { t, place: entry.place, colorFrom: info.colorFrom, colorTo: info.colorTo, colorSolid: info.colorSolid, imageUri: info.imageUri };
+          if (info.slug && !srcPBMap[info.slug]) srcPBMap[info.slug] = val;
+          if (info.intl && info.intl !== info.slug && !srcPBMap[info.intl]) srcPBMap[info.intl] = val;
+        });
+      }
+
+      grid.innerHTML = '';
+      participants.forEach(p => {
+        const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
+        const iso      = (p.country === 'UK' ? 'GB' : p.country).toLowerCase();
+        const pb      = playerPB[p.name]    != null ? pFmtTime(playerPB[p.name]) : '—';
+        const pbLabel = playerPBKey[p.name] ? pMatchLabel(playerPBKey[p.name]) : null;
+        const avg = playerTimes[p.name] != null
+          ? pFmtTime(playerTimes[p.name].reduce((a, b) => a + b, 0) / playerTimes[p.name].length) : '—';
+        const qualSeed  = playerQualSeed[p.name];
+        const placement = playerPlacement[p.name];
+
+        const srUser   = p.username || p.name;
+        const srcEntry = srcPBMap[srUser.toLowerCase()];
+        const srcPb    = srcEntry ? pFmtTime(srcEntry.t) : '—';
+        const srcPlace = srcEntry ? `#${srcEntry.place}` : '—';
+        const srcPlaceColor = !srcEntry ? '' : (() => {
+          const pl = srcEntry.place;
+          if (pl === 1) return '#d4b84a';
+          if (pl === 2) return '#c0c0c0';
+          if (pl === 3) return '#cd7f32';
+          if (pl === 4) return '#4a90d4';
+          if (pl <= 10) {
+            const t = (pl - 5) / 5; // 0 at rank 5, 1 at rank 10
+            const r = Math.round(255 - 100 * t);
+            const g = Math.round(105 -  16 * t);
+            const b = Math.round(180 +   2 * t);
+            return `rgb(${r},${g},${b})`;
+          }
+          return '';
+        })();
+        const nameStyle = (srcEntry?.colorFrom && srcEntry?.colorTo)
+          ? `style="background: linear-gradient(90deg, ${srcEntry.colorFrom}, ${srcEntry.colorTo}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"`
+          : (srcEntry?.colorSolid ? `style="color: ${srcEntry.colorSolid};"` : '');
+        const avatarStyle = (srcEntry?.colorFrom && srcEntry?.colorTo)
+          ? `style="border: 3px solid transparent; background: linear-gradient(#0f111c, #0f111c) padding-box, linear-gradient(to bottom, ${srcEntry.colorFrom}, ${srcEntry.colorTo}) border-box;"`
+          : (srcEntry?.colorSolid ? `style="border: 3px solid ${srcEntry.colorSolid};"` : '');
+
+        const top8Place  = top8Placement[p.name];
+        const activeStage = top8ActiveStatus[p.name];
+        let statusHtml = '';
+        if (top8Place != null) {
+          const color = top8PlacementColors[top8Place] || 'var(--dim)';
+          const placeLabel = top8Place === 1 ? '★ Champion ★' : top8Place === 2 ? 'Runner-Up' : `${pOrdinal(top8Place)} Place`;
+          statusHtml = `<div class="p-stat-status" style="color:${color}">${placeLabel}</div>`;
+        } else if (activeStage) {
+          const stageColor = activeStage === '3rd–4th Place' ? '#cd7f32' : '#4a90d4';
+          statusHtml = `<div class="p-stat-status" style="color:${stageColor}">${activeStage}</div>`;
+        } else if (qualSeed != null) {
+          statusHtml = `<div class="p-stat-status qualified">Top 8 Seed #${qualSeed}</div>`;
+        } else if (placement != null) {
+          statusHtml = `<div class="p-stat-status eliminated">${pOrdinal(placement)} Place</div>`;
+        }
+
+        grid.innerHTML += `
+          <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
+            <div class="p-avatar" ${avatarStyle}>${srcEntry?.imageUri ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">` : initials}</div>
+            <div class="p-handle"><span class="fi fi-${iso}"></span><span ${nameStyle}>${p.name}</span></div>
+            <div class="p-role">Seed ${p.seed}</div>
+            <div class="p-stats">
+              <div class="p-stat-row">
+                <div class="p-stat"><span class="p-stat-label">PB</span><span class="p-stat-value">${srcPb}</span></div>
+                <div class="p-stat"><span class="p-stat-label">Rank</span><span class="p-stat-value" ${srcPlaceColor ? `style="color:${srcPlaceColor};"` : ''}>${srcPlace}</span></div>
+                <div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}"` : ''}>${pb}</span></div>
+                <div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${avg}</span></div>
+              </div>
+              ${statusHtml}
+            </div>
+          </a>`;
+      });
+      observeAll();
+
+      // Attach styled tooltip to Ladder PB values
+      let pTip = document.getElementById('bp-shared-tooltip');
+      if (!pTip) {
+        pTip = document.createElement('div');
+        pTip.id = 'bp-shared-tooltip';
+        document.body.appendChild(pTip);
+        document.addEventListener('click', () => { pTip.style.display = 'none'; });
+      }
+      grid.querySelectorAll('.p-stat-tip').forEach(el => {
+        el.addEventListener('mouseenter', e => {
+          pTip.style.minWidth = '0';
+          pTip.style.padding = '.5rem .8rem';
+          pTip.innerHTML = `<div style="font-size:.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Achieved in</div><div style="font-size:.9rem;color:var(--text);margin-top:.2rem">${el.dataset.tip}</div>`;
+          pTip.style.display = 'block';
+          pTip.style.left = '0px';
+          pTip.style.top = '0px';
+          const tr = pTip.getBoundingClientRect();
+          const er = el.getBoundingClientRect();
+          let left = er.right + 8;
+          let top  = er.top + er.height / 2 - tr.height / 2;
+          left = Math.max(8, Math.min(left, window.innerWidth - tr.width - 8));
+          pTip.style.left = `${left}px`;
+          pTip.style.top  = `${top}px`;
+        });
+        el.addEventListener('mouseleave', () => { pTip.style.display = 'none'; });
+      });
+    }).catch(() => {});
 
     // ── PREDICTIONS DATA ──
     const matchups = [
@@ -1967,8 +2264,6 @@
         document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(`standings-tab-${name}`).classList.add('active');
-        const top8Btn = document.getElementById('ladder-top8-btn');
-        if (top8Btn) top8Btn.style.display = name === 'ladder' ? '' : 'none';
         if (name === 'top8') {
           const boxIds = ['top8-champion-box','top8-runnerup-box','top8-bronze-box','top8-rest-box'];
           boxIds.forEach(id => {
@@ -2287,16 +2582,6 @@
         return [0, 1, 2].map(i => (r.places[i] ? r.places[i].name : '—'));
       }
 
-      const WEEK1_LINEUP = {
-        1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
-        2: ["itsjared97",   "ERoadhouse","Bricko"],
-        3: ["WiiSuper",     "Scynor",    "Wazzip"],
-        4: ["FlamingLazer", "Dimei",     "Colten"],
-        5: ["TheCrazedCap", "kwazrr",    "ejpman"],
-        6: lcqWinners("lcq_1"),
-        7: lcqWinners("lcq_2"),
-      };
-
       // Derive the expected lineup for a given week by simulating player movements
       // from the previous week's results.
       // Movement rules:
@@ -2306,7 +2591,15 @@
       //   - Bottom rung, 2nd & 3rd → eliminated
       //   - All other 1st & 2nd place → move up one rung
       function computeLineup(week) {
-        if (week === 1) return WEEK1_LINEUP;
+        if (week === 1) return {
+          1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
+          2: ["itsjared97",   "ERoadhouse","Bricko"],
+          3: ["WiiSuper",     "Scynor",    "Wazzip"],
+          4: ["FlamingLazer", "Dimei",     "Colten"],
+          5: ["TheCrazedCap", "kwazrr",    "ejpman"],
+          6: lcqWinners("lcq_1"),
+          7: lcqWinners("lcq_2"),
+        };
         const prevWeek = week - 1;
         const prevMatchCount = weekMatchCounts[prevWeek - 1];
         const thisMatchCount = weekMatchCounts[week - 1];
@@ -2415,17 +2708,20 @@
 
       // Build week-1 seed lookup: global seed = (rung-1)*3 + position in rung
       const week1Seed = {};
-      Object.entries(WEEK1_LINEUP).forEach(([rung, players]) => {
+      Object.entries(computeLineup(1)).forEach(([rung, players]) => {
         players.forEach((name, i) => {
           week1Seed[name] = (parseInt(rung) - 1) * 3 + (i + 1);
         });
       });
 
-      // Shared tooltip for player names inside match cards
-      const bpTooltipEl = document.createElement('div');
-      bpTooltipEl.id = 'bp-shared-tooltip';
-      document.body.appendChild(bpTooltipEl);
-      document.addEventListener('click', () => { bpTooltipEl.style.display = 'none'; });
+      // Shared tooltip for player names inside match cards (created once)
+      let bpTooltipEl = document.getElementById('bp-shared-tooltip');
+      if (!bpTooltipEl) {
+        bpTooltipEl = document.createElement('div');
+        bpTooltipEl.id = 'bp-shared-tooltip';
+        document.body.appendChild(bpTooltipEl);
+        document.addEventListener('click', () => { bpTooltipEl.style.display = 'none'; });
+      }
 
       // Hover tooltip for move icons
       function showIconTip(icon) {
@@ -2725,20 +3021,7 @@
 
       // Button lives on document.body to escape the `transform` on .bracket-outer.reveal
       // which would otherwise break position:fixed. Created once; subsequent buildBracket calls skip it.
-      if (!document.getElementById('ladder-top8-btn')) {
-        const top8Btn = document.createElement('div');
-        top8Btn.id = 'ladder-top8-btn';
-        top8Btn.className = 'ladder-top8-btn';
-        top8Btn.textContent = 'View Top 8 Bracket →';
-        top8Btn.addEventListener('click', () => {
-          document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
-          document.querySelector('.standings-tab[data-tab="top8"]').classList.add('active');
-          document.getElementById('standings-tab-top8').classList.add('active');
-          top8Btn.style.display = 'none';
-        });
-        document.body.appendChild(top8Btn);
-      }
+
 
       container.appendChild(week7Group);
 
@@ -2749,23 +3032,39 @@
       elabel.className = 'bracket-eliminated-label';
       elabel.textContent = '✕ Eliminated';
       elimCol.appendChild(elabel);
-      // Build elimination slots ordered best (9th) → worst
-      // Wildcard loser = 9th, then latest regular week down to week 1
+      // Build elimination slots ordered best → worst, weeks only (no hardcoded wildcard slot).
+      // Wildcard loser naturally falls at their original week slot after the match resolves.
       const elimSlots = [];
-      elimSlots.push({ week: WILDCARD_WEEK, rung: 1, place: 2 }); // 9th
       for (let w = WEEKS - 1; w >= 1; w--) {
         const matchCount = weekMatchCounts[w - 1];
         const bottomRung = matchCount;
-        if (bottomRung === 1) continue; // week 7: its only rung is also qualifying, no elimination
         for (let place = 2; place <= 3; place++) {    // 2nd place first (better), then 3rd
           elimSlots.push({ week: w, rung: bottomRung, place });
         }
       }
 
-      elimSlots.forEach((s, i) => {
-        const placement = 9 + i;
+      // Wildcard exclusion: during limbo both participants are hidden;
+      // after the match only the winner is excluded (loser returns to their original week slot).
+      // wildcardParticipants is already computed above from fastest/avg stats.
+      const bracketWildcardWinner = (RESULTS['8_1']?.places?.[0] || {}).name || null;
+      const bracketExcludeFromElim = new Set();
+      if (bracketWildcardWinner) {
+        bracketExcludeFromElim.add(bracketWildcardWinner);
+      } else {
+        wildcardParticipants.forEach(p => bracketExcludeFromElim.add(p));
+      }
+
+      // Collect elim entries, skipping excluded players and closing the gap
+      const elimEntries = [];
+      elimSlots.forEach(s => {
         const result = RESULTS[`${s.week}_${s.rung}`];
         const name = result ? (result.places[s.place - 1] || {}).name : null;
+        if (name && bracketExcludeFromElim.has(name)) return; // remove from list, close gap
+        elimEntries.push(name); // may be null (empty slot)
+      });
+
+      elimEntries.forEach((name, i) => {
+        const placement = 9 + i;
         const slotEl = document.createElement('div');
         slotEl.className = 'eliminated-slot' + (name ? '' : ' empty');
 
@@ -3474,8 +3773,6 @@
           document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
           document.querySelector('.standings-tab[data-tab="ladder"]').classList.add('active');
           document.getElementById('standings-tab-ladder').classList.add('active');
-          const top8Btn = document.getElementById('ladder-top8-btn');
-          if (top8Btn) top8Btn.style.display = '';
         });
         container.appendChild(ladderBtn);
       }
