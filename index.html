@@ -519,7 +519,8 @@
       text-transform: uppercase;
       color: var(--dim);
       margin-bottom: 0;
-      padding-bottom: .2rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
       width: 100%;
       text-align: center;
     }
@@ -532,9 +533,7 @@
       opacity: 1;
       text-align: center;
       width: 100%;
-      padding-bottom: .5rem;
       margin-bottom: .2rem;
-      border-bottom: 1px solid var(--border);
     }
     .bracket-week-matches {
       display: flex;
@@ -1253,12 +1252,14 @@
       pointer-events: none;
     }
     .participant-card > * { position: relative; z-index: 1; }
-    .participant-card:nth-child(6n+1)::before { background-image: url('tcsimage6.png'); }
-    .participant-card:nth-child(6n+2)::before { background-image: url('tcsimage2.png'); }
-    .participant-card:nth-child(6n+3)::before { background-image: url('tcsimage3.png'); }
-    .participant-card:nth-child(6n+4)::before { background-image: url('tcsimage6.png'); }
-    .participant-card:nth-child(6n+5)::before { background-image: url('tcsimage2.png'); }
-    .participant-card:nth-child(6n)::before   { background-image: url('tcsimage3.png'); }
+    .participant-card:nth-child(8n+1)::before { background-image: url('tcsimage9.png'); }
+    .participant-card:nth-child(8n+2)::before { background-image: url('tcsimage2.png'); }
+    .participant-card:nth-child(8n+3)::before { background-image: url('tcsimage3.png'); }
+    .participant-card:nth-child(8n+4)::before { background-image: url('tcsimage15.png'); }
+    .participant-card:nth-child(8n+5)::before { background-image: url('tcsimage10.jpg'); }
+    .participant-card:nth-child(8n+6)::before { background-image: url('tcsimage11.png'); }
+    .participant-card:nth-child(8n+7)::before   { background-image: url('tcsimage13.png'); }
+    .participant-card:nth-child(8n)::before   { background-image: url('tcsimage12.png'); }
 
     .p-stats {
       display: flex;
@@ -2815,15 +2816,15 @@
         weekEl.className = 'bracket-week';
 
         const WEEK_DATES = ['May 11–17', 'May 18–24', 'May 25–31', 'June 1–7', 'June 8–14', 'June 15–21', 'June 15–21', 'June 21–22'];
-        const label = document.createElement('div');
-        label.className = 'bracket-week-label';
-        label.textContent = w === WILDCARD_WEEK ? 'Wildcard' : `Week ${w}`;
-        weekEl.appendChild(label);
-
         const dateRange = document.createElement('div');
         dateRange.className = 'bracket-week-dates';
         dateRange.textContent = WEEK_DATES[w - 1] || '';
         weekEl.appendChild(dateRange);
+
+        const label = document.createElement('div');
+        label.className = 'bracket-week-label';
+        label.textContent = w === WILDCARD_WEEK ? 'Wildcard' : `Week ${w}`;
+        weekEl.appendChild(label);
 
         const matchesWrap = document.createElement('div');
         matchesWrap.className = 'bracket-week-matches';
