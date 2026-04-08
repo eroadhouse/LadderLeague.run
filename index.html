@@ -1240,6 +1240,24 @@
     }
     .participant-card:first-child { border-top: 1px solid var(--border); }
     .participant-card:hover { background: rgba(140,160,200,.04); }
+    .participant-card::before {
+      content: '';
+      position: absolute;
+      inset: -40px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(4px);
+      opacity: .05;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .participant-card > * { position: relative; z-index: 1; }
+    .participant-card:nth-child(6n+1)::before { background-image: url('tcsimage1.png'); }
+    .participant-card:nth-child(6n+2)::before { background-image: url('tcsimage2.png'); }
+    .participant-card:nth-child(6n+3)::before { background-image: url('tcsimage3.png'); }
+    .participant-card:nth-child(6n+4)::before { background-image: url('tcsimage4.png'); }
+    .participant-card:nth-child(6n+5)::before { background-image: url('tcsimage5.png'); }
+    .participant-card:nth-child(6n)::before   { background-image: url('tcsimage6.png'); }
 
     .p-stats {
       display: flex;
