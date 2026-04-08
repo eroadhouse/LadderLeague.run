@@ -304,7 +304,7 @@
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
       font-size: .8rem;
-      color: var(--dim);
+      color: var(--accent2);
       letter-spacing: 3px;
       text-transform: uppercase;
       margin-top: .5rem;
@@ -1832,6 +1832,111 @@
       font-weight: 400;
     }
 
+    /* ════════════════════════════
+       ABOUT PAGE
+    ════════════════════════════ */
+    #about {
+      position: relative;
+      overflow: hidden;
+    }
+    .about-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('tcsimage17.png');
+      background-size: cover;
+      background-position: center;
+      filter: blur(18px) brightness(.55);
+      transform: scale(1.06);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .about-content {
+      position: relative;
+      z-index: 1;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    @keyframes aboutCardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .about-card {
+      grid-column: span 4;
+      background: rgba(15,17,28,.75);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      backdrop-filter: blur(6px);
+    }
+    .about-card.reveal { opacity: 0; transition: none; }
+    .about-card.visible {
+      opacity: 1;
+      animation: aboutCardIn .6s ease backwards;
+      transition: transform .5s ease-out, border-color .15s ease-out;
+    }
+    .about-card.visible:hover { transform: scale(1.14); border-color: var(--accent); }
+    .about-card:nth-child(-n+4) { grid-column: span 3; }
+    /* @media (max-width: 900px) { .about-card, .about-card:nth-child(-n+4) { grid-column: span 6; } } */
+    /* @media (max-width: 560px) { .about-card, .about-card:nth-child(-n+4) { grid-column: span 12; } } */
+    .about-card-role {
+      font-family: 'Rubik', sans-serif;
+      font-size: .7rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+    .about-card-name {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: .5rem;
+    }
+    .about-card-name-secondary {
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: #fff;
+      /* margin-bottom: .5rem; */
+    }
+    .about-card-desc {
+      font-size: .78rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .about-contact {
+      margin-top: 3rem;
+      padding: 1.75rem 2rem;
+      background: rgba(15,17,28,.75);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .about-contact-title {
+      font-family: 'Rubik', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .about-contact-desc { font-size: .85rem; color: var(--text); }
+    .about-contact-email {
+      /* display: inline-flex; */
+      /* align-items: center; */
+      gap: .5rem;
+      font-size: .9rem;
+      font-weight: 900;
+      color: var(--accent2);
+      text-decoration: none;
+      margin-top: .25rem;
+      transition: color .15s;
+    }
+    .about-contact-email:hover { color: #fff; }
+
   </style>
 </head>
 <body>
@@ -1850,6 +1955,7 @@
       <li><a href="#" data-page="participants">Participants</a></li>
       <li><a href="#" data-page="predictions">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
+      <li><a href="#" data-page="about">About</a></li>
     </ul>
   </nav>
 
@@ -1865,7 +1971,7 @@
         LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions and follow along
         as the season unfolds.
       </p>
-      <a href="https://youtube.com/playlist?list=PLaoVS_ComfptPxoMS_10q7cxi0R9UfCh4&si=4pSv4zzBkFcQPJcC" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      <a href="https://youtube.com/playlist?list=PLSrKjg5pKQBIEGc76GE8w2US2bN1fCJHL&si=Xg63plo8HGQvBHKd" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
       </a>
       <div id="countdown-container">
         <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
@@ -2019,6 +2125,71 @@
             </ul>
           </div>
         </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ABOUT ══ -->
+  <div class="page" id="about">
+    <div class="about-bg"></div>
+    <div class="about-content section">
+      <div class="page-title reveal">A<span>BOUT</span></div>
+      <div class="page-subtitle reveal" style="transition-delay:.15s">Ladder League Team</div>
+      <div class="divider"></div>
+
+      <div class="about-grid">
+        <div class="about-card reveal" style="animation-delay:.2s">
+          <div class="about-card-role">Tech</div>
+          <div class="about-card-name">P53, Javster</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.25s">
+          <div class="about-card-role">Content Director</div>
+          <div class="about-card-name">ZacMuffin</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.3s">
+          <div class="about-card-role">Head of Commentary</div>
+          <div class="about-card-name">Saber</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.4s">
+          <div class="about-card-role">Design Lead</div>
+          <div class="about-card-name">Bricko</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.35s">
+          <div class="about-card-role">Web Development</div>
+          <div class="about-card-name">ZacMuffin, ERoadhouse</div>
+          <div class="about-card-name-secondary">FlamingLazer, Bricko</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.45s">
+          <div class="about-card-role">Hospitality Management</div>
+          <div class="about-card-name">WiiSuper</div>
+          <div class="about-card-name-secondary">Chimkin</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.5s">
+          <div class="about-card-role">Prediction Model</div>
+          <div class="about-card-name">AnAnonymousSource</div>
+          <div class="about-card-name-secondary">Scynor</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.55s">
+          <div class="about-card-role">Head of Scheduling</div>
+          <div class="about-card-name">ERoadhouse</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.6s">
+          <div class="about-card-role">Production Assistant</div>
+          <div class="about-card-name">itsjared97</div>
+        </div>
+        <div class="about-card reveal" style="animation-delay:.6s">
+          <div class="about-card-role">Music</div>
+          <div class="about-card-name">Leveye, gustative</div>
+        </div>
+      </div>
+
+      <div class="about-contact reveal" style="transition-delay:.5s">
+        <div class="about-contact-title">Contact Us</div>
+        <div class="about-contact-desc">Questions, business enquiries, or feedback</div>
+        <a class="about-contact-email" href="mailto:tcsspeedrunning@gmail.com">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          tcsspeedrunning@gmail.com
+        </a>
       </div>
     </div>
   </div>
@@ -2676,6 +2847,25 @@
         function entryTime(v)    { return typeof v === 'string' ? v : (v && (v.time || v.start)) || null; }
         function entryPlayers(v) { return typeof v === 'object' && v && Array.isArray(v.players) ? v.players : null; }
 
+        // Derive Top 8 seeds from weekly rung-1 winners (same logic as bracket section)
+        const top8Seeds = Array.from({ length: 8 }, (_, i) => allResults?.[`${i + 1}_1`]?.places?.[0]?.name || null);
+        const top8Winner = key => allResults?.[key]?.places?.[0]?.name || null;
+        const top8Loser  = key => allResults?.[key]?.places?.[1]?.name || null;
+
+        function top8Players(key) {
+          const pairings = { qf_1:[0,7], qf_2:[3,4], qf_3:[2,5], qf_4:[1,6] };
+          if (pairings[key]) {
+            const [i, j] = pairings[key];
+            const a = top8Seeds[i], b = top8Seeds[j];
+            if (a || b) return [a || 'TBD', b || 'TBD'];
+          }
+          if (key === 'sf_1') { const a = top8Winner('qf_1'), b = top8Winner('qf_2'); if (a || b) return [a || 'TBD', b || 'TBD']; }
+          if (key === 'sf_2') { const a = top8Winner('qf_3'), b = top8Winner('qf_4'); if (a || b) return [a || 'TBD', b || 'TBD']; }
+          if (key === 'tp_1') { const a = top8Loser('sf_1'),  b = top8Loser('sf_2');  if (a || b) return [a || 'TBD', b || 'TBD']; }
+          if (key === 'gf_1') { const a = top8Winner('sf_1'), b = top8Winner('sf_2'); if (a || b) return [a || 'TBD', b || 'TBD']; }
+          return null;
+        }
+
         function matchName(section, key) {
           if (section === 'lcq')    return `LCQ ${key.replace('lcq_', '')}`;
           if (section === 'top8')   return TOP8_NAMES[key] || key;
@@ -2724,7 +2914,8 @@
           const dt         = timeStr ? new Date(timeStr) : derivedDate(section, key);
           if (!dt || dt <= now) return;
 
-          matches.push({ dt, section, key, name: matchName(section, key), players: schedEntry ? entryPlayers(schedEntry) : null, fromSchedule: !!timeStr });
+          const players = (schedEntry ? entryPlayers(schedEntry) : null) || (section === 'top8' ? top8Players(key) : null);
+          matches.push({ dt, section, key, name: matchName(section, key), players, fromSchedule: !!timeStr });
         });
 
         matches.sort((a, b) => a.dt - b.dt);
@@ -3610,6 +3801,12 @@
       function getTop8Players(roundId, matchNum) {
         const tbd = { name: '—', seed: null };
         const player = name => name ? { name, seed: seedOf(name) } : tbd;
+
+        // If schedule.json explicitly lists players for this match, use them.
+        const schedEntry = TOP8_SCHEDULE[`${roundId}_${matchNum}`];
+        if (schedEntry && typeof schedEntry === 'object' && Array.isArray(schedEntry.players)) {
+          return schedEntry.players.map(n => (n && n !== 'TBD') ? player(n) : tbd);
+        }
 
         if (roundId === 'qf') {
           // Standard seeding: 1v8, 4v5, 3v6, 2v7
