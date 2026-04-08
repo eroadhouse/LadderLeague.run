@@ -1317,6 +1317,24 @@
     .p-stat-tip {
       cursor: default;
     }
+    .p-accolades {
+      display: flex;
+      gap: .45rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: .25rem;
+    }
+    .p-accolade {
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: .18rem .52rem;
+      border-radius: 3px;
+    }
+    .p-accolade-wr  { background: rgba(212,184,74,.13); color: #d4b84a; border: 1px solid rgba(212,184,74,.38); }
+    .p-accolade-win { background: rgba(196,114,32,.13); color: #e3b128; border: 1px solid rgba(196,114,32,.38); }
+    .p-accolade-ru  { background: rgba(180,190,210,.08); color: #9aadcc; border: 1px solid rgba(180,190,210,.28); }
 
     .p-avatar {
       width: 83px; height: 83px;
@@ -1655,27 +1673,79 @@
     .upcoming-section { padding: 3rem 2rem 6rem; }
     .upcoming-title { font-family: 'Rubik', sans-serif; color: #fff; font-size: 2rem; margin-bottom: .5rem; }
     .upcoming-sub { font-family: 'Montserrat', sans-serif; color: var(--dim); font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+    .upcoming-nav-wrap {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      max-width: 1200px;
+      margin: 1.25rem auto 0;
+    }
+    .upcoming-arrow {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--dim);
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      transition: color .15s, border-color .15s;
+    }
+    .upcoming-arrow:hover:not(:disabled) { color: var(--accent2); border-color: var(--accent); }
+    .upcoming-arrow:disabled { opacity: .2; cursor: default; }
+    @keyframes ucSlideFromRight { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes ucSlideFromLeft  { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+    .upcoming-grid.anim-next { animation: ucSlideFromRight .22s ease; }
+    .upcoming-grid.anim-prev { animation: ucSlideFromLeft  .22s ease; }
     .upcoming-grid {
       display: grid;
       gap: 1rem;
-      max-width: 900px;
-      margin: 0 auto;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      margin-top: 1.25rem;
+      flex: 1;
+      grid-template-columns: repeat(4, 1fr);
     }
+    @media (max-width: 720px) { .upcoming-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .upcoming-grid { grid-template-columns: 1fr; } .upcoming-arrow { display: none; } }
     .upcoming-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 1rem 1.25rem;
+      padding: 1rem 1.1rem;
       display: flex;
       flex-direction: column;
-      gap: .5rem;
-      align-items: stretch;
+      gap: .45rem;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
     }
-    .upcoming-card .teams { display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
-    .upcoming-card .team { font-family: 'Rubik', sans-serif; color: #fff; font-size: 1.05rem; }
-    .upcoming-card .meta { display:flex; justify-content:space-between; color:var(--dim); font-size:.85rem; }
-    .upcoming-cta { margin-top:.5rem; align-self:flex-end; padding:.45rem .8rem; background:transparent; border:1px solid var(--border); color:var(--accent); font-weight:700; cursor:pointer; }
+    .upcoming-card:hover { border-color: var(--accent); background: rgba(154,170,187,.04); }
+    .uc-cat {
+      font-size: .6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+      padding: .18rem .48rem; border-radius: 3px; align-self: flex-start;
+    }
+    .uc-cat--lcq    { background: rgba(140,100,220,.12); color: #a07de0; border: 1px solid rgba(140,100,220,.3); }
+    .uc-cat--ladder { background: rgba(80,160,220,.12);  color: #60aad8; border: 1px solid rgba(80,160,220,.3); }
+    .uc-cat--top8   { background: rgba(212,184,74,.12);  color: #d4b84a; border: 1px solid rgba(212,184,74,.3); }
+    .uc-name { font-family: 'Rubik', sans-serif; color: #fff; font-size: 1rem; line-height: 1.2; }
+    .uc-time { font-size: .78rem; color: var(--dim); }
+    .uc-players { display: flex; gap: .3rem; flex-wrap: wrap; margin-top: .1rem; justify-content: center; }
+    .uc-player { font-size: .75rem; color: var(--accent); }
+    .uc-player + .uc-player::before { content: '·'; margin-right: .3rem; color: var(--dim); }
+    .uc-tbd { font-size: .75rem; color: var(--dim); font-style: italic; }
+    .uc-empty { text-align: center; width: 100%; padding: 1.5rem 0; font-size: .85rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); grid-column: 1 / -1; }
+    .uc-vod { display: inline-block; align-self: center; margin-top: .5rem; font-size: .75rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); text-decoration: none; border: 1px solid var(--border); padding: .35rem 1.1rem; border-radius: 3px; transition: color .15s, border-color .15s; }
+    .uc-vod:hover { color: var(--accent2); border-color: var(--accent); }
+    .upcoming-section-label { font-family: 'Rubik', sans-serif; color: #fff; font-size: 2rem; margin-bottom: .5rem; margin-top: 3rem; }
+    .uc-places { display: flex; flex-direction: column; gap: .25rem; margin-top: .2rem; }
+    .uc-result-row { font-size: .8rem; display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+    .uc-result-time { color: var(--dim); font-size: .75rem; white-space: nowrap; }
+    .uc-result-gold { color: #d4b84a; font-weight: 700; }
+    .uc-result-won  { color: #6ec88a; }
+    .uc-result-lost { color: #d65757; }
+    .uc-result-1st  { color: #6ec88a; }
+    .uc-result-2nd  { color: var(--accent); }
+    .uc-result-3rd  { color: var(--dim); }
 
     /* ════════════════════════════
        LCQ PAGE
@@ -1819,7 +1889,7 @@
         </div>
       </div>
       <button class="hero-scroll-cta" onclick="scrollToUpcoming()">
-        See Upcoming Matches
+        View Matches
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 16.5l-8-8 1.41-1.41L12 13.67l6.59-6.58L20 8.5z"/></svg>
       </button>
     </div>
@@ -1827,8 +1897,24 @@
     <div class="upcoming-section reveal" id="upcoming-section">
       <div class="section">
         <div class="upcoming-title">Upcoming Matches</div>
-        <div class="upcoming-grid" id="upcoming-list">
-          <!-- populated by JS when section is visible -->
+        <div class="upcoming-nav-wrap">
+          <button class="upcoming-arrow" id="upcoming-prev" disabled aria-label="Previous matches">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="upcoming-grid" id="upcoming-list"></div>
+          <button class="upcoming-arrow" id="upcoming-next" aria-label="Next matches">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+        <div class="upcoming-section-label">Match Results</div>
+        <div class="upcoming-nav-wrap">
+          <button class="upcoming-arrow" id="results-prev" disabled aria-label="Previous results">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="upcoming-grid" id="results-list"></div>
+          <button class="upcoming-arrow" id="results-next" aria-label="Next results">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -1983,6 +2069,9 @@
       const s = Math.round(secs % 60);
       return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
+
+    const schedulePromise = fetch('schedule.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
+    const resultsPromise  = fetch('results.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
 
     Promise.all([
       fetch('participants.json', { cache: 'no-store' }).then(r => r.json()),
@@ -2147,9 +2236,10 @@
         lbData.data.runs.forEach(entry => {
           const pid  = entry.run?.players?.[0]?.id;
           const info = pid ? playerIndex[pid] : null;
-          const t    = entry.run?.times?.realtime_t;
+          const t         = entry.run?.times?.realtime_t;
+          const submitted = entry.run?.submitted || null;
           if (!info || t == null) return;
-          const val = { t, place: entry.place, colorFrom: info.colorFrom, colorTo: info.colorTo, colorSolid: info.colorSolid, imageUri: info.imageUri };
+          const val = { t, place: entry.place, colorFrom: info.colorFrom, colorTo: info.colorTo, colorSolid: info.colorSolid, imageUri: info.imageUri, submitted };
           if (info.slug && !srcPBMap[info.slug]) srcPBMap[info.slug] = val;
           if (info.intl && info.intl !== info.slug && !srcPBMap[info.intl]) srcPBMap[info.intl] = val;
         });
@@ -2169,6 +2259,9 @@
         const srUser   = p.username || p.name;
         const srcEntry = srcPBMap[srUser.toLowerCase()];
         const srcPb    = srcEntry ? pFmtTime(srcEntry.t) : '—';
+        const srcPbDate = srcEntry?.submitted
+          ? new Date(srcEntry.submitted).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+          : null;
         const srcPlace = srcEntry ? `#${srcEntry.place}` : '—';
         const srcPlaceColor = !srcEntry ? '' : (() => {
           const pl = srcEntry.place;
@@ -2208,11 +2301,20 @@
             <div class="p-role">Seed ${p.seed}</div>
             <div class="p-stats">
               <div class="p-stat-row">
-                <div class="p-stat"><span class="p-stat-label">PB</span><span class="p-stat-value">${srcPb}</span></div>
+                <div class="p-stat"><span class="p-stat-label">PB</span><span class="p-stat-value${srcPbDate ? ' p-stat-tip' : ''}"${srcPbDate ? ` data-tip="${srcPbDate}" data-tip-label="Achieved on"` : ''}>${srcPb}</span></div>
                 <div class="p-stat"><span class="p-stat-label">Rank</span><span class="p-stat-value" ${srcPlaceColor ? `style="color:${srcPlaceColor};"` : ''}>${srcPlace}</span></div>
                 ${playerPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}"` : ''}>${pb}</span></div>` : ''}
                 ${playerPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${avg}</span></div>` : ''}
               </div>
+              ${(() => {
+                const ac = p.accolades;
+                if (!ac) return '';
+                const badges = [];
+                if (ac.WR)                badges.push(`<span class="p-accolade p-accolade-wr">WR ${ac.WR}<span style="text-transform:none;vertical-align:baseline">x</span></span>`);
+                [].concat(ac['tourney-wins']    || []).forEach(s => badges.push(`<span class="p-accolade p-accolade-win">${s} Champion</span>`));
+                [].concat(ac['tourney-runnerups'] || []).forEach(s => badges.push(`<span class="p-accolade p-accolade-ru">${s} Runner-Up</span>`));
+                return badges.length ? `<div class="p-accolades">${badges.join('')}</div>` : '';
+              })()}
               ${statusHtml}
             </div>
           </a>`;
@@ -2231,7 +2333,7 @@
         el.addEventListener('mouseenter', e => {
           pTip.style.minWidth = '0';
           pTip.style.padding = '.5rem .8rem';
-          pTip.innerHTML = `<div style="font-size:.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Achieved in</div><div style="font-size:.9rem;color:var(--text);margin-top:.2rem">${el.dataset.tip}</div>`;
+          pTip.innerHTML = `<div style="font-size:.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase">${el.dataset.tipLabel || 'Achieved in'}</div><div style="font-size:.9rem;color:var(--text);margin-top:.2rem">${el.dataset.tip}</div>`;
           pTip.style.display = 'block';
           pTip.style.left = '0px';
           pTip.style.top = '0px';
@@ -2290,18 +2392,15 @@
     }
 
     // ── STANDINGS TABS ──
-    // Set default tab based on date:
-    //   before midnight EST May 11 → LCQ
-    //   midnight EST May 11 through midnight EST Jun 25 → Ladder
-    //   after midnight EST Jun 25 → Ladder (fallback)
-    (function setDefaultStandingsTab() {
+    // Set default tab based on date (thresholds come from schedule.json).
+    schedulePromise.then(sd => {
       const now = new Date();
-      const lcqEnd    = new Date('2026-05-11T05:00:00Z'); // 11 PM EST Apr 7 (testing)
-      const ladderEnd = new Date('2026-06-25T05:00:00Z'); // midnight EST Jun 25
+      const lcqEnd    = new Date(sd.lcqEnd    || '2026-05-11T05:00:00Z');
+      const ladderEnd = new Date(sd.ladderEnd || '2026-06-25T05:00:00Z');
       const defaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
       document.querySelector(`.standings-tab[data-tab="${defaultTab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${defaultTab}`).classList.add('active');
-    })();
+    });
 
     document.querySelectorAll('.standings-tab').forEach(tab => {
       tab.addEventListener('click', () => {
@@ -2452,11 +2551,23 @@
       setTimeout(observeAll, 50);
     }
 
-    // ── COUNTDOWN TO SPECIFIC MATCH (May 9, 1:00 PM Eastern Time) ──
-    (function() {
-      // 1:00 PM Eastern Time (ET) on May 9 -> convert to UTC.
-      // For May the US observes DST (EDT = UTC-4), so 13:00 ET = 17:00 UTC.
-      const target = new Date(Date.UTC(new Date().getFullYear(), 3, 8, 1, 35, 0, 0));
+    function goToStandings(tab) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.getElementById('standings').classList.add('active');
+      document.querySelectorAll('.nav-links a[data-page="standings"]').forEach(a => a.classList.add('active'));
+      document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`.standings-tab[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById(`standings-tab-${tab}`).classList.add('active');
+      window.scrollTo(0, 0);
+      setTimeout(observeAll, 50);
+    }
+
+    // ── COUNTDOWN TO SPECIFIC MATCH ──
+    schedulePromise.then(sd => {
+      const target = sd.countdown ? new Date(sd.countdown) : null;
+      if (!target) return;
 
       const elDays = document.getElementById('cd-days');
       const elHours = document.getElementById('cd-hours');
@@ -2509,32 +2620,278 @@
 
       updateCountdown();
       countdownInterval = setInterval(updateCountdown, 1000);
-    })();
+    });
 
     // ── LAZY LOAD UPCOMING MATCHES ON SCROLL ──
     var upcomingLoaded = false;
+    var upcomingAllMatches = [], upcomingOffset = 0;
+
+    function renderUpcomingPage(direction) {
+      const list = document.getElementById('upcoming-list');
+      const prevBtn = document.getElementById('upcoming-prev');
+      const nextBtn = document.getElementById('upcoming-next');
+      if (!list) return;
+      const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
+      const page = upcomingAllMatches.slice(upcomingOffset, upcomingOffset + 4);
+      list.innerHTML = page.map(m => {
+        const dateStr  = m.dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const timeStr  = m.fromSchedule ? m.dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : null;
+        const playersHtml = m.players
+          ? m.players.map(p => `<span class="uc-player">${p}</span>`).join('')
+          : '<span class="uc-tbd">TBD</span>';
+        return `
+          <div class="upcoming-card${direction === 'init' ? ' reveal' : ' visible'}" onclick="goToStandings('${m.section}')">
+            <span class="uc-cat uc-cat--${m.section}">${sectionLabel[m.section]}</span>
+            <div class="uc-name">${m.name}</div>
+            ${m.fromSchedule ? `<div class="uc-time">${dateStr}${timeStr ? ` · ${timeStr}` : ''}</div>` : ''}
+            ${m.section !== 'lcq' ? `<div class="uc-players">${playersHtml}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+      if (direction === 'init') {
+        document.querySelectorAll('#upcoming-list .reveal').forEach(el => observer.observe(el));
+      } else {
+        list.classList.remove('anim-next', 'anim-prev');
+        void list.offsetWidth;
+        list.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
+      }
+      if (prevBtn) prevBtn.disabled = upcomingOffset === 0;
+      if (nextBtn) nextBtn.disabled = upcomingOffset + 4 >= upcomingAllMatches.length;
+    }
+
     function loadUpcomingContent() {
       if (upcomingLoaded) return;
       upcomingLoaded = true;
       const upcomingList = document.getElementById('upcoming-list');
       if (!upcomingList) return;
-      const data = (typeof matchups !== 'undefined' ? matchups : []).slice(0, 6);
-      if (!data || data.length === 0) {
-        upcomingList.innerHTML = '<div class="upcoming-card">No matches scheduled</div>';
-      } else {
-        upcomingList.innerHTML = data.map(m => `
-          <div class="upcoming-card reveal">
-            <div class="teams"><div class="team">${m.a}</div><div class="team">${m.b}</div></div>
-            <div class="meta"><span>${m.date}</span><span>${m.oddsA} • ${m.oddsB}</span></div>
-            <button class="upcoming-cta" onclick="goToPredictions()">Predict</button>
+
+      Promise.all([schedulePromise, resultsPromise]).then(([sd, allResults]) => {
+        const now = new Date();
+
+        const TOP8_KEYS = ['qf_1', 'qf_2', 'qf_3', 'qf_4', 'sf_1', 'sf_2', 'tp_1', 'gf_1'];
+        const TOP8_NAMES = { qf_1:'Quarterfinal 1', qf_2:'Quarterfinal 2', qf_3:'Quarterfinal 3', qf_4:'Quarterfinal 4', sf_1:'Semifinal 1', sf_2:'Semifinal 2', tp_1:'Third Place', gf_1:'Grand Final' };
+        const WEEK_ENDS         = ['2026-05-17','2026-05-24','2026-05-31','2026-06-07','2026-06-14','2026-06-21','2026-06-21','2026-06-22'];
+        const WEEK_MATCH_COUNTS = [7, 6, 5, 4, 3, 2, 1, 1];
+
+        function entryTime(v)    { return typeof v === 'string' ? v : (v && (v.time || v.start)) || null; }
+        function entryPlayers(v) { return typeof v === 'object' && v && Array.isArray(v.players) ? v.players : null; }
+
+        function matchName(section, key) {
+          if (section === 'lcq')    return `LCQ ${key.replace('lcq_', '')}`;
+          if (section === 'top8')   return TOP8_NAMES[key] || key;
+          if (section === 'ladder') {
+            const [w, r] = key.split('_');
+            return +w === 8 ? 'Wildcard' : `Week ${w} Rung ${r}`;
+          }
+          return key;
+        }
+
+        function derivedDate(section, key) {
+          if (section === 'ladder') {
+            const [w, r] = key.split('_').map(Number);
+            const idx = w - 1;
+            if (idx < 0 || idx >= WEEK_ENDS.length) return null;
+            const d = new Date(WEEK_ENDS[idx]);
+            d.setDate(d.getDate() - (WEEK_MATCH_COUNTS[idx] - r));
+            return d;
+          }
+          if (section === 'lcq') {
+            const n = parseInt(key.replace('lcq_', '')) || 1;
+            return new Date(n === 1 ? '2026-04-08' : '2026-05-10');
+          }
+          const top8Fallback = { qf_1:'2026-07-10T14:00:00Z', qf_2:'2026-07-10T23:00:00Z', qf_3:'2026-07-10T20:00:00Z', qf_4:'2026-07-10T17:00:00Z', sf_1:'2026-07-11T16:30:00Z', sf_2:'2026-07-11T20:00:00Z', tp_1:'2026-07-12T16:30:00Z', gf_1:'2026-07-12T20:00:00Z' };
+          return new Date(top8Fallback[key] || '2026-07-10');
+        }
+
+        const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
+
+        // Generate every possible match slot across the whole tournament
+        const allSlots = [];
+        allSlots.push({ section: 'lcq', key: 'lcq_1' }, { section: 'lcq', key: 'lcq_2' });
+        WEEK_MATCH_COUNTS.forEach((count, idx) => {
+          for (let r = 1; r <= count; r++) allSlots.push({ section: 'ladder', key: `${idx + 1}_${r}` });
+        });
+        TOP8_KEYS.forEach(key => allSlots.push({ section: 'top8', key }));
+
+        const matches = [];
+        allSlots.forEach(({ section, key }) => {
+          // Skip if already completed
+          const result = allResults && allResults[key];
+          if (result && result.places && result.places.length > 0) return;
+
+          const schedEntry = (sd[section] || {})[key];
+          const timeStr    = schedEntry ? entryTime(schedEntry) : null;
+          const dt         = timeStr ? new Date(timeStr) : derivedDate(section, key);
+          if (!dt || dt <= now) return;
+
+          matches.push({ dt, section, key, name: matchName(section, key), players: schedEntry ? entryPlayers(schedEntry) : null, fromSchedule: !!timeStr });
+        });
+
+        matches.sort((a, b) => a.dt - b.dt);
+
+        if (matches.length === 0) {
+          upcomingList.innerHTML = '<div class="uc-empty">No Upcoming Matches</div>';
+          const p = document.getElementById('upcoming-prev'), n = document.getElementById('upcoming-next');
+          if (p) p.disabled = true; if (n) n.disabled = true;
+          return;
+        }
+
+        upcomingAllMatches = matches;
+        upcomingOffset = 0;
+        renderUpcomingPage('init');
+
+        const prevBtn = document.getElementById('upcoming-prev');
+        const nextBtn = document.getElementById('upcoming-next');
+        if (prevBtn) prevBtn.onclick = () => { upcomingOffset = Math.max(0, upcomingOffset - 1); renderUpcomingPage('prev'); };
+        if (nextBtn) nextBtn.onclick = () => { upcomingOffset = Math.min(upcomingAllMatches.length - 4, upcomingOffset + 1); renderUpcomingPage('next'); };
+      });
+    }
+
+    var resultsLoaded = false;
+    var resultsAllEntries = [], resultsOffset = 0;
+
+    function renderResultsPage(direction) {
+      const list = document.getElementById('results-list');
+      const prevBtn = document.getElementById('results-prev');
+      const nextBtn = document.getElementById('results-next');
+      if (!list) return;
+      const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
+      const page = resultsAllEntries.slice(resultsOffset, resultsOffset + 4);
+      list.innerHTML = page.map(e => {
+        const places  = e.result.places;
+        const dateStr = e.hasScheduleDate ? e.dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+        const vodHtml = e.result.vod
+          ? `<a class="uc-vod" href="${e.result.vod}" target="_blank" rel="noopener" onclick="event.stopPropagation()">VOD ↗</a>`
+          : '';
+        let placesHtml;
+        if (e.section === 'lcq') {
+          const w = places[0];
+          placesHtml = `<div class="uc-result-row uc-result-gold">★ ${w.name}<span class="uc-result-time">${w.time}</span></div>`;
+        } else if (places.length === 2) {
+          placesHtml = places.map((p, i) => `<div class="uc-result-row ${i === 0 ? 'uc-result-won' : 'uc-result-lost'}">${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
+        } else {
+          const cls = ['uc-result-1st', 'uc-result-2nd', 'uc-result-3rd'];
+          placesHtml = places.map((p, i) => `<div class="uc-result-row ${cls[i] || 'uc-result-3rd'}">${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
+        }
+        return `
+          <div class="upcoming-card${direction === 'init' ? ' reveal' : ' visible'}" onclick="goToStandings('${e.section}')">
+            <span class="uc-cat uc-cat--${e.section}">${sectionLabel[e.section]}</span>
+            <div class="uc-name">${e.name}</div>
+            ${dateStr ? `<div class="uc-time">${dateStr}</div>` : ''}
+            <div class="uc-places">${placesHtml}</div>
+            ${vodHtml}
           </div>
-        `).join('');
+        `;
+      }).join('');
+      if (direction === 'init') {
+        document.querySelectorAll('#results-list .reveal').forEach(el => observer.observe(el));
+      } else {
+        list.classList.remove('anim-next', 'anim-prev');
+        void list.offsetWidth;
+        list.classList.add(direction === 'next' ? 'anim-next' : 'anim-prev');
       }
-      document.querySelectorAll('#upcoming-list .reveal').forEach(el => observer.observe(el));
+      if (prevBtn) prevBtn.disabled = resultsOffset === 0;
+      if (nextBtn) nextBtn.disabled = resultsOffset + 4 >= resultsAllEntries.length;
+    }
+
+    function loadRecentResultsContent() {
+      if (resultsLoaded) return;
+      resultsLoaded = true;
+      const resultsList = document.getElementById('results-list');
+      if (!resultsList) return;
+
+      Promise.all([schedulePromise, resultsPromise]).then(([sd, allResults]) => {
+        const TOP8_NAMES = {
+          qf_1: 'Quarterfinal 1', qf_2: 'Quarterfinal 2',
+          qf_3: 'Quarterfinal 3', qf_4: 'Quarterfinal 4',
+          sf_1: 'Semifinal 1',    sf_2: 'Semifinal 2',
+          tp_1: 'Third Place',    gf_1: 'Grand Final',
+        };
+
+        function matchSection(key) {
+          if (key.startsWith('lcq_')) return 'lcq';
+          if (/^\d+_\d+$/.test(key)) return 'ladder';
+          return 'top8';
+        }
+
+        function matchName(section, key) {
+          if (section === 'lcq')    return `LCQ ${key.replace('lcq_', '')}`;
+          if (section === 'top8')   return TOP8_NAMES[key] || key;
+          if (section === 'ladder') {
+            const [w, r] = key.split('_');
+            return +w === 8 ? 'Wildcard' : `Week ${w} Rung ${r}`;
+          }
+          return key;
+        }
+
+        // Week end dates mirror the WEEK_DATES array on the ladder page.
+        // Match counts per week: [7, 6, 5, 4, 3, 2, 1, 1]
+        // Rung N of a week falls on the end date; rung N-1 the day before, etc.
+        const WEEK_ENDS        = ['2026-05-17','2026-05-24','2026-05-31','2026-06-07','2026-06-14','2026-06-21','2026-06-21','2026-06-22'];
+        const WEEK_MATCH_COUNTS = [7, 6, 5, 4, 3, 2, 1, 1];
+
+        function scheduleTime(section, key) {
+          const bucket = (sd[section] || {})[key];
+          if (!bucket) return null;
+          const t = typeof bucket === 'string' ? bucket : (bucket.time || bucket.start || null);
+          return t ? new Date(t) : null;
+        }
+
+        // Returns a Date for any match, using schedule.json when available and
+        // falling back to derived dates based on the known weekly schedule.
+        function matchDate(section, key) {
+          const fromSchedule = scheduleTime(section, key);
+          if (fromSchedule) return fromSchedule;
+
+          if (section === 'ladder') {
+            const [w, r] = key.split('_').map(Number);
+            const idx = w - 1;
+            if (idx < 0 || idx >= WEEK_ENDS.length) return new Date(0);
+            const d = new Date(WEEK_ENDS[idx]);
+            d.setDate(d.getDate() - (WEEK_MATCH_COUNTS[idx] - r));
+            return d;
+          }
+          if (section === 'lcq') {
+            const n = parseInt(key.replace('lcq_', '')) || 1;
+            return new Date(n === 1 ? '2026-04-08' : '2026-05-10');
+          }
+          // top8 fallback (all have schedule entries in practice)
+          const top8Fallback = { qf_1:'2026-07-10T14:00:00Z', qf_2:'2026-07-10T23:00:00Z', qf_3:'2026-07-10T20:00:00Z', qf_4:'2026-07-10T17:00:00Z', sf_1:'2026-07-11T16:30:00Z', sf_2:'2026-07-11T20:00:00Z', tp_1:'2026-07-12T16:30:00Z', gf_1:'2026-07-12T20:00:00Z' };
+          return new Date(top8Fallback[key] || '2026-07-10');
+        }
+
+        const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
+
+        const entries = Object.entries(allResults || {})
+          .filter(([, r]) => r && r.places && r.places.length > 0)
+          .map(([key, result]) => {
+            const section = matchSection(key);
+            const fromSchedule = scheduleTime(section, key);
+            return { key, section, result, dt: matchDate(section, key), hasScheduleDate: !!fromSchedule, name: matchName(section, key) };
+          })
+          .sort((a, b) => b.dt - a.dt); // most recent first
+
+        if (entries.length === 0) {
+          resultsList.innerHTML = '<div class="uc-empty">No Recent Match Results</div>';
+          const p = document.getElementById('results-prev'), n = document.getElementById('results-next');
+          if (p) p.disabled = true; if (n) n.disabled = true;
+          return;
+        }
+
+        resultsAllEntries = entries;
+        resultsOffset = 0;
+        renderResultsPage('init');
+
+        const prevBtn = document.getElementById('results-prev');
+        const nextBtn = document.getElementById('results-next');
+        if (prevBtn) prevBtn.onclick = () => { resultsOffset = Math.max(0, resultsOffset - 1); renderResultsPage('prev'); };
+        if (nextBtn) nextBtn.onclick = () => { resultsOffset = Math.min(resultsAllEntries.length - 4, resultsOffset + 1); renderResultsPage('next'); };
+      });
     }
 
     function scrollToUpcoming() {
       loadUpcomingContent();
+      loadRecentResultsContent();
       const upcomingSection = document.getElementById('upcoming-section');
       if (!upcomingSection) return;
       upcomingSection.classList.add('visible');
@@ -2548,6 +2905,7 @@
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
           loadUpcomingContent();
+          loadRecentResultsContent();
           obs.unobserve(entry.target);
         });
       }, { threshold: 0.12 });
@@ -2568,7 +2926,7 @@
       // │  Set to null to disable.                                │
       // │  Example:  { week: 1, rung: 3 }   or   null            │
       // └──────────────────────────────────────────────────────────┘
-      const LIVE_MATCH = null;
+      let LIVE_MATCH = null;
 
       // ┌──────────────────────────────────────────────────────────┐
       // │  QUALIFIED CONFIG                                        │
@@ -2604,8 +2962,7 @@
       // │  Format: "YYYY-MM-DDTHH:MM:SS±HH:MM"                           │
       // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00"   │
       // └────────────────────────────────────────────────────────────────┘
-      const SCHEDULE = {
-      };
+      let SCHEDULE = {};
 
       function ordinal(n) {
         const s = ['th','st','nd','rd'];
@@ -3201,7 +3558,11 @@
         }, 30_000);
       }
 
-      init();
+      schedulePromise.then(sd => {
+        SCHEDULE   = sd.ladder   || {};
+        LIVE_MATCH = sd.liveMatch || null;
+        init();
+      });
 
     })();
 
@@ -3219,15 +3580,7 @@
       // │  Match numbers start at 1 for each round                       │
       // │  Example: "qf_1", "sf_1", "gf_1"                              │
       // └────────────────────────────────────────────────────────────────┘
-      const TOP8_SCHEDULE = {
-        "qf_1": "2026-07-10T10:00:00-04:00",
-        "qf_4": "2026-07-10T13:00:00-04:00",
-        "qf_3": "2026-07-10T16:00:00-04:00",
-        "qf_2": "2026-07-10T19:00:00-04:00",
-        "sf_1": "2026-07-11T12:30:00-04:00",
-        "sf_2": "2026-07-11T16:00:00-04:00",
-        "gf_1": "2026-07-06T21:46:00-04:00",
-      };
+      let TOP8_SCHEDULE = {};
 
       const ROUNDS_CONFIG = [
         { id: 'qf', name: 'Quarterfinals', matches: 4 },
@@ -3679,7 +4032,10 @@
         }, 30_000);
       }
 
-      initTop8();
+      schedulePromise.then(sd => {
+        TOP8_SCHEDULE = sd.top8 || {};
+        initTop8();
+      });
 
     })();
 
@@ -3691,13 +4047,10 @@
       // ┌────────────────────────────────────────────────────────────────┐
       // │  LCQ SCHEDULE  (ISO 8601, auto-goes-live at timestamp)        │
       // └────────────────────────────────────────────────────────────────┘
-      const LCQ_SCHEDULE = {
-        "lcq_1": {"start": "2026-04-07T13:00:00-04:00", "timerStart": "2026-04-07T13:03:00-04:00"},
-        "lcq_2": "2026-05-10T13:00:00-04:00",
-      };
+      let LCQ_SCHEDULE = {};
 
       // Force a match live (set to 1 or 2), or null to disable
-      const LCQ_LIVE_MATCH = null;
+      let LCQ_LIVE_MATCH = null;
 
       // LCQ_PLAYERS is populated from participants.json (entries with lcq: true)
       let LCQ_PLAYERS = [];
@@ -3860,26 +4213,30 @@
         }
       }
 
-      (async () => {
-        try {
-          await loadLCQData();
-        } catch (e) {
-          console.error('Could not load LCQ data', e);
-        }
-        buildLCQ();
-        setInterval(async () => {
+      schedulePromise.then(sd => {
+        LCQ_SCHEDULE   = sd.lcq        || {};
+        LCQ_LIVE_MATCH = sd.lcqLiveMatch || null;
+        (async () => {
           try {
-            const res = await fetch('results.json', { cache: 'no-store' });
-            if (!res.ok) return;
-            const data = await res.json();
-            const fresh = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
-            if (JSON.stringify(fresh) !== JSON.stringify(LCQ_RESULTS)) {
-              LCQ_RESULTS = fresh;
-              buildLCQ();
-            }
-          } catch (e) { /* network blip */ }
-        }, 30_000);
-      })();
+            await loadLCQData();
+          } catch (e) {
+            console.error('Could not load LCQ data', e);
+          }
+          buildLCQ();
+          setInterval(async () => {
+            try {
+              const res = await fetch('results.json', { cache: 'no-store' });
+              if (!res.ok) return;
+              const data = await res.json();
+              const fresh = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
+              if (JSON.stringify(fresh) !== JSON.stringify(LCQ_RESULTS)) {
+                LCQ_RESULTS = fresh;
+                buildLCQ();
+              }
+            } catch (e) { /* network blip */ }
+          }, 30_000);
+        })();
+      });
 
     })();
 
