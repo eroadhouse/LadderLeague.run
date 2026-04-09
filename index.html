@@ -410,7 +410,78 @@
       transition: background .2s, transform .15s;
     }
 
-
+    /* ── Twitch live layout ── */
+    #home .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #home .hero-twitch-wrap {
+      display: none;
+      flex: 0 0 55%;
+      min-width: 0;
+    }
+    #home .hero-live-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: .75rem;
+      text-decoration: none;
+      transition: color .2s, text-shadow .2s;
+    }
+    #home .hero-live-badge:hover {
+      color: var(--accent2);
+      text-shadow: 0 0 12px rgba(192,202,216,.4);
+    }
+    #home .hero-live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #e91916;
+      flex-shrink: 0;
+      animation: livePulse 1.5s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .35; }
+    }
+    #twitch-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    #twitch-embed iframe {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      border: 0;
+    }
+    #home .hero.live {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      max-width: 1400px;
+      gap: 3rem;
+    }
+    #home .hero.live .hero-left {
+      flex: 1;
+      align-items: flex-start;
+    }
+    #home .hero.live .hero-left .hero-desc { margin-left: 0; margin-right: 0; }
+    #home .hero.live .hero-twitch-wrap { display: block; }
+    @media (max-width: 860px) {
+      #home .hero.live { flex-direction: column; text-align: center; }
+      #home .hero.live .hero-left { align-items: center; }
+      #home .hero.live .hero-twitch-wrap { width: 100%; flex: none; }
+    }
 
     .stat-row {
       display: flex;
@@ -1218,6 +1289,31 @@
     /* ════════════════════════════
        PARTICIPANTS PAGE
     ════════════════════════════ */
+    .participants-season-tabs {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .participants-season-tab {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: .6rem 1.6rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .participants-season-tab:hover { color: var(--text); }
+    .participants-season-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
     .participant-grid {
       display: flex;
       flex-direction: column;
@@ -1542,6 +1638,7 @@
     }
     .format-section-title .icon { font-size: 1rem; }
 
+    .format-desc { font-size: 1rem; font-weight: 300; line-height: 1.8; color: #d7dbe6; text-align: left; }
     .format-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; text-align: left; }
     .format-list li {
       font-size: 1rem;
@@ -1842,7 +1939,7 @@
     .about-bg {
       position: absolute;
       inset: 0;
-      background-image: url('tcsimage17.png');
+      background-image: url('tcsimage17.webp');
       background-size: cover;
       background-position: center;
       filter: blur(18px) brightness(.55);
@@ -1853,6 +1950,7 @@
     .about-content {
       position: relative;
       z-index: 1;
+      padding-top: 2rem;
     }
     .about-grid {
       display: grid;
@@ -1962,37 +2060,46 @@
   <!-- ══ HOME ══ -->
   <div class="page active" id="home">
     <div class="hero">
-      <p class="hero-eyebrow reveal" id="hero-status-eyebrow" style="transition-delay:.1s">Season 03 · Coming Soon</p>
-      <h1 class="hero-title reveal" style="transition-delay:.25s">
-        LADDER<br>
-        <span class="accent">LEA</span><span class="accent2">GUE</span>
-      </h1>
-      <p class="hero-desc reveal" style="transition-delay:.4s">
-        LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions and follow along
-        as the season unfolds.
-      </p>
-      <a href="https://youtube.com/playlist?list=PLSrKjg5pKQBIEGc76GE8w2US2bN1fCJHL&si=Xg63plo8HGQvBHKd" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-      </a>
-      <div id="countdown-container">
-        <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
-        <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
-          <div class="stat-item">
-            <div class="stat-value" id="cd-days">0</div>
-            <div class="stat-label">Days</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="cd-hours">00</div>
-            <div class="stat-label">Hours</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="cd-minutes">00</div>
-            <div class="stat-label">Minutes</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="cd-seconds">00</div>
-            <div class="stat-label">Seconds</div>
+      <div class="hero-left">
+        <p class="hero-eyebrow reveal" id="hero-status-eyebrow" style="transition-delay:.1s">Season 03 · Coming Soon</p>
+        <h1 class="hero-title reveal" style="transition-delay:.25s">
+          LADDER<br>
+          <span class="accent">LEA</span><span class="accent2">GUE</span>
+        </h1>
+        <p class="hero-desc reveal" style="transition-delay:.4s">
+          LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions and follow along
+          as the season unfolds.
+        </p>
+        <a href="https://youtube.com/playlist?list=PLSrKjg5pKQBIEGc76GE8w2US2bN1fCJHL&si=Xg63plo8HGQvBHKd" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </a>
+        <div id="countdown-container">
+          <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
+          <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
+            <div class="stat-item">
+              <div class="stat-value" id="cd-days">0</div>
+              <div class="stat-label">Days</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="cd-hours">00</div>
+              <div class="stat-label">Hours</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="cd-minutes">00</div>
+              <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="cd-seconds">00</div>
+              <div class="stat-label">Seconds</div>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="hero-twitch-wrap">
+        <a class="hero-live-badge" href="https://twitch.tv/legospeedruns" target="_blank" rel="noopener">
+          <span class="hero-live-dot"></span>
+          LIVE NOW · legospeedruns
+        </a>
+        <div id="twitch-embed"></div>
       </div>
       <button class="hero-scroll-cta" onclick="scrollToUpcoming()">
         View Matches
@@ -2054,8 +2161,34 @@
   <div class="page" id="participants">
     <div class="section">
       <div class="page-title reveal">PARTICI<span>PANTS</span></div>
-      <div class="page-subtitle reveal" style="transition-delay:.15s">21 competitors · Season 03</div>
+      <div class="page-subtitle reveal" style="transition-delay:.15s" id="participants-subtitle">Season 03</div>
       <div class="divider"></div>
+      <div class="participants-season-tabs reveal" style="transition-delay:.2s">
+        <button class="participants-season-tab" data-season="season1">Season 1</button>
+        <button class="participants-season-tab" data-season="season2">Season 2</button>
+        <button class="participants-season-tab active" data-season="season3">Season 3</button>
+      </div>
+      <div id="participants-countdown" style="display:none">
+        <p class="hero-eyebrow" style="margin-bottom:.5rem">Season Starts In</p>
+        <div class="stat-row" style="margin-top:0; justify-content:center">
+          <div class="stat-item">
+            <div class="stat-value" id="p-cd-days">0</div>
+            <div class="stat-label">Days</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="p-cd-hours">00</div>
+            <div class="stat-label">Hours</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="p-cd-minutes">00</div>
+            <div class="stat-label">Minutes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="p-cd-seconds">00</div>
+            <div class="stat-label">Seconds</div>
+          </div>
+        </div>
+      </div>
       <div class="participant-grid" id="p-grid"></div>
     </div>
   </div>
@@ -2077,52 +2210,34 @@
       <div class="page-subtitle reveal" style="transition-delay:.15s">Ladder League format · Season 03</div>
       <div class="divider"></div>
       <div class="format-sections">
-        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage1.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage5.png'); transition-delay:.3s">
           <div class="format-copy">
-            <div class="format-section-title">Ladder</div>
-            <ul class="format-list">
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-            </ul>
+            <div class="format-section-title">Ladder Seeding</div>
+            <p class="format-desc">Ladder League will begin by seeding the top 15 runners into the top 5 rungs of the bracket in Week 1. The remaining competitors with times under 2:45 will take part in 2 Last Chance Qualifier races, or "LCQs." The top 3 finishers of the first LCQ will qualify to Rung 6, and the the second to Rung 7. From there, the ladder will begin.</p>
           </div>
         </section>
-        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage2.png'); transition-delay:.4s">
+        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage6.png'); transition-delay:.4s">
           <div class="format-copy">
-            <div class="format-section-title">Leapfrog</div>
-            <ul class="format-list">
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-            </ul>
+            <div class="format-section-title">Main Ladder</div>
+            <p class="format-desc">Each week, all rungs of the ladder will play 1 match. In rung 1, the winner will qualify for Top 8 with their respective Seed (Seed 1 for Week 1's winner). Second place in this match will remain in the rung, and the loser will move down to the lower rung. In the bottom rung, only the winner will move on, while the two losers will be eliminated. In every other rung, the top two finishers will move up while the loser moves down.</p>
           </div>
         </section>
-        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage3.png'); transition-delay:.5s">
+        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage7.png'); transition-delay:.5s">
           <div class="format-copy">
             <div class="format-section-title">Wildcard</div>
-            <ul class="format-list">
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-            </ul>
+            <p class="format-desc">As the ladder progresses through 7 weeks, 7 runners will qualify for top 8. The 8th seed will be decided through a wildcard match: the runner with the fastest single time achieved will compete against the runner with the best average time over the course of the ladder in a wildcard match to earn the 8th seed. Note that a DNF doubles your worst time in average calculations, and multiple DNFs disqualifies you from the wildcard match.</p>
           </div>
         </section>
-        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage4.png'); transition-delay:.6s">
+        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage8.png'); transition-delay:.6s">
+          <div class="format-copy">
+            <div class="format-section-title">Leapfrog</div>
+            <p class="format-desc">To reward runners for exceptional play and punish runners for lackluster times while coasting, the leapfrog mechanic allows any runner below rung 2 to move up 2 rungs at once. If the winner of a rung has a time faster than that of the second place finisher in the rung above them, they will move up 2 rungs, while the runner above will remain in their rung.</p>
+          </div>
+        </section>
+        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage16.png'); transition-delay:.7s">
           <div class="format-copy">
             <div class="format-section-title">Top 8</div>
-            <ul class="format-list">
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-              <li>Placeholder</li>
-            </ul>
+            <p class="format-desc">The final Top 8 bracket will be a single-elimination playoffs bracket hosted in person. The matchups will use typical seeding: Seed 1 vs Seed 8, Seed 2 vs Seed 7, and so on. The final day will consist of a third place match followed by the Grand Finals, where the Ladder League Season 3 champion will be crowned.</p>
           </div>
         </section>
       </div>
@@ -2248,9 +2363,112 @@
       fetch('participants.json', { cache: 'no-store' }).then(r => r.json()),
       fetch('results.json',      { cache: 'no-store' }).then(r => r.json()),
       fetch('https://www.speedrun.com/api/v1/leaderboards/46w33l1r/category/9d8p7ylk?embed=players&platform=PC&top=150&var-j84pew89=0q5v2grl').then(r => r.json()).catch(() => null),
-    ]).then(([participants, ladderResults, lbData]) => {
-      const subtitle = document.querySelector('#participants .page-subtitle');
-      if (subtitle) subtitle.textContent = `${participants.length} competitors · Season 03`;
+    ]).then(([allParticipants, ladderResults, lbData]) => {
+      // allParticipants is now { season1: [...], season2: [...], season3: [...] }
+      // For stats/results we always use season3
+      const participants = allParticipants.season3 || [];
+
+      // Season tab switching — non-season3 tabs just show a simple list
+      let activeSeason = 'season3';
+      document.querySelectorAll('.participants-season-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.participants-season-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeSeason = tab.dataset.season;
+          const subtitle = document.getElementById('participants-subtitle');
+          const seasonNum = activeSeason.replace('season', '');
+          const seasonList = allParticipants[activeSeason] || [];
+          if (subtitle) subtitle.textContent = `Season 0${seasonNum}`;
+          const pCdEl = document.getElementById('participants-countdown');
+          const pGridEl = document.getElementById('p-grid');
+          if (activeSeason === 'season3') {
+            if (season3CountdownActive) {
+              if (pCdEl) pCdEl.style.display = 'block';
+              if (pGridEl) pGridEl.style.display = 'none';
+            } else {
+              if (pCdEl) pCdEl.style.display = 'none';
+              if (pGridEl) pGridEl.style.display = '';
+              renderSeason3();
+            }
+          } else {
+            // Always show grid for past seasons, hide countdown regardless of timer state
+            if (pCdEl) pCdEl.style.display = 'none';
+            if (pGridEl) pGridEl.style.display = '';
+            renderSimple(seasonList);
+          }
+        });
+      });
+
+      function renderSimple(list) {
+        grid.innerHTML = '';
+        const sorted = [...list].sort((a, b) => {
+          if (a.placement == null && b.placement == null) return 0;
+          if (a.placement == null) return 1;
+          if (b.placement == null) return -1;
+          return a.placement - b.placement;
+        });
+        sorted.forEach(p => {
+          const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
+          const iso = (p.country === 'UK' ? 'GB' : p.country || 'US').toLowerCase();
+          const srUser = p.username || p.name;
+          const srcEntry = srcPBMap[srUser.toLowerCase()];
+
+          const nameStyle = (srcEntry?.colorFrom && srcEntry?.colorTo)
+            ? `style="background: linear-gradient(90deg, ${srcEntry.colorFrom}, ${srcEntry.colorTo}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"`
+            : (srcEntry?.colorSolid ? `style="color: ${srcEntry.colorSolid};"` : '');
+          const avatarStyle = (srcEntry?.colorFrom && srcEntry?.colorTo)
+            ? `style="border: 3px solid transparent; background: linear-gradient(#0f111c, #0f111c) padding-box, linear-gradient(to bottom, ${srcEntry.colorFrom}, ${srcEntry.colorTo}) border-box;"`
+            : (srcEntry?.colorSolid ? `style="border: 3px solid ${srcEntry.colorSolid};"` : '');
+          const avatarContent = srcEntry?.imageUri
+            ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">`
+            : initials;
+
+          const placementColors = { 1: '#d4b84a', 2: '#9aa8b8', 3: '#b07040' };
+          let statusHtml = '';
+          if (p.placement != null) {
+            const label = p.placement === 1 ? '★ Champion ★' : p.placement === 2 ? 'Runner-Up' : `${pOrdinal(p.placement)} Place`;
+            const color = placementColors[p.placement] || null;
+            const isTop8 = p.placement >= 4 && p.placement <= 8;
+            if (color) {
+              statusHtml = `<div class="p-stat-status" style="color:${color}">${label}</div>`;
+            } else if (isTop8) {
+              statusHtml = `<div class="p-stat-status" style="color:#aebdd9">${label}</div>`;
+            } else {
+              statusHtml = `<div class="p-stat-status eliminated">${label}</div>`;
+            }
+          }
+
+          const acBadges = (() => {
+            const ac = p.accolades;
+            if (!ac) return '';
+            const badges = [];
+            if (ac.WR) badges.push(`<span class="p-accolade p-accolade-wr">WR ${ac.WR}<span style="text-transform:none;vertical-align:baseline">x</span></span>`);
+            [].concat(ac['tourney-wins'] || []).forEach(s => badges.push(`<span class="p-accolade p-accolade-win">${s} Champion</span>`));
+            [].concat(ac['tourney-runnerups'] || []).forEach(s => badges.push(`<span class="p-accolade p-accolade-ru">${s} Runner-Up</span>`));
+            return badges.length ? `<div class="p-accolades">${badges.join('')}</div>` : '';
+          })();
+
+          grid.innerHTML += `
+            <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
+              <div class="p-avatar" ${avatarStyle}>${avatarContent}</div>
+              <div class="p-handle"><span class="fi fi-${iso}"></span><span ${nameStyle}>${p.name}</span></div>
+              <div class="p-role">Seed ${p.seed}</div>
+              <div class="p-stats">
+                <div class="p-stat-row">
+                  ${p.seededPB   != null ? `<div class="p-stat"><span class="p-stat-label">Seeded PB</span><span class="p-stat-value">${p.seededPB}</span></div>` : ''}
+                  ${p.ladderPB   != null ? `<div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value">${p.ladderPB}</span></div>` : ''}
+                  ${p.ladderAvg  != null ? `<div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${p.ladderAvg}</span></div>` : ''}
+                </div>
+                ${acBadges}
+                ${statusHtml}
+              </div>
+            </a>`;
+        });
+        observeAll();
+      }
+
+      const subtitle = document.getElementById('participants-subtitle');
+      if (subtitle) subtitle.textContent = `Season 03`;
 
       const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1, 1];
 
@@ -2416,6 +2634,7 @@
         });
       }
 
+      function renderSeason3() {
       grid.innerHTML = '';
       participants.forEach(p => {
         const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
@@ -2518,6 +2737,9 @@
         });
         el.addEventListener('mouseleave', () => { pTip.style.display = 'none'; });
       });
+      } // end renderSeason3
+
+      renderSeason3();
     }).catch(() => {});
 
     // ── PREDICTIONS DATA ──
@@ -2736,6 +2958,8 @@
     }
 
     // ── COUNTDOWN TO SPECIFIC MATCH ──
+    let season3CountdownActive = false;
+
     schedulePromise.then(sd => {
       const target = sd.countdown ? new Date(sd.countdown) : null;
       if (!target) return;
@@ -2760,6 +2984,12 @@
         if (footerStatusItem) footerStatusItem.style.color = '#4caf50';
         const footerStatusDot = document.getElementById('footer-status-dot');
         if (footerStatusDot) footerStatusDot.style.background = '#4caf50';
+        // Hide participants countdown, show grid
+        season3CountdownActive = false;
+        const pCd = document.getElementById('participants-countdown');
+        if (pCd) pCd.style.display = 'none';
+        const pGrid = document.getElementById('p-grid');
+        if (pGrid) pGrid.style.display = '';
       }
 
       // If already past the target, go live immediately with no flash
@@ -2767,6 +2997,18 @@
         goLive();
         return;
       }
+
+      // Season not yet started — show participants countdown, hide grid
+      season3CountdownActive = true;
+      const pCd = document.getElementById('participants-countdown');
+      if (pCd) pCd.style.display = 'block';
+      const pGrid = document.getElementById('p-grid');
+      if (pGrid) pGrid.style.display = 'none';
+
+      const pElDays    = document.getElementById('p-cd-days');
+      const pElHours   = document.getElementById('p-cd-hours');
+      const pElMinutes = document.getElementById('p-cd-minutes');
+      const pElSeconds = document.getElementById('p-cd-seconds');
 
       function updateCountdown() {
         const now = new Date();
@@ -2787,6 +3029,11 @@
         elHours.textContent = String(hours).padStart(2, '0');
         elMinutes.textContent = String(minutes).padStart(2, '0');
         elSeconds.textContent = String(seconds).padStart(2, '0');
+
+        if (pElDays)    pElDays.textContent    = days;
+        if (pElHours)   pElHours.textContent   = String(hours).padStart(2, '0');
+        if (pElMinutes) pElMinutes.textContent  = String(minutes).padStart(2, '0');
+        if (pElSeconds) pElSeconds.textContent  = String(seconds).padStart(2, '0');
       }
 
       updateCountdown();
@@ -3118,9 +3365,13 @@
       // │  Example:  { week: 1, rung: 3 }   or   null            │
       // └──────────────────────────────────────────────────────────┘
       let LIVE_MATCH = null;
+      let SEASON_START = null; // set from schedule.json countdown; bracket shows blank slots before this date
 
       // ┌──────────────────────────────────────────────────────────┐
       // │  QUALIFIED CONFIG                                        │
+      // │  One entry per week. Use null if not yet decided.       │
+      // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
+      // └──────────────────────────────────────────────────────────┘
       // │  One entry per week. Use null if not yet decided.       │
       // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
       // └──────────────────────────────────────────────────────────┘
@@ -3207,15 +3458,22 @@
       //   - Bottom rung, 2nd & 3rd → eliminated
       //   - All other 1st & 2nd place → move up one rung
       function computeLineup(week) {
-        if (week === 1) return {
-          1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
-          2: ["itsjared97",   "ERoadhouse","Bricko"],
-          3: ["WiiSuper",     "Scynor",    "Wazzip"],
-          4: ["FlamingLazer", "Dimei",     "Colten"],
-          5: ["TheCrazedCap", "kwazrr",    "ejpman"],
-          6: lcqWinners("lcq_1"),
-          7: lcqWinners("lcq_2"),
-        };
+        if (week === 1) {
+          if (SEASON_START && new Date() < SEASON_START) {
+            const blank = {};
+            for (let r = 1; r <= 7; r++) blank[r] = ['—', '—', '—'];
+            return blank;
+          }
+          return {
+            1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
+            2: ["itsjared97",   "ERoadhouse","Bricko"],
+            3: ["WiiSuper",     "Scynor",    "Wazzip"],
+            4: ["FlamingLazer", "Dimei",     "Colten"],
+            5: ["TheCrazedCap", "kwazrr",    "ejpman"],
+            6: lcqWinners("lcq_1"),
+            7: lcqWinners("lcq_2"),
+          };
+        }
         const prevWeek = week - 1;
         const prevMatchCount = weekMatchCounts[prevWeek - 1];
         const thisMatchCount = weekMatchCounts[week - 1];
@@ -3750,8 +4008,9 @@
       }
 
       schedulePromise.then(sd => {
-        SCHEDULE   = sd.ladder   || {};
-        LIVE_MATCH = sd.liveMatch || null;
+        SCHEDULE      = sd.ladder    || {};
+        LIVE_MATCH    = sd.liveMatch || null;
+        SEASON_START  = sd.countdown ? new Date(sd.countdown) : null;
         init();
       });
 
@@ -4251,6 +4510,7 @@
 
       // LCQ_PLAYERS is populated from participants.json (entries with lcq: true)
       let LCQ_PLAYERS = [];
+      let SEASON_START = null; // set from schedule.json countdown; LCQ shows blank slots before this date
 
       const LCQ_PLAYERS_PER_MATCH = 9; // fallback placeholder count when participants not yet loaded
       const LCQ_WINNERS = 3;            // top N get green arrows
@@ -4341,10 +4601,11 @@
           if (isDone) {
             players = result.places;
           } else if (m === 1) {
-            // LCQ 1: all participants with lcq: true
-            players = LCQ_PLAYERS.length
-              ? LCQ_PLAYERS.map(n => ({ name: n }))
-              : Array(LCQ_PLAYERS_PER_MATCH).fill(null);
+            // LCQ 1: all participants with lcq: true (blank before season starts)
+            const beforeSeason = SEASON_START && new Date() < SEASON_START;
+            players = beforeSeason || !LCQ_PLAYERS.length
+              ? Array(LCQ_PLAYERS_PER_MATCH).fill(null)
+              : LCQ_PLAYERS.map(n => ({ name: n }));
           } else {
             // LCQ 2: populated from LCQ 1 losers once LCQ 1 is finished; blank until then
             const lcq1 = LCQ_RESULTS['lcq_1'];
@@ -4402,7 +4663,7 @@
         ]);
         if (pRes.ok) {
           const data = await pRes.json();
-          LCQ_PLAYERS = data.filter(p => p.lcq).map(p => p.name);
+          LCQ_PLAYERS = (data.season3 || []).filter(p => p.lcq).map(p => p.name);
         }
         if (rRes.ok) {
           const data = await rRes.json();
@@ -4411,8 +4672,9 @@
       }
 
       schedulePromise.then(sd => {
-        LCQ_SCHEDULE   = sd.lcq        || {};
+        LCQ_SCHEDULE   = sd.lcq         || {};
         LCQ_LIVE_MATCH = sd.lcqLiveMatch || null;
+        SEASON_START   = sd.countdown ? new Date(sd.countdown) : null;
         (async () => {
           try {
             await loadLCQData();
@@ -4435,6 +4697,63 @@
         })();
       });
 
+    })();
+
+    // ── Twitch live embed ──
+    (async function initTwitchEmbed() {
+      // Check if any match is currently live using schedule + results data
+      async function anyMatchLive() {
+        try {
+          const [sched, results] = await Promise.all([
+            fetch('schedule.json').then(r => r.json()),
+            fetch('results.json').then(r => r.json()).catch(() => ({}))
+          ]);
+          const now = new Date();
+          const ladder = sched.ladder || {};
+          for (const key of Object.keys(ladder)) {
+            if (results[key]) continue;
+            const entry = ladder[key];
+            const start = typeof entry === 'string' ? entry : entry?.start;
+            if (start && now >= new Date(start)) return true;
+          }
+          const top8 = sched.top8 || {};
+          for (const key of Object.keys(top8)) {
+            const entry = top8[key];
+            const start = typeof entry === 'string' ? entry : entry?.start;
+            if (start && now >= new Date(start)) return true;
+          }
+          if (sched.liveMatch) return true;
+          if (sched.lcqLiveMatch) return true;
+        } catch (e) { /* network error */ }
+        return false;
+      }
+
+      const hero = document.querySelector('#home .hero');
+      const embedContainer = document.getElementById('twitch-embed');
+
+      function setLive(live) {
+        hero.classList.toggle('live', live);
+        if (live && !embedContainer.hasChildNodes()) {
+          const hostname = window.location.hostname || 'localhost';
+          const w = embedContainer.offsetWidth || 640;
+          const h = Math.round(w * 9 / 16);
+          // Set explicit pixel height on the container — aspect-ratio alone isn't
+          // enough for Twitch's "style visibility" autoplay check inside the iframe.
+          embedContainer.style.height = h + 'px';
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://player.twitch.tv/?channel=legospeedruns&parent=${hostname}&autoplay=true&muted=true&volume=0`;
+          iframe.width  = w;
+          iframe.height = h;
+          iframe.setAttribute('allowfullscreen', '');
+          iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
+          iframe.style.cssText = 'width:100%;height:100%;display:block;border:0;';
+          embedContainer.appendChild(iframe);
+        }
+      }
+
+      // Check live state immediately, then re-poll every 60s for runtime transitions
+      setLive(await anyMatchLive());
+      setInterval(async () => setLive(await anyMatchLive()), 60_000);
     })();
 
   </script>
