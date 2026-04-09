@@ -512,7 +512,7 @@
       display: flex;
       gap: 0;
       border-bottom: 1px solid var(--border);
-      padding: 1rem 1rem 0;
+      padding: .375rem 1rem 0;
       background: var(--bg);
       position: sticky;
       top: var(--nav-h);
@@ -568,7 +568,7 @@
     /* ─ Top 8 Bracket Container ─ */
     .top8-bracket-outer {
       overflow-x: auto;
-      padding: 1rem 1rem;
+      padding: .45rem 1rem;
       height: calc(100vh - var(--nav-h) - 28px);
       display: flex;
       flex-direction: column;
@@ -579,7 +579,7 @@
       min-width: max-content;
       align-items: flex-start;
       flex: 1;
-      padding: 1rem 0 2rem 0;
+      padding: .45rem 0 2rem 0;
       position: relative;
       z-index: 1;
     }
@@ -2135,24 +2135,47 @@
 
   <!-- ══ STANDINGS ══ -->
   <div class="page" id="standings">
-    <div class="standings-tabs">
-      <div class="standings-tab" data-tab="lcq">LCQ</div>
-      <div class="standings-tab" data-tab="ladder">Ladder</div>
-      <div class="standings-tab" data-tab="top8">Top 8</div>
+    <div class="participants-season-tabs" style="border-bottom:none; padding:.25rem 1rem 0; margin-bottom:0">
+      <button class="participants-season-tab" data-sseason="1">Season 1</button>
+      <button class="participants-season-tab" data-sseason="2">Season 2</button>
+      <button class="participants-season-tab active" data-sseason="3">Season 3</button>
     </div>
-    <div class="standings-tab-panel" id="standings-tab-lcq">
-      <div class="lcq-outer reveal" style="transition-delay:.1s">
-        <div id="lcq-scroll"></div>
+    <div id="standings-s3">
+      <div class="standings-tabs">
+        <div class="standings-tab" data-tab="lcq">LCQ</div>
+        <div class="standings-tab" data-tab="ladder">Ladder</div>
+        <div class="standings-tab" data-tab="top8">Top 8</div>
+      </div>
+      <div class="standings-tab-panel" id="standings-tab-lcq">
+        <div class="lcq-outer reveal" style="transition-delay:.1s">
+          <div id="lcq-scroll"></div>
+        </div>
+      </div>
+      <div class="standings-tab-panel" id="standings-tab-ladder">
+        <div class="bracket-outer reveal" style="transition-delay:.1s">
+          <div class="bracket-scroll" id="bracket-scroll"></div>
+        </div>
+      </div>
+      <div class="standings-tab-panel" id="standings-tab-top8">
+        <div class="top8-bracket-outer reveal" style="transition-delay:.1s">
+          <div class="top8-bracket-scroll" id="bracket-scroll-top8"></div>
+        </div>
       </div>
     </div>
-    <div class="standings-tab-panel" id="standings-tab-ladder">
-      <div class="bracket-outer reveal" style="transition-delay:.1s">
-        <div class="bracket-scroll" id="bracket-scroll"></div>
+    <div id="standings-past" style="display:none">
+      <div class="standings-tabs" id="standings-past-tabs">
+        <div class="standings-tab active" data-ptab="ladder">Ladder</div>
+        <div class="standings-tab" data-ptab="top8">Top 8</div>
       </div>
-    </div>
-    <div class="standings-tab-panel" id="standings-tab-top8">
-      <div class="top8-bracket-outer reveal" style="transition-delay:.1s">
-        <div class="top8-bracket-scroll" id="bracket-scroll-top8"></div>
+      <div class="standings-tab-panel active" id="standings-past-ladder">
+        <div class="bracket-outer reveal" style="transition-delay:.1s">
+          <div class="bracket-scroll" id="past-bracket-scroll"></div>
+        </div>
+      </div>
+      <div class="standings-tab-panel" id="standings-past-top8">
+        <div class="top8-bracket-outer reveal" style="transition-delay:.1s">
+          <div class="top8-bracket-scroll" id="past-top8-scroll"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -2370,9 +2393,9 @@
 
       // Season tab switching — non-season3 tabs just show a simple list
       let activeSeason = 'season3';
-      document.querySelectorAll('.participants-season-tab').forEach(tab => {
+      document.querySelectorAll('.participants-season-tab[data-season]').forEach(tab => {
         tab.addEventListener('click', () => {
-          document.querySelectorAll('.participants-season-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.participants-season-tab[data-season]').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           activeSeason = tab.dataset.season;
           const subtitle = document.getElementById('participants-subtitle');
@@ -2786,20 +2809,21 @@
 
     // ── STANDINGS TABS ──
     // Set default tab based on date (thresholds come from schedule.json).
+    let s3DefaultTab = 'ladder';
     schedulePromise.then(sd => {
       const now = new Date();
       const lcqEnd    = new Date(sd.lcqEnd    || '2026-05-11T05:00:00Z');
       const ladderEnd = new Date(sd.ladderEnd || '2026-06-25T05:00:00Z');
-      const defaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
-      document.querySelector(`.standings-tab[data-tab="${defaultTab}"]`).classList.add('active');
-      document.getElementById(`standings-tab-${defaultTab}`).classList.add('active');
+      s3DefaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
+      document.querySelector(`#standings-s3 .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
+      document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
     });
 
-    document.querySelectorAll('.standings-tab').forEach(tab => {
+    document.querySelectorAll('#standings-s3 .standings-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const name = tab.dataset.tab;
-        document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(`standings-tab-${name}`).classList.add('active');
         if (name === 'top8') {
@@ -2949,9 +2973,18 @@
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       document.getElementById('standings').classList.add('active');
       document.querySelectorAll('.nav-links a[data-page="standings"]').forEach(a => a.classList.add('active'));
-      document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
-      document.querySelector(`.standings-tab[data-tab="${tab}"]`).classList.add('active');
+      // Reset season switcher to Season 3
+      document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(t => t.classList.remove('active'));
+      const s3SeasonTab = document.querySelector('.participants-season-tab[data-sseason="3"]');
+      if (s3SeasonTab) s3SeasonTab.classList.add('active');
+      const s3El = document.getElementById('standings-s3');
+      const pastEl = document.getElementById('standings-past');
+      if (s3El) s3El.style.display = '';
+      if (pastEl) pastEl.style.display = 'none';
+      // Activate the correct inner tab
+      document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`#standings-s3 .standings-tab[data-tab="${tab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${tab}`).classList.add('active');
       window.scrollTo(0, 0);
       setTimeout(observeAll, 50);
@@ -4648,9 +4681,9 @@
         ladderBtn.className = 'lcq-ladder-btn';
         ladderBtn.textContent = 'See Ladder Standings →';
         ladderBtn.addEventListener('click', () => {
-          document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.standings-tab-panel').forEach(p => p.classList.remove('active'));
-          document.querySelector('.standings-tab[data-tab="ladder"]').classList.add('active');
+          document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector('#standings-s3 .standings-tab[data-tab="ladder"]').classList.add('active');
           document.getElementById('standings-tab-ladder').classList.add('active');
         });
         container.appendChild(ladderBtn);
@@ -4696,6 +4729,492 @@
           }, 30_000);
         })();
       });
+
+    })();
+
+    // ── PAST SEASONS STANDINGS (S1, S2) ──
+    (function() {
+      const s3El   = document.getElementById('standings-s3');
+      const pastEl = document.getElementById('standings-past');
+
+      const VOD_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>';
+
+      // Season tab switching
+      document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const season = parseInt(tab.dataset.sseason);
+          if (season === 3) {
+            s3El.style.display = '';
+            pastEl.style.display = 'none';
+            // Re-apply the schedule-based default tab for S3
+            document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`#standings-s3 .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
+            document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
+          } else {
+            s3El.style.display = 'none';
+            pastEl.style.display = '';
+            // Default past seasons 1 & 2 to Top 8 (bracket is complete)
+            document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('#standings-past-tabs .standings-tab[data-ptab="top8"]').classList.add('active');
+            document.querySelectorAll('#standings-past .standings-tab-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('standings-past-top8').classList.add('active');
+            loadAndRenderPastSeason(season);
+          }
+        });
+      });
+
+      // Past season inner tab switching
+      document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const ptab = tab.dataset.ptab;
+          document.querySelectorAll('#standings-past .standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.getElementById(`standings-past-${ptab}`).classList.add('active');
+        });
+      });
+
+      let pastSeasonCache = null;
+
+      async function loadAndRenderPastSeason(season) {
+        if (!pastSeasonCache) {
+          try {
+            const res = await fetch('past_seasons.json', { cache: 'no-store' });
+            pastSeasonCache = await res.json();
+          } catch (e) {
+            console.error('Could not load past_seasons.json', e);
+            return;
+          }
+        }
+        const data = pastSeasonCache[`season${season}`];
+        if (!data) return;
+        buildPastBracket(data);
+        buildPastTop8(data);
+      }
+
+      function emptyMsg(text) {
+        return `<div style="text-align:center;padding:4rem 2rem;color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:3px;text-transform:uppercase">${text}</div>`;
+      }
+
+      function buildPastBracket(data) {
+        const container = document.getElementById('past-bracket-scroll');
+        if (!container) return;
+        container.innerHTML = '';
+        const { weekMatchCounts = [], wildcardWeek = null, weekDates = [], results = {} } = data;
+        if (!weekMatchCounts.length) { container.innerHTML = emptyMsg('Results Coming Soon'); return; }
+
+        const isAutoWildcardSeason = 'wildcardAutoQualifier' in data;
+
+        function pastSecsFmt(s) {
+          const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+          return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+        }
+
+        // Pre-compute fastest times for auto-wildcard standings panel
+        let fastestTimes = [];
+        if (isAutoWildcardSeason) {
+          const qualifiedSet = new Set();
+          const playerBestSecs = {};
+          Object.entries(results).forEach(([key, result]) => {
+            const [wStr, rStr] = key.split('_');
+            const w = parseInt(wStr), r = parseInt(rStr);
+            if (wildcardWeek && w >= wildcardWeek) return;
+            if (r === 1 && result.places?.[0]?.name) qualifiedSet.add(result.places[0].name);
+            (result.places || []).forEach(entry => {
+              if (!entry.name || !entry.time || entry.time === 'DNF') return;
+              const p = entry.time.split(':').map(Number);
+              const secs = p.length === 3 ? p[0]*3600+p[1]*60+p[2] : null;
+              if (secs === null) return;
+              if (!playerBestSecs[entry.name] || secs < playerBestSecs[entry.name]) playerBestSecs[entry.name] = secs;
+            });
+          });
+          fastestTimes = Object.entries(playerBestSecs)
+            .filter(([name]) => !qualifiedSet.has(name))
+            .sort((a, b) => a[1] - b[1])
+            .slice(0, 3);
+        }
+
+        let lastRegWeekEl = null, pastWcEl = null;
+
+        for (let w = 1; w <= weekMatchCounts.length; w++) {
+          const matchCount = weekMatchCounts[w - 1];
+          const isWildcard = w === wildcardWeek;
+          const weekEl = document.createElement('div');
+          weekEl.className = 'bracket-week';
+
+          if (weekDates[w - 1]) {
+            const d = document.createElement('div');
+            d.className = 'bracket-week-dates';
+            d.textContent = weekDates[w - 1];
+            weekEl.appendChild(d);
+          }
+
+          // Auto-wildcard: fastest time qualifies with no match (Season 2 format)
+          if (isWildcard && isAutoWildcardSeason) {
+            const autoQual = data.wildcardAutoQualifier;
+            const qualSlot = document.createElement('div');
+            qualSlot.className = 'week-qualified-slot' + (autoQual ? '' : ' empty');
+            qualSlot.innerHTML = autoQual
+              ? `<span class="wqs-icon">★</span><span class="wqs-name">${autoQual.name}</span><span class="wqs-icon">★</span>`
+              : `<span class="wqs-name">SEED ${w}</span>`;
+            weekEl.appendChild(qualSlot);
+            pastWcEl = weekEl;
+            continue;
+          }
+
+          if (!isWildcard) {
+            const topRungResult = results[`${w}_1`];
+            const qualName = topRungResult?.places?.[0]?.name || null;
+            const qualSlot = document.createElement('div');
+            qualSlot.className = 'week-qualified-slot' + (qualName ? '' : ' empty');
+            qualSlot.innerHTML = qualName
+              ? `<span class="wqs-icon">★</span><span class="wqs-name">${qualName}</span><span class="wqs-icon">★</span>`
+              : `<span class="wqs-name">SEED ${w}</span>`;
+            weekEl.appendChild(qualSlot);
+          }
+
+          const matchesWrap = document.createElement('div');
+          matchesWrap.className = 'bracket-week-matches';
+
+          for (let r = 1; r <= matchCount; r++) {
+            const result = results[`${w}_${r}`];
+            const isDone = !!result;
+            const isTop  = r === 1;
+            const isBot  = r === matchCount && !isWildcard;
+
+            let card;
+            if (isDone && result.vod) {
+              card = document.createElement('a');
+              card.href = result.vod; card.target = '_blank'; card.rel = 'noopener';
+            } else { card = document.createElement('div'); }
+            card.className = 'bracket-match' + (isDone ? ' done' : '');
+
+            const rungRow = document.createElement('div');
+            rungRow.className = 'bracket-match-rung';
+            const rungLabel = document.createElement('span');
+            rungLabel.textContent = isWildcard ? 'Wildcard' : `Rung ${r}`;
+            if (isTop) rungLabel.style.color = '#ac8427';
+            else if (isBot) rungLabel.style.color = '#ff8099';
+            rungRow.appendChild(rungLabel);
+
+            if (isDone) {
+              const ind = document.createElement('span');
+              ind.className = 'done-indicator';
+              if (result.vod) { ind.innerHTML = `VOD<span class="done-arrow">${VOD_SVG}</span>`; rungRow.appendChild(ind); }
+              else { ind.textContent = 'Done'; rungRow.appendChild(ind); }
+            } else {
+              const tbd = document.createElement('span');
+              tbd.className = 'scheduled-indicator'; tbd.textContent = 'TBD';
+              rungRow.appendChild(tbd);
+            }
+            card.appendChild(rungRow);
+
+            const displayPlayers = isDone ? result.places : Array(3).fill({ name: '—' });
+            displayPlayers.forEach((entry, pi) => {
+              const p      = typeof entry === 'string' ? entry : (entry.name || '—');
+              const time   = typeof entry === 'object' ? (entry.time   || null) : null;
+              const status = typeof entry === 'object' ? (entry.status || null) : null;
+              const place = pi + 1;
+              const isTbd = p === '—';
+              const qualifies      = isDone && isTop && place === 1;
+              const eliminated     = isDone && (isBot || isWildcard) && place > 1;
+              const dropsDown      = isDone && !isBot && !isWildcard && place === displayPlayers.length;
+              const movesUp        = isDone && !qualifies && !eliminated && !dropsDown;
+              const isLeapfrogging = status === 'leapfrogging';
+              const isLeapfrogged  = status === 'leapfrogged';
+
+              let leapfrogPartner = null;
+              if (isLeapfrogging) {
+                const aboveResult = results[`${w}_${r - 1}`];
+                leapfrogPartner = aboveResult?.places?.[1]?.name ?? null;
+              } else if (isLeapfrogged) {
+                const belowResult = results[`${w}_${r + 1}`];
+                leapfrogPartner = belowResult?.places?.find(e => e.status === 'leapfrogging')?.name ?? null;
+              }
+
+              let moveArrow = '';
+              if      (qualifies)          moveArrow = `<span class="bp-move qualified"    data-tip="Qualified for Top 8">★</span>`;
+              else if (eliminated)         moveArrow = `<span class="bp-move eliminated"   data-tip="Eliminated">✖</span>`;
+              else if (dropsDown)          moveArrow = `<span class="bp-move down"          data-tip="Demoted">↓</span>`;
+              else if (isLeapfrogging)     moveArrow = `<span class="bp-move leapfrogging"  data-tip="Leapfrogging${leapfrogPartner ? ' ' + leapfrogPartner : ''}">⇑</span>`;
+              else if (isLeapfrogged)      moveArrow = `<span class="bp-move leapfrogged"   data-tip="Leapfrogged by${leapfrogPartner ? ' ' + leapfrogPartner : ''}">↔</span>`;
+              else if (movesUp && isTop)   moveArrow = `<span class="bp-move" style="color:var(--dim)" data-tip="Staying in top rung">–</span>`;
+              else if (movesUp)            moveArrow = `<span class="bp-move up"            data-tip="Promoted">↑</span>`;
+
+              const pEl = document.createElement('div');
+              pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (dropsDown || eliminated ? ' lost' : '');
+              pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>`
+                + (isTbd ? p : `<span class="bp-name">${p}</span>`)
+                + (time ? `<span class="bp-time">${time}</span>` : '')
+                + moveArrow;
+              card.appendChild(pEl);
+            });
+
+            matchesWrap.appendChild(card);
+          }
+          weekEl.appendChild(matchesWrap);
+          if (isAutoWildcardSeason && wildcardWeek && w === wildcardWeek - 1) {
+            lastRegWeekEl = weekEl; // group with WCS after the loop
+          } else {
+            container.appendChild(weekEl);
+          }
+        }
+
+        // Post-loop: build WCS-style "Fastest Time" panel grouped with last regular week
+        if (isAutoWildcardSeason && lastRegWeekEl && pastWcEl) {
+          const wcsEl = document.createElement('div');
+          wcsEl.className = 'wildcard-standings';
+          wcsEl.innerHTML = '<div class="wildcard-standings-label">Wildcard Standings</div>';
+          const secLbl = document.createElement('div');
+          secLbl.className = 'wcs-section-label';
+          secLbl.textContent = 'Fastest Time';
+          wcsEl.appendChild(secLbl);
+          const ords = ['1st', '2nd', '3rd'];
+          const autoQualName = data.wildcardAutoQualifier?.name || null;
+          for (let i = 0; i < 3; i++) {
+            const entry = fastestTimes[i];
+            const isLeader = entry && entry[0] === autoQualName;
+            const row = document.createElement('div');
+            row.className = 'wcs-row' + (entry ? (isLeader ? ' leader' : '') : ' empty');
+            row.innerHTML = entry
+              ? `<span class="wcs-rank">${ords[i]}</span><span class="bp-name">${entry[0]}</span><span class="wcs-time">${pastSecsFmt(entry[1])}</span>`
+              : `<span class="wcs-rank">${ords[i]}</span>—`;
+            wcsEl.appendChild(row);
+          }
+          const lastRegGroup = document.createElement('div');
+          lastRegGroup.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:12px; align-self:flex-start; margin-top:0;';
+          lastRegGroup.appendChild(lastRegWeekEl);
+          lastRegGroup.appendChild(pastWcEl);
+          lastRegGroup.appendChild(wcsEl);
+          container.appendChild(lastRegGroup);
+        }
+      }
+
+      function buildPastTop8(data) {
+        const container = document.getElementById('past-top8-scroll');
+        if (!container) return;
+        container.innerHTML = '';
+        const top8 = data.top8 || {};
+        if (!Object.keys(top8).length) { container.innerHTML = emptyMsg('Results Coming Soon'); return; }
+
+        const noThirdPlace = !!data.noThirdPlace;
+
+        // Derive Top 8 seeds from ladder results (week N rung-1 winner = seed N)
+        const parseT = t => { if (!t) return Infinity; const [h,m,s] = t.split(':').map(Number); return h*3600+m*60+s; };
+        const { weekMatchCounts = [], wildcardWeek = null, results = {} } = data;
+        const pastTop8Seeds = {};
+        let seedNum = 1;
+        for (let w = 1; w <= weekMatchCounts.length; w++) {
+          if (wildcardWeek && w === wildcardWeek) {
+            const aq = data.wildcardAutoQualifier;
+            if (aq?.name) pastTop8Seeds[aq.name] = seedNum++;
+            continue;
+          }
+          const r1 = results[`${w}_1`];
+          const winner = (r1?.places || []).filter(p => p.time && p.time !== 'DNF')
+            .reduce((best, p) => !best || parseT(p.time) < parseT(best.time) ? p : best, null);
+          if (winner?.name) pastTop8Seeds[winner.name] = seedNum++;
+        }
+
+        const ROUNDS = [
+          { id: 'qf', name: 'Quarterfinals', label: 'Quarterfinal', matches: 4 },
+          { id: 'sf', name: 'Semifinals',    label: 'Semifinal',    matches: 2 },
+          { id: 'gf', name: 'Finals',        label: null,           matches: 1 },
+        ];
+
+        const winnerOf = key => top8[key]?.places?.[0]?.name || null;
+        const loserOf  = key => top8[key]?.places?.[1]?.name || null;
+
+        function getPlayers(roundId, matchNum) {
+          const result = top8[`${roundId}_${matchNum}`];
+          if (result?.places?.length >= 2) return result.places.slice(0, 2).map(p => p.name);
+          if (roundId === 'sf') { const b = (matchNum - 1) * 2 + 1; return [winnerOf(`qf_${b}`) || '—', winnerOf(`qf_${b + 1}`) || '—']; }
+          if (roundId === 'gf') return [winnerOf('sf_1') || '—', winnerOf('sf_2') || '—'];
+          if (roundId === 'tp') return [loserOf('sf_1')  || '—', loserOf('sf_2')  || '—'];
+          return ['—', '—'];
+        }
+
+        ROUNDS.forEach(round => {
+          const roundEl = document.createElement('div');
+          roundEl.className = 'bracket-round';
+          const roundLabelEl = document.createElement('div');
+          roundLabelEl.className = 'bracket-round-label';
+          roundLabelEl.textContent = round.name;
+          roundEl.appendChild(roundLabelEl);
+          const matchesWrap = document.createElement('div');
+          matchesWrap.className = 'bracket-round-matches';
+          for (let m = 1; m <= round.matches; m++) matchesWrap.appendChild(buildPastTop8Match(round, m, getPlayers(round.id, m), top8, pastTop8Seeds));
+          if (round.id === 'gf' && !noThirdPlace) matchesWrap.appendChild(buildPastTop8Match({ id:'tp', name:'3rd Place Match', label:null }, 1, getPlayers('tp', 1), top8, pastTop8Seeds));
+          roundEl.appendChild(matchesWrap);
+          container.appendChild(roundEl);
+        });
+
+        // ── Results column ──
+        const fastestWinner = places => places?.reduce((best, p) => (!p.time || (best && parseT(best.time) <= parseT(p.time))) ? best : p, null);
+        const fastestLoser  = places => { const w = fastestWinner(places); return w ? (places?.find(p => p.name !== w.name) || null) : null; };
+
+        const gf = top8['gf_1'];
+        const champion  = gf ? fastestWinner(gf.places)?.name : null;
+        const runnerUp  = gf ? fastestLoser(gf.places)?.name  : null;
+
+        const resultsCol = document.createElement('div');
+        resultsCol.className = 'bracket-round bracket-round-results';
+        const resultsLabel = document.createElement('div');
+        resultsLabel.className = 'bracket-round-label';
+        resultsLabel.textContent = 'Results';
+        resultsCol.appendChild(resultsLabel);
+        const resultsStack = document.createElement('div');
+        resultsStack.className = 'top8-results-stack';
+
+        const champBoxEl = document.createElement('div');
+        champBoxEl.className = 'top8-champion-box' + (champion ? ' visible' : '');
+        champBoxEl.innerHTML = `<div class="top8-champion-label">★ Champion ★</div><div class="top8-champion-name">${champion || ''}</div>`;
+        resultsStack.appendChild(champBoxEl);
+
+        const ruBoxEl = document.createElement('div');
+        ruBoxEl.className = 'top8-runnerup-box' + (runnerUp ? ' visible' : '');
+        ruBoxEl.innerHTML = `<div class="top8-runnerup-label">Runner-Up</div><div class="top8-runnerup-name">${runnerUp || ''}</div>`;
+        resultsStack.appendChild(ruBoxEl);
+
+        // SF losers sorted by fastest time → 3rd and 4th
+        const sfLosers = ['sf_1','sf_2']
+          .map(key => { const p = fastestLoser(top8[key]?.places); return p ? { name: p.name, time: p.time } : null; })
+          .filter(Boolean)
+          .sort((a, b) => parseT(a.time) - parseT(b.time));
+        const thirdPlace = sfLosers[0]?.name || null;
+
+        const bronzeBoxEl = document.createElement('div');
+        bronzeBoxEl.className = 'top8-bronze-box' + (thirdPlace ? ' visible' : '');
+        bronzeBoxEl.innerHTML = `<div class="top8-bronze-label">3rd Place</div><div class="top8-bronze-name">${thirdPlace || ''}</div>`;
+        resultsStack.appendChild(bronzeBoxEl);
+
+        // Rest box: 4th (slower SF loser) + 5th–8th (QF losers)
+        const qfLosers = ['qf_1','qf_2','qf_3','qf_4']
+          .map(key => { const p = fastestLoser(top8[key]?.places); return p ? { name: p.name, time: p.time } : null; })
+          .filter(Boolean)
+          .sort((a, b) => parseT(a.time) - parseT(b.time));
+        const restPlaces = [
+          { place: '4th', name: sfLosers[1]?.name || null },
+          ...qfLosers.map((p, i) => ({ place: `${5 + i}th`, name: p.name })),
+          ...Array.from({ length: 4 - qfLosers.length }, (_, i) => ({ place: `${5 + qfLosers.length + i}th`, name: null })),
+        ];
+        const restBoxEl = document.createElement('div');
+        restBoxEl.className = 'top8-rest-box' + (restPlaces.some(p => p.name) ? ' visible' : '');
+        restBoxEl.innerHTML = restPlaces.map(p =>
+          `<div class="top8-rest-row"><span class="top8-rest-place">${p.place}</span><span class="top8-rest-name">${p.name || '—'}</span></div>`
+        ).join('');
+        resultsStack.appendChild(restBoxEl);
+
+        resultsCol.appendChild(resultsStack);
+        container.appendChild(resultsCol);
+
+        requestAnimationFrame(() => drawPastTop8Connectors());
+      }
+
+      function drawPastTop8Connectors() {
+        const container = document.getElementById('past-top8-scroll');
+        if (!container) return;
+
+        const old = container.querySelector('.past-top8-connectors-svg');
+        if (old) old.remove();
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('past-top8-connectors-svg');
+        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible;';
+        svg.setAttribute('width', container.scrollWidth);
+        svg.setAttribute('height', container.scrollHeight);
+
+        const cr = container.getBoundingClientRect();
+
+        const groups = [
+          [['past-top8-card-qf-1', 'past-top8-card-qf-2'], 'past-top8-card-sf-1'],
+          [['past-top8-card-qf-3', 'past-top8-card-qf-4'], 'past-top8-card-sf-2'],
+          [['past-top8-card-sf-1', 'past-top8-card-sf-2'], 'past-top8-card-gf-1'],
+        ];
+
+        groups.forEach(([[id1, id2], tgtId]) => {
+          const el1 = document.getElementById(id1);
+          const el2 = document.getElementById(id2);
+          const elT = document.getElementById(tgtId);
+          if (!el1 || !el2 || !elT) return;
+
+          const r1 = el1.getBoundingClientRect();
+          const r2 = el2.getBoundingClientRect();
+          const rt = elT.getBoundingClientRect();
+
+          const y1   = (r1.top + r1.bottom) / 2 - cr.top;
+          const y2   = (r2.top + r2.bottom) / 2 - cr.top;
+          const yt   = (rt.top + rt.bottom) / 2 - cr.top;
+          const xSrc = r1.right - cr.left;
+          const xTgt = rt.left  - cr.left;
+          const midX = (xSrc + xTgt) / 2;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d',
+            `M${xSrc},${y1} H${midX} V${y2} M${xSrc},${y2} H${midX} M${midX},${yt} H${xTgt}`
+          );
+          path.setAttribute('stroke', 'rgba(255,255,255,0.13)');
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('fill', 'none');
+          svg.appendChild(path);
+        });
+
+        container.insertBefore(svg, container.firstChild);
+      }
+
+      function buildPastTop8Match(round, matchNum, players, top8, seedLookup) {
+        const key    = `${round.id}_${matchNum}`;
+        const result = top8[key] || null;
+        const isDone = !!result;
+        const isGF   = round.id === 'gf';
+
+        let card;
+        if (isDone && result.vod) { card = document.createElement('a'); card.href = result.vod; card.target = '_blank'; card.rel = 'noopener'; }
+        else { card = document.createElement('div'); }
+        card.className = 'top8-match' + (isDone ? ' done' : '');
+        card.id = `past-top8-card-${round.id}-${matchNum}`;
+
+        const matchRow = document.createElement('div');
+        matchRow.className = 'top8-match-rung';
+        const matchLabelEl = document.createElement('span');
+        matchLabelEl.textContent = round.label
+          ? (round.matches > 1 ? `${round.label} ${matchNum}` : round.name)
+          : round.name;
+        matchRow.appendChild(matchLabelEl);
+
+        if (isDone) {
+          const ind = document.createElement('span');
+          ind.className = 'top8-done-indicator';
+          if (result.vod) { ind.innerHTML = `VOD<span class="top8-done-arrow">${VOD_SVG}</span>`; matchRow.appendChild(ind); }
+          else { ind.textContent = 'Done'; matchRow.appendChild(ind); }
+        } else {
+          const tbd = document.createElement('span');
+          tbd.className = 'top8-scheduled-indicator'; tbd.textContent = 'TBD';
+          matchRow.appendChild(tbd);
+        }
+        card.appendChild(matchRow);
+
+        const toSecs = t => { const [h,m,s] = t.split(':').map(Number); return h*3600+m*60+s; };
+        const winner = isDone ? result.places.reduce((best, p) =>
+          (!p.time || (best && toSecs(best.time) <= toSecs(p.time))) ? best : p
+        , null)?.name : null;
+        players.forEach(name => {
+          const isTbd = !name || name === '—';
+          const resultEntry = isDone && !isTbd ? result.places.find(p => p.name === name) : null;
+          const time = resultEntry?.time || null;
+          const resultClass = isDone && !isTbd ? (name === winner ? (isGF ? ' champion' : ' won') : (isGF ? ' runner-up' : ' lost')) : '';
+          const pEl = document.createElement('div');
+          const seed = (!isTbd && seedLookup?.[name]) ? `${seedLookup[name]}` : '';
+          pEl.className = 'top8-bracket-player' + (isTbd ? ' tbd' : '') + resultClass;
+          pEl.innerHTML = `<span class="bp-num">${seed}</span>${isTbd ? '—' : name}` + (time ? `<span class="bp-time">${time}</span>` : '');
+          card.appendChild(pEl);
+        });
+
+        return card;
+      }
 
     })();
 

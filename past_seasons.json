@@ -1,0 +1,294 @@
+{
+  "season1": {
+    "weekMatchCounts": [8, 7, 6, 5, 4, 3, 2, 1],
+    "wildcardWeek": null,
+    "noThirdPlace": true,
+    "weekDates": [],
+    "results": {},
+    "top8": {}
+  },
+  "season2": {
+    "weekMatchCounts": [7, 6, 5, 4, 3, 2, 1, 1],
+    "wildcardWeek": 8,
+    "wildcardAutoQualifier": { "name" : "Dragon67", "time": "2:23:34"},
+    "noThirdPlace": true,
+    "weekDates": ["May 19-25", "May 26-June 1", "June 2-8", "June 9-15", "June 16-22", "June 23-29", "June 23-29"],
+    "results": {
+      "1_1": {
+        "vod": "https://www.youtube.com/live/mv3PPZ3i3VM?si=pweaDFr_NrWjn8v2",
+        "places": [
+          { "name": "FrostByte", "time": "2:20:24" },
+          { "name": "itsjared97",  "time": "2:22:56" },
+          { "name": "WiiSuper",   "time": "2:24:54" }
+        ]
+      },
+      "1_2": {
+        "vod": "https://youtu.be/ejnCTYsnjLk?si=R8R6gEkV2z9ZHXKd",
+        "places": [
+          { "name": "Scynor",     "time": "2:24:58" },
+          { "name": "Herasmie",   "time": "2:25:45" , "status" : "leapfrogged"},
+          { "name": "AnorakDT",   "time": "2:26:56" }
+        ]
+      },
+      "1_3": {
+        "vod": "https://www.youtube.com/live/2Q7rnf30mFA?si=k6jzN_-XnklTveYw",
+        "places": [
+          { "name": "Dragon67",   "time": "2:23:34" , "status" : "leapfrogging"},
+          { "name": "FlamingLazer",   "time": "2:24:53" },
+          { "name": "Dimei",       "time": "2:29:11" }
+        ]
+      },
+      "1_4": {
+        "vod": "https://www.youtube.com/live/JrvSf4V2kxc?si=r8LhKn9v5s5DnrvD",
+        "places": [
+          { "name": "Revvylo",        "time": "2:31:19" },
+          { "name": "flup",    "time": "2:31:35" , "status": "leapfrogged"},
+          { "name": "Coolisen",     "time": "2:31:37" }
+        ]
+      },
+      "1_5": {
+        "vod": "https://www.youtube.com/live/z4kEKOs-mvU?si=EGnbLh20Femnw5L6",
+        "places": [
+          { "name": "GildetPhantom",  "time": "2:29:27" , "status": "leapfrogging" },
+          { "name": "Tfresh",         "time": "2:33:23" },
+          { "name": "TwiceLyte",      "time": "2:36:27" }
+        ]
+      },
+      "1_6": {
+        "vod": "https://www.youtube.com/live/bGPB92XPK9Q?si=mo5IDJXCiVkKorWa",
+        "places": [
+          { "name": "Charzight",      "time": "2:33:50" },
+          { "name": "kwazrr",         "time": "2:37:07" , "status": "leapfrogged" },
+          { "name": "thenzota",       "time": "2:41:19" }
+        ]
+      },
+      "1_7": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f",
+        "places": [
+          { "name": "Anonymous",      "time": "2:35:09" , "status": "leapfrogging"},
+          { "name": "Biksel",         "time": "2:36:45" },
+          { "name": "yahootles",      "time": "2:45:25" }
+        ]
+      },
+      "2_1": {
+        "vod": "",
+        "places": [
+          { "name": "itsjared97",    "time": "2:23:50" },
+          { "name": "Dragon67",      "time": "2:25:54" },
+          { "name": "Scynor",        "time": "2:27:18" }
+        ]
+      },
+      "2_2": {
+        "vod": "",
+        "places": [
+          { "name": "WiiSuper",      "time": "2:22:05" },
+          { "name": "Herasmie",      "time": "2:22:14" },
+          { "name": "FlamingLazer",  "time": "2:26:54" }
+        ]
+      },
+      "2_3": {
+        "vod": "",
+        "places": [
+          { "name": "AnorakDT",      "time": "2:29:07" },
+          { "name": "GildetPhantom", "time": "2:29:58", "status": "leapfrogged" },
+          { "name": "Revvylo",       "time": "2:33:29" }
+        ]
+      },
+      "2_4": {
+        "vod": "",
+        "places": [
+          { "name": "Dimei",         "time": "2:26:47", "status": "leapfrogging" },
+          { "name": "Tfresh",        "time": "2:28:00" },
+          { "name": "flup",          "time": "2:28:58" }
+        ]
+      },
+      "2_5": {
+        "vod": "",
+        "places": [
+          { "name": "Coolisen",      "time": "2:31:51" },
+          { "name": "Charzight",     "time": "2:32:20", "status": "leapfrogged" },
+          { "name": "Anonymous",     "time": "2:38:04" }
+        ]
+      },
+      "2_6": {
+        "vod": "",
+        "places": [
+          { "name": "TwiceLyte",     "time": "2:31:19", "status": "leapfrogging" },
+          { "name": "kwazrr",        "time": "2:31:40" },
+          { "name": "thenzota",      "time": "2:39:45" }
+        ]
+      },
+      "3_1": {
+        "vod": "",
+        "places": [
+          { "name": "Herasmie",      "time": "2:22:32" },
+          { "name": "WiiSuper",      "time": "2:23:43" },
+          { "name": "Dragon67",      "time": "2:27:02" }
+        ]
+      },
+      "3_2": {
+        "vod": "",
+        "places": [
+          { "name": "Scynor",        "time": "2:23:02" },
+          { "name": "AnorakDT",      "time": "2:25:34" },
+          { "name": "Dimei",         "time": "2:32:30" }
+        ]
+      },
+      "3_3": {
+        "vod": "",
+        "places": [
+          { "name": "GildetPhantom", "time": "2:27:31" },
+          { "name": "FlamingLazer",  "time": "2:27:35" },
+          { "name": "Tfresh",        "time": "2:41:00" }
+        ]
+      },
+      "3_4": {
+        "vod": "",
+        "places": [
+          { "name": "Coolisen",      "time": "2:27:37" },
+          { "name": "Revvylo",       "time": "2:34:14", "status": "leapfrogged" },
+          { "name": "TwiceLyte",     "time": "2:34:24" }
+        ]
+      },
+      "3_5": {
+        "vod": "",
+        "places": [
+          { "name": "Charzight",     "time": "2:30:31", "status": "leapfrogging" },
+          { "name": "flup",          "time": "2:30:47" },
+          { "name": "Anonymous",     "time": "2:35:46" }
+        ]
+      },
+      "4_1": {
+        "vod": "",
+        "places": [
+          { "name": "Scynor",        "time": "2:23:07" },
+          { "name": "WiiSuper",      "time": "2:24:33" },
+          { "name": "AnorakDT",      "time": "2:26:30" }
+        ]
+      },
+      "4_2": {
+        "vod": "",
+        "places": [
+          { "name": "Dragon67",      "time": "2:24:54" },
+          { "name": "FlamingLazer",  "time": "2:25:29" },
+          { "name": "GildetPhantom", "time": "2:29:44" }
+        ]
+      },
+      "4_3": {
+        "vod": "",
+        "places": [
+          { "name": "Dimei",         "time": "2:28:57" },
+          { "name": "Charzight",     "time": "2:32:33", "status": "leapfrogged" },
+          { "name": "Coolisen",      "time": "2:45:42" }
+        ]
+      },
+      "4_4": {
+        "vod": "",
+        "places": [
+          { "name": "Tfresh",        "time": "2:29:30", "status": "leapfrogging" },
+          { "name": "TwiceLyte",     "time": "2:29:50" },
+          { "name": "Revvylo",       "time": "2:38:01" }
+        ]
+      },
+      "5_1": {
+        "vod": "",
+        "places": [
+          { "name": "WiiSuper",      "time": "2:20:58" },
+          { "name": "Dragon67",      "time": "2:24:05" },
+          { "name": "FlamingLazer",  "time": "2:25:07" }
+        ]
+      },
+      "5_2": {
+        "vod": "",
+        "places": [
+          { "name": "Tfresh",        "time": "2:25:27" },
+          { "name": "AnorakDT",      "time": "2:26:01" },
+          { "name": "Dimei",         "time": "2:29:11" }
+        ]
+      },
+      "5_3": {
+        "vod": "",
+        "places": [
+          { "name": "GildetPhantom", "time": "2:29:25" },
+          { "name": "Charzight",     "time": "2:33:49" },
+          { "name": "Coolisen",      "time": "2:37:46" }
+        ]
+      },
+      "6_1": {
+        "vod": "",
+        "places": [
+          { "name": "AnorakDT",      "time": "2:26:35" },
+          { "name": "Dragon67",      "time": "2:26:38" },
+          { "name": "Tfresh",        "time": "2:28:28" }
+        ]
+      },
+      "6_2": {
+        "vod": "",
+        "places": [
+          { "name": "FlamingLazer",  "time": "2:23:00" },
+          { "name": "GildetPhantom", "time": "2:27:31" },
+          { "name": "Dimei",         "time": "2:29:06" }
+        ]
+      },
+      "7_1": {
+        "vod": "",
+        "places": [
+          { "name": "FlamingLazer",      "time": "2:23:14" },
+          { "name": "Dragon67",      "time": "2:25:29" },
+          { "name": "Tfresh",  "time": "DNF" }
+        ]
+      }
+    },
+    "top8": {
+      "qf_1": {
+        "vod": "https://www.youtube.com/live/2Q7rnf30mFA?si=k6jzN_-XnklTveYw&t=2h32m10s",
+        "places": [
+          { "name": "FrostByte",      "time": "2:26:10" },
+          { "name": "Dragon67",      "time": "2:24:38" }
+        ]
+      },
+      "qf_2": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=1h40m00s",
+        "places": [
+          { "name": "Scynor",      "time": "2:21:51" },
+          { "name": "WiiSuper",        "time": "2:20:57" }
+        ]
+      },
+      "qf_3": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=2h25m00s",
+        "places": [
+          { "name": "Herasmie",      "time": "2:23:35" },
+          { "name": "AnorakDT",      "time": "2:25:07" }
+        ]
+      },
+      "qf_4": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=3h10m00s",
+        "places": [
+          { "name": "itsjared97",         "time": "2:21:29" },
+          { "name": "FlamingLazer", "time": "2:22:28" }
+        ]
+      },
+      "sf_1": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=4h20m00s",
+        "places": [
+          { "name": "Dragon67",      "time": "2:23:50" },
+          { "name": "WiiSuper",      "time": "2:21:48" }
+        ]
+      },
+      "sf_2": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=5h00m00s",
+        "places": [
+          { "name": "Herasmie",        "time": "2:25:09" },
+          { "name": "itsjared97",    "time": "2:24:14" }
+        ]
+      },
+      "gf_1": {
+        "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f&t=6h00m00s",
+        "places": [
+          { "name": "WiiSuper",      "time": "2:22:37" },
+          { "name": "itsjared97",      "time": "2:22:22" }
+        ]
+      }
+    }
+  }
+}
