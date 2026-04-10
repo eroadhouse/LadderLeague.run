@@ -4576,6 +4576,7 @@
         if (container && window.ResizeObserver) {
           new ResizeObserver(() => { positionThirdPlaceMatch(); drawTop8Connectors(); }).observe(container);
         }
+        window.addEventListener('resize', () => { positionThirdPlaceMatch(); drawTop8Connectors(); });
         setInterval(async () => {
           try {
             const data = await loadTop8Results();
@@ -5295,6 +5296,8 @@
 
         return card;
       }
+
+      window.addEventListener('resize', () => { drawPastTop8Connectors(); });
 
     })();
 
