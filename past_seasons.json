@@ -34,7 +34,7 @@
         "places": [
           { "name": "DaHamster",    "time": "2:35:50" },
           { "name": "FlamingLazer", "time": "2:37:48" },
-          { "name": "Core",         "time": "2:50:33" }
+          { "name": "CoreCompetence",         "time": "2:50:33" }
         ]
       },
       "1_5": {
@@ -106,7 +106,7 @@
         "places": [
           { "name": "flup",         "time": "2:35:41" },
           { "name": "Charzight",    "time": "2:36:28" },
-          { "name": "Core",         "time": "2:50:59" }
+          { "name": "CoreCompetence",         "time": "2:50:59" }
         ]
       },
       "2_6": {
@@ -170,7 +170,7 @@
         "places": [
           { "name": "GildetPhantom","time": "2:34:52" },
           { "name": "thenzota",     "time": "2:35:07" },
-          { "name": "Core",         "time": "2:42:04" }
+          { "name": "CoreCompetence",         "time": "2:42:04" }
         ]
       },
       "4_1": {

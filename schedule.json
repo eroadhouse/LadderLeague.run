@@ -4,8 +4,14 @@
   "ladderEnd":  "2026-06-25T05:00:00Z",
   "liveMatch":  null,
   "lcq":    {
-    "lcq_1": "2026-05-09T13:00:00-04:00",
-    "lcq_2": "2026-05-10T13:00:00-04:00"
+    "lcq_1": {
+      "start":"2026-05-09T13:00:00-04:00",
+      "players": ["Charzight","AnorakDT","thenzota","TwiceLyte","GildetPhantom","Anonymous"]
+    },
+    "lcq_2": {
+      "start":"2026-05-10T13:00:00-04:00",
+      "players": ["Charzight","AnorakDT","thenzota","TwiceLyte","GildetPhantom","Anonymous"]
+    }
   },
   "ladder": {
     },
