@@ -3399,6 +3399,7 @@
       // └──────────────────────────────────────────────────────────┘
       let LIVE_MATCH = null;
       let SEASON_START = null; // set from schedule.json countdown; bracket shows blank slots before this date
+      let LADDER_START = null; // set from schedule.json lcqEnd; eliminated column hidden before this date
 
       // ┌──────────────────────────────────────────────────────────┐
       // │  QUALIFIED CONFIG                                        │
@@ -3998,7 +3999,8 @@
       const wildcardGroup = document.createElement('div');
       wildcardGroup.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:12px; align-self:stretch;';
       if (wildcardEl) wildcardGroup.appendChild(wildcardEl);
-      wildcardGroup.appendChild(elimCol);
+      const ladderIsLive = !LADDER_START || new Date() >= LADDER_START;
+      if (ladderIsLive) wildcardGroup.appendChild(elimCol);
       container.appendChild(wildcardGroup);
       } // end buildBracket
 
@@ -4044,6 +4046,7 @@
         SCHEDULE      = sd.ladder    || {};
         LIVE_MATCH    = sd.liveMatch || null;
         SEASON_START  = sd.countdown ? new Date(sd.countdown) : null;
+        LADDER_START  = sd.lcqEnd    ? new Date(sd.lcqEnd)    : null;
         init();
       });
 
@@ -4850,6 +4853,13 @@
             d.className = 'bracket-week-dates';
             d.textContent = weekDates[w - 1];
             weekEl.appendChild(d);
+          }
+
+          if (!(isWildcard && isAutoWildcardSeason)) {
+            const labelEl = document.createElement('div');
+            labelEl.className = 'bracket-week-label';
+            labelEl.textContent = isWildcard ? 'Wildcard' : `Week ${w}`;
+            weekEl.appendChild(labelEl);
           }
 
           // Auto-wildcard: fastest time qualifies with no match (Season 2 format)
