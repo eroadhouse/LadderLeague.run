@@ -2363,7 +2363,7 @@
 
       <div class="about-contact reveal" style="transition-delay:.5s">
         <div class="about-contact-title">Contact Us</div>
-        <div class="about-contact-desc">Questions, business enquiries, or feedback</div>
+        <div class="about-contact-desc">Questions, business inquiries, or feedback</div>
         <a class="about-contact-email" href="mailto:tcsspeedrunning@gmail.com">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
           tcsspeedrunning@gmail.com
@@ -3281,7 +3281,7 @@
         matches.sort((a, b) => a.dt - b.dt);
 
         if (matches.length === 0) {
-          upcomingList.innerHTML = '<div class="uc-empty">No Upcoming Matches</div>';
+          upcomingList.innerHTML = '<div class="uc-empty">No Matches Scheduled</div>';
           const p = document.getElementById('upcoming-prev'), n = document.getElementById('upcoming-next');
           if (p) p.disabled = true; if (n) n.disabled = true;
           return;
@@ -3423,7 +3423,7 @@
           .sort((a, b) => b.dt - a.dt); // most recent first
 
         if (entries.length === 0) {
-          resultsList.innerHTML = '<div class="uc-empty">No Recent Match Results</div>';
+          resultsList.innerHTML = '<div class="uc-empty">No Recent Matches</div>';
           const p = document.getElementById('results-prev'), n = document.getElementById('results-next');
           if (p) p.disabled = true; if (n) n.disabled = true;
           return;
@@ -5360,7 +5360,7 @@
           // enough for Twitch's "style visibility" autoplay check inside the iframe.
           embedContainer.style.height = h + 'px';
           const iframe = document.createElement('iframe');
-          iframe.src = `https://player.twitch.tv/?channel=legospeedruns&parent=${hostname}&autoplay=true&muted=true&volume=0`;
+          iframe.src = `https://player.twitch.tv/?channel=captainpaxo&parent=${hostname}&autoplay=true&muted=true&volume=0`;
           iframe.width  = w;
           iframe.height = h;
           iframe.setAttribute('allowfullscreen', '');

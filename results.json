@@ -1,3 +1,314 @@
 {
-    
+  "lcq_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Charzight",   "time": "2:30:00" },
+      { "name": "Coolisen",    "time": "2:35:00" },
+      { "name": "MelloVro",    "time": "2:40:00" },
+      { "name": "ChessWiz",    "time": "2:45:00" },
+      { "name": "CaptainPaxo", "time": "2:50:00" },
+      { "name": "Gamer_Olive", "time": "2:55:00" },
+      { "name": "Chroma_Q",     "time": "3:00:00" },
+      { "name": "Nolan",       "time": "3:05:00" },
+      { "name": "skunkmonke",  "time": "3:10:00" }
+    ]
+  },
+  "lcq_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ChessWiz",   "time": "2:30:00" },
+      { "name": "CaptainPaxo",    "time": "2:35:00" },
+      { "name": "Gamer_Olive",    "time": "2:40:00" },
+      { "name": "ChromaQ",    "time": "2:45:00" },
+      { "name": "Nolan",       "time": "3:05:00" },
+      { "name": "skunkmonke",  "time": "3:10:00" }
+    ]
+  },
+  "1_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ZacMuffin", "time": "2:18:45" },
+      { "name": "Dragon67",  "time": "2:22:10" },
+      { "name": "AnorakDT",   "time": "2:30:00" }
+    ]
+  },
+  "1_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97", "time": "2:18:45" },
+      { "name": "ERoadhouse",  "time": "2:22:10" },
+      { "name": "Bricko",   "time": "2:30:00" }
+    ]
+  },
+  "1_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "WiiSuper", "time": "2:18:45" },
+      { "name": "Scynor",   "time": "2:22:10" , "status": "leapfrogged"},
+      { "name": "Wazzip",   "time": "2:30:00" }
+    ]
+  },
+  "1_4": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "FlamingLazer", "time": "2:18:45" , "status": "leapfrogging"},
+      { "name": "Dimei",        "time": "2:22:10" },
+      { "name": "Colten",       "time": "2:30:00" }
+    ]
+  },
+  "1_5": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "TheCrazedCap", "time": "2:18:45" },
+      { "name": "kwazrr",       "time": "2:22:10" },
+      { "name": "ejpman",       "time": "2:30:00" }
+    ]
+   },
+   "1_6": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Charzight", "time": "2:18:45" },
+      { "name": "Coolisen",  "time": "2:22:10" , "status": "leapfrogged"},
+      { "name": "MelloVro",  "time": "2:30:00" }
+    ]
+   },
+  "1_7": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ChessWiz", "time": "2:18:45" , "status": "leapfrogging"},
+      { "name": "CaptainPaxo",       "time": "2:22:10" },
+      { "name": "Gamer_Olive",       "time": "2:30:00" }
+    ]
+   },
+   "2_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Dragon67", "time": "2:18:45" },
+      { "name": "itsjared97",     "time": "2:22:10" },
+      { "name": "ERoadhouse",  "time": "2:30:00" }
+    ]
+   },
+   "2_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "AnorakDT",   "time": "2:18:45" },
+      { "name": "WiiSuper", "time": "2:22:10" , "status": "leapfrogged"},
+      { "name": "FlamingLazer",   "time": "2:30:00" }
+    ]
+   },
+   "2_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Bricko",   "time": "2:18:45" , "status": "leapfrogging"},
+      { "name": "Scynor",   "time": "2:22:10" },
+      { "name": "Dimei",    "time": "2:30:00" }
+    ]
+   },
+   "2_4": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Wazzip",   "time": "2:17:45" },
+      { "name": "TheCrazedCap",   "time": "2:25:10" , "status": "leapfrogged"},
+      { "name": "kwazrr",   "time": "2:40:00" }
+    ]
+   },
+   "2_5": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Colten",   "time": "2:20:41" , "status": "leapfrogging"},
+      { "name": "Coolisen",   "time": "2:21:37" },
+      { "name": "Charzight",   "time": "2:28:05" }
+    ]
+   },
+   "2_6": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ejpman",   "time": "2:20:45" },
+      { "name": "MelloVro",   "time": "2:22:10" },
+      { "name": "ChessWiz",   "time": "2:22:14" }
+    ]
+   },
+   "3_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97",   "time": "2:16:35" },
+      { "name": "Bricko",   "time": "2:20:10" },
+      { "name": "AnorakDT",   "time": "2:20:22" }
+    ]
+   },
+   "3_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ERoadhouse",  "time": "2:16:45" },
+      { "name": "Scynor",  "time": "2:20:10" , "status": "leapfrogged"},
+      { "name": "WiiSuper",   "time": "2:23:09" }
+    ]
+   },
+   "3_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "FlamingLazer", "time": "2:16:45" , "status": "leapfrogging"},
+      { "name": "Wazzip",    "time": "2:20:10" },
+      { "name": "Colten",  "time": "2:23:09" }
+    ]
+   },
+   "3_4": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "TheCrazedCap",   "time": "2:19:45" },
+      { "name": "Coolisen",   "time": "2:20:50" },
+      { "name": "Dimei",   "time": "2:21:00" }
+    ]
+   },
+   "3_5": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "kwazrr",   "time": "2:19:45" },
+      { "name": "ejpman",   "time": "2:20:50" },
+      { "name": "Charzight",   "time": "2:21:00" }
+    ]
+   },
+   "4_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Bricko",   "time": "2:18:50" },
+      { "name": "ERoadhouse",   "time": "2:19:32" },
+      { "name": "FlamingLazer",   "time": "2:20:00" }
+    ]
+   },
+   "4_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Wazzip",   "time": "2:17:03" },
+      { "name": "Scynor",   "time": "2:17:07" },
+      { "name": "AnorakDT",   "time": "2:17:22" }
+    ]
+   },
+   "4_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "WiiSuper",   "time": "2:18:45" },
+      { "name": "TheCrazedCap",   "time": "2:22:10" , "status": "leapfrogged"},
+      { "name": "Coolisen",   "time": "2:30:00" }
+    ]
+   },
+   "4_4": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Dimei",   "time": "2:18:45" , "status": "leapfrogging"},
+      { "name": "Colten",  "time": "2:22:10" },
+      { "name": "kwazrr",  "time": "2:24:40" }
+    ]
+   },
+   "5_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ERoadhouse",   "time": "2:18:42" },
+      { "name": "Scynor",    "time": "2:18:44" },
+      { "name": "Wazzip",    "time": "2:19:30" }
+    ]
+   },
+   "5_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Dimei",   "time": "2:22:45" },
+      { "name": "WiiSuper",   "time": "2:22:55" , "status": "leapfrogged"},
+      { "name": "FlamingLazer",   "time": "2:23:10" }
+    ]
+   },
+   "5_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "AnorakDT",  "time": "2:18:45" , "status": "leapfrogging"},
+      { "name": "TheCrazedCap",   "time": "2:22:10"},
+      { "name": "Coolisen",  "time": "2:45:59" }
+    ]
+   },
+   "6_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Scynor",   "time": "2:16:22" },
+      { "name": "AnorakDT",   "time": "2:18:10" },
+      { "name": "Dimei",   "time": "2:25:15" }
+    ]
+   },
+   "6_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "WiiSuper",   "time": "2:19:45" },
+      { "name": "FlamingLazer",   "time": "2:20:10" },
+      { "name": "Wazzip",  "time": "2:20:15" }
+    ]
+   },
+   "7_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "AnorakDT",   "time": "2:21:52" },
+      { "name": "WiiSuper",   "time": "2:22:10" },
+      { "name": "Dimei",   "time": "2:22:34" }
+    ]
+   },
+   "8_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "FlamingLazer", "time": "2:18:45" },
+      { "name": "ChessWiz",  "time": "2:22:10" }
+    ]
+   },
+   "qf_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ZacMuffin", "time": "2:18:45" },
+      { "name": "FlamingLazer",  "time": "2:22:10" }
+    ]
+   },
+   "qf_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Bricko",  "time": "2:16:15" },
+      { "name": "ERoadhouse",  "time": "2:18:00" }
+    ]
+   },
+   "qf_3": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97",  "time": "2:19:00" },
+      { "name": "Scynor",  "time": "2:21:55" }
+    ]
+  },
+  "qf_4": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Dragon67",  "time": "2:16:30" },
+      { "name": "AnorakDT",  "time": "2:18:21" }
+    ]
+  },
+  "sf_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ZacMuffin",  "time": "2:17:45" },
+      { "name": "Bricko",  "time": "2:20:00" }
+    ]
+  },
+  "sf_2": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "itsjared97",  "time": "2:18:45" },
+      { "name": "Dragon67",  "time": "2:19:00" }
+    ]
+  },
+  "tp_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "Bricko",  "time": "2:17:45" },
+      { "name": "Dragon67",  "time": "2:18:45" }
+    ]
+  },
+  "gf_1": {
+    "vod": "https://www.youtube.com/@TCSSpeedrunning",
+    "places": [
+      { "name": "ZacMuffin",  "time": "2:16:45" },
+      { "name": "itsjared97",  "time": "2:18:10" }
+    ]
+   }
 }
