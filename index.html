@@ -1733,8 +1733,8 @@
       border-radius: 50%;
       background: #6a7a8a;
       margin-right: .4rem;
-      animation: pulse 1.5s infinite;
     }
+    .status-dot.live { animation: pulse 1.5s infinite; }
     .status-bar-right {
       margin-left: auto;
       display: flex;
@@ -2343,7 +2343,7 @@
           <div class="about-card-name-secondary">Chimkin</div>
         </div>
         <div class="about-card reveal" style="animation-delay:.5s">
-          <div class="about-card-role">Prediction Model</div>
+          <div class="about-card-role">Data Scientists</div>
           <div class="about-card-name">AnAnonymousSource</div>
           <div class="about-card-name-secondary">Scynor</div>
         </div>
@@ -2356,7 +2356,7 @@
           <div class="about-card-name">itsjared97</div>
         </div>
         <div class="about-card reveal" style="animation-delay:.6s">
-          <div class="about-card-role">Music</div>
+          <div class="about-card-role">Music Production</div>
           <div class="about-card-name">Leveye, gustative</div>
         </div>
       </div>
@@ -2374,7 +2374,7 @@
 
   <!-- STATUS BAR -->
   <div class="status-bar">
-    <span class="status-item"><span class="status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
+    <span class="status-item"><span class="status-dot" id="footer-status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
     <span class="status-item">Season 03</span>
     <div class="status-bar-right">
       <a class="social-link" href="https://twitch.tv/legospeedruns" target="_blank" rel="noopener">
@@ -3078,7 +3078,7 @@
           const footerStatusItem = document.getElementById('footer-status-item');
           if (footerStatusItem) footerStatusItem.style.color = '#4caf50';
           const footerStatusDot = document.getElementById('footer-status-dot');
-          if (footerStatusDot) footerStatusDot.style.background = '#4caf50';
+          if (footerStatusDot) { footerStatusDot.style.background = '#4caf50'; footerStatusDot.classList.add('live'); }
         }
 
         function updateHomeCountdown() {
