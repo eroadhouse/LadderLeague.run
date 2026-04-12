@@ -1778,6 +1778,26 @@
       color: var(--accent);
       font-weight: 700;
     }
+    .format-panel-img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46%;
+      max-height: 88%;
+      object-fit: contain;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .format-panel--right .format-panel-img {
+      left: 2%;
+      mask-image: linear-gradient(to right, black 55%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black 55%, transparent 100%);
+    }
+    .format-panel--left .format-panel-img {
+      right: 2%;
+      mask-image: linear-gradient(to left, black 55%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, black 55%, transparent 100%);
+    }
     @media (max-width: 900px) {
       .format-panel {
         flex-direction: column;
@@ -1791,6 +1811,16 @@
       .format-copy {
         width: 100%;
         margin: 0;
+      }
+      .format-panel-img {
+        position: static;
+        transform: none;
+        width: 75%;
+        max-height: 200px;
+        display: block;
+        margin: 1.5rem auto .5rem;
+        mask-image: none;
+        -webkit-mask-image: none;
       }
     }
 
@@ -2366,6 +2396,7 @@
       <div class="divider"></div>
       <div class="format-sections">
         <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage5.png'); transition-delay:.3s">
+          <img class="format-panel-img" src="1_LadderSeeding.webp" alt="Ladder Seeding diagram">
           <div class="format-copy">
             <div class="format-section-title">Ladder Seeding</div>
             <p class="format-desc">Ladder League will begin by seeding the top 15 runners into the top 5 rungs of the bracket in Week 1. The remaining competitors with times under 2:45 will take part in 2 Last Chance Qualifier races, or "LCQs." The top 3 finishers of the first LCQ will qualify to Rung 6, and the the second to Rung 7. From there, the ladder will begin.</p>
@@ -2376,8 +2407,10 @@
             <div class="format-section-title">Main Ladder</div>
             <p class="format-desc">Each week, all rungs of the ladder will play 1 match. In rung 1, the winner will qualify for Top 8 with their respective Seed (Seed 1 for Week 1's winner). Second place in this match will remain in the rung, and the loser will move down to the lower rung. In the bottom rung, only the winner will move on, while the two losers will be eliminated. In every other rung, the top two finishers will move up while the loser moves down.</p>
           </div>
+          <img class="format-panel-img" src="2_MainLadder.webp" alt="Main Ladder diagram">
         </section>
         <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage7.png'); transition-delay:.5s">
+          <img class="format-panel-img" src="3_Wildcard.webp" alt="Wildcard diagram">
           <div class="format-copy">
             <div class="format-section-title">Wildcard</div>
             <p class="format-desc">As the ladder progresses through 7 weeks, 7 runners will qualify for top 8. The 8th seed will be decided through a wildcard match: the runner with the fastest single time achieved will compete against the runner with the best average time over the course of the ladder in a wildcard match to earn the 8th seed. Note that a DNF doubles your worst time in average calculations, and multiple DNFs disqualifies you from the wildcard match.</p>
@@ -2388,8 +2421,10 @@
             <div class="format-section-title">Leapfrog</div>
             <p class="format-desc">To reward runners for exceptional play and punish runners for lackluster times while coasting, the leapfrog mechanic allows any runner below rung 2 to move up 2 rungs at once. If the winner of a rung has a time faster than that of the second place finisher in the rung above them, they will move up 2 rungs, while the runner above will remain in their rung.</p>
           </div>
+          <img class="format-panel-img" src="4_Leapfrog.webp" alt="Leapfrog diagram">
         </section>
         <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage16.png'); transition-delay:.7s">
+          <img class="format-panel-img" src="5_Top8.webp" alt="Top 8 diagram">
           <div class="format-copy">
             <div class="format-section-title">Top 8</div>
             <p class="format-desc">The final Top 8 bracket will be a single-elimination playoffs bracket hosted in person. The matchups will use typical seeding: Seed 1 vs Seed 8, Seed 2 vs Seed 7, and so on. The final day will consist of a third place match followed by the Grand Finals, where the Ladder League Season 3 champion will be crowned.</p>
