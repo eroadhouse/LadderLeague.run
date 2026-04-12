@@ -508,15 +508,105 @@
     /* ════════════════════════════
        STANDINGS TABS
     ════════════════════════════ */
-    .standings-tabs {
+    .standings-bar {
       display: flex;
-      gap: 0;
+      align-items: stretch;
       border-bottom: 1px solid var(--border);
-      padding: .375rem 1rem 0;
-      background: transparent;
+      background: var(--bg);
       position: sticky;
       top: var(--nav-h);
       z-index: 10;
+    }
+    .standings-bar-left {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+    }
+    .standings-bar-right {
+      flex: 1;
+    }
+    .season-dropdown {
+      position: relative;
+    }
+    .season-dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .35rem .65rem;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+      outline: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .season-dropdown-btn:hover,
+    .season-dropdown.open .season-dropdown-btn {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+    .season-dropdown-chevron {
+      transition: transform .2s;
+      flex-shrink: 0;
+      opacity: .6;
+    }
+    .season-dropdown.open .season-dropdown-chevron {
+      transform: rotate(180deg);
+    }
+    .season-dropdown-menu {
+      position: absolute;
+      top: calc(100% + .4rem);
+      left: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .3rem 0;
+      list-style: none;
+      min-width: 100%;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity .15s, transform .15s;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    }
+    .season-dropdown.open .season-dropdown-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .season-dropdown-item {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: .55rem 1.1rem;
+      cursor: pointer;
+      transition: color .12s, background .12s;
+      white-space: nowrap;
+    }
+    .season-dropdown-item:hover {
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+    }
+    .season-dropdown-item.active {
+      color: var(--accent);
+    }
+    .standings-tabs {
+      display: flex;
+      gap: 0;
+      padding: .375rem 0 0;
     }
     .standings-tab {
       font-family: 'Montserrat', sans-serif;
@@ -1388,7 +1478,7 @@
       margin-top: 2rem;
     }
     .p-stat-status.qualified  { color: #d4b84a; }
-    .p-stat-status.eliminated { color: #cc3a3a; }
+    .p-stat-status.eliminated { color: #ba3b3b; }
     .p-stat-row {
       display: flex;
       gap: 2.6rem;
@@ -1943,6 +2033,9 @@
     .lcq-week .bp-move {
       font-size: 1rem;
     }
+    .lcq-week .scheduled-indicator {
+      font-size: .75rem;
+    }
     .lcq-week .bracket-player {
       height: auto;
       min-height: 2.4rem;
@@ -2163,17 +2256,32 @@
 
   <!-- ══ STANDINGS ══ -->
   <div class="page" id="standings">
-    <div class="participants-season-tabs" style="border-bottom:none; padding:.25rem 1rem 0; margin-bottom:0">
-      <button class="participants-season-tab" data-sseason="1">Season 1</button>
-      <button class="participants-season-tab" data-sseason="2">Season 2</button>
-      <button class="participants-season-tab active" data-sseason="3">Season 3</button>
-    </div>
-    <div id="standings-s3">
-      <div class="standings-tabs">
+    <div class="standings-bar">
+      <div class="standings-bar-left">
+        <div id="standings-season-dropdown" class="season-dropdown">
+          <button class="season-dropdown-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="standings-season-label">Season 3</span>
+            <svg class="season-dropdown-chevron" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <ul class="season-dropdown-menu" role="listbox">
+            <li class="season-dropdown-item" data-sseason="1" role="option">Season 1</li>
+            <li class="season-dropdown-item" data-sseason="2" role="option">Season 2</li>
+            <li class="season-dropdown-item active" data-sseason="3" role="option">Season 3</li>
+          </ul>
+        </div>
+      </div>
+      <div id="standings-s3-tabs" class="standings-tabs">
         <div class="standings-tab" data-tab="lcq">LCQ</div>
         <div class="standings-tab" data-tab="ladder">Ladder</div>
         <div class="standings-tab" data-tab="top8">Top 8</div>
       </div>
+      <div id="standings-past-tabs" class="standings-tabs" style="display:none">
+        <div class="standings-tab active" data-ptab="ladder">Ladder</div>
+        <div class="standings-tab" data-ptab="top8">Top 8</div>
+      </div>
+      <div class="standings-bar-right"></div>
+    </div>
+    <div id="standings-s3">
       <div class="standings-tab-panel" id="standings-tab-lcq">
         <div class="lcq-outer reveal" style="transition-delay:.1s">
           <div id="lcq-scroll"></div>
@@ -2191,10 +2299,6 @@
       </div>
     </div>
     <div id="standings-past" style="display:none">
-      <div class="standings-tabs" id="standings-past-tabs">
-        <div class="standings-tab active" data-ptab="ladder">Ladder</div>
-        <div class="standings-tab" data-ptab="top8">Top 8</div>
-      </div>
       <div class="standings-tab-panel active" id="standings-past-ladder">
         <div class="bracket-outer reveal" style="transition-delay:.1s">
           <div class="bracket-scroll" id="past-bracket-scroll"></div>
@@ -2878,14 +2982,14 @@
       const lcqEnd    = new Date(sd.lcqEnd    || '2026-05-11T05:00:00Z');
       const ladderEnd = new Date(sd.ladderEnd || '2026-06-25T05:00:00Z');
       s3DefaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
-      document.querySelector(`#standings-s3 .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
+      document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
     });
 
-    document.querySelectorAll('#standings-s3 .standings-tab').forEach(tab => {
+    document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const name = tab.dataset.tab;
-        document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(`standings-tab-${name}`).classList.add('active');
@@ -3036,18 +3140,26 @@
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       document.getElementById('standings').classList.add('active');
       document.querySelectorAll('.nav-links a[data-page="standings"]').forEach(a => a.classList.add('active'));
-      // Reset season switcher to Season 3
-      document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(t => t.classList.remove('active'));
-      const s3SeasonTab = document.querySelector('.participants-season-tab[data-sseason="3"]');
-      if (s3SeasonTab) s3SeasonTab.classList.add('active');
+      // Reset season dropdown to Season 3
+      const _dd = document.getElementById('standings-season-dropdown');
+      if (_dd) {
+        const _lbl = document.getElementById('standings-season-label');
+        if (_lbl) _lbl.textContent = 'Season 3';
+        _dd.querySelectorAll('.season-dropdown-item').forEach(el => el.classList.toggle('active', el.dataset.sseason === '3'));
+        _dd.classList.remove('open');
+      }
       const s3El = document.getElementById('standings-s3');
       const pastEl = document.getElementById('standings-past');
+      const s3Tabs   = document.getElementById('standings-s3-tabs');
+      const pastTabs = document.getElementById('standings-past-tabs');
       if (s3El) s3El.style.display = '';
       if (pastEl) pastEl.style.display = 'none';
+      if (s3Tabs)   s3Tabs.style.display = '';
+      if (pastTabs) pastTabs.style.display = 'none';
       // Activate the correct inner tab
-      document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
-      document.querySelector(`#standings-s3 .standings-tab[data-tab="${tab}"]`).classList.add('active');
+      document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${tab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${tab}`).classList.add('active');
       window.scrollTo(0, 0);
       setTimeout(observeAll, 50);
@@ -3057,6 +3169,20 @@
     let season3CountdownActive = false;
 
     schedulePromise.then(sd => {
+      // ── shared countdown unit helper ──
+      function updateUnit(el, value, singular, plural, pad, hideIfZero = true) {
+        if (!el) return;
+        const item = el.parentElement;
+        if (value === 0 && hideIfZero) {
+          if (item) item.style.display = 'none';
+          return;
+        }
+        if (item) item.style.display = '';
+        el.textContent = pad ? String(value).padStart(2, '0') : value;
+        const label = el.nextElementSibling;
+        if (label) label.textContent = value === 1 ? singular : plural;
+      }
+
       // ── HOME: counts down to seasonStart ──
       const homeTarget = sd.seasonStart ? new Date(sd.seasonStart) : null;
       if (homeTarget) {
@@ -3089,10 +3215,10 @@
           const hours   = Math.floor((totalSec % 86400) / 3600);
           const minutes = Math.floor((totalSec % 3600) / 60);
           const seconds = totalSec % 60;
-          if (elDays)    elDays.textContent    = days;
-          if (elHours)   elHours.textContent   = String(hours).padStart(2, '0');
-          if (elMinutes) elMinutes.textContent = String(minutes).padStart(2, '0');
-          if (elSeconds) elSeconds.textContent = String(seconds).padStart(2, '0');
+          updateUnit(elDays,    days,    'Day',    'Days',    false);
+          updateUnit(elHours,   hours,   'Hour',   'Hours',   true);
+          updateUnit(elMinutes, minutes, 'Minute', 'Minutes', true);
+          updateUnit(elSeconds, seconds, 'Second', 'Seconds', true, false);
         }
 
         if (new Date() >= homeTarget) {
@@ -3143,10 +3269,10 @@
         const hours   = Math.floor((totalSec % 86400) / 3600);
         const minutes = Math.floor((totalSec % 3600) / 60);
         const seconds = totalSec % 60;
-        if (pElDays)    pElDays.textContent    = days;
-        if (pElHours)   pElHours.textContent   = String(hours).padStart(2, '0');
-        if (pElMinutes) pElMinutes.textContent = String(minutes).padStart(2, '0');
-        if (pElSeconds) pElSeconds.textContent = String(seconds).padStart(2, '0');
+        updateUnit(pElDays,    days,    'Day',    'Days',    false);
+        updateUnit(pElHours,   hours,   'Hour',   'Hours',   true);
+        updateUnit(pElMinutes, minutes, 'Minute', 'Minutes', true);
+        updateUnit(pElSeconds, seconds, 'Second', 'Seconds', true, false);
       }
 
       updateCountdown();
@@ -3312,7 +3438,7 @@
         const places  = e.result.places;
         const dateStr = e.hasScheduleDate ? e.dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
         const vodHtml = e.result.vod
-          ? `<a class="uc-vod" href="${e.result.vod}" target="_blank" rel="noopener" onclick="event.stopPropagation()">VOD ↗</a>`
+          ? `<a class="uc-vod" href="${e.result.vod}" target="_blank" rel="noopener" onclick="event.stopPropagation()">VOD <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>`
           : '';
         let placesHtml;
         if (e.section === 'lcq') {
@@ -4772,9 +4898,9 @@
         ladderBtn.className = 'lcq-ladder-btn';
         ladderBtn.textContent = 'See Ladder Standings →';
         ladderBtn.addEventListener('click', () => {
-          document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(t => t.classList.remove('active'));
           document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
-          document.querySelector('#standings-s3 .standings-tab[data-tab="ladder"]').classList.add('active');
+          document.querySelector('#standings-s3-tabs .standings-tab[data-tab="ladder"]').classList.add('active');
           document.getElementById('standings-tab-ladder').classList.add('active');
         });
         container.appendChild(ladderBtn);
@@ -4830,31 +4956,62 @@
 
       const VOD_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>';
 
-      // Season tab switching
-      document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.participants-season-tab[data-sseason]').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const season = parseInt(tab.dataset.sseason);
-          if (season === 3) {
-            s3El.style.display = '';
-            pastEl.style.display = 'none';
-            // Re-apply the schedule-based default tab for S3
-            document.querySelectorAll('#standings-s3 .standings-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
-            document.querySelector(`#standings-s3 .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
-            document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
-          } else {
-            s3El.style.display = 'none';
-            pastEl.style.display = '';
-            // Default past seasons 1 & 2 to Top 8 (bracket is complete)
-            document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('#standings-past-tabs .standings-tab[data-ptab="top8"]').classList.add('active');
-            document.querySelectorAll('#standings-past .standings-tab-panel').forEach(p => p.classList.remove('active'));
-            document.getElementById('standings-past-top8').classList.add('active');
-            loadAndRenderPastSeason(season);
-          }
+      // Season custom dropdown
+      const s3TabsEl   = document.getElementById('standings-s3-tabs');
+      const pastTabsEl = document.getElementById('standings-past-tabs');
+      const seasonDropdown = document.getElementById('standings-season-dropdown');
+      const seasonDropBtn  = seasonDropdown.querySelector('.season-dropdown-btn');
+      const seasonLabel    = document.getElementById('standings-season-label');
+      let currentSeason = 3;
+
+      function setStandingsSeason(season, switchContent = true) {
+        currentSeason = season;
+        // Update label + active item
+        seasonLabel.textContent = `Season ${season}`;
+        seasonDropdown.querySelectorAll('.season-dropdown-item').forEach(el => {
+          el.classList.toggle('active', parseInt(el.dataset.sseason) === season);
         });
+        seasonDropBtn.setAttribute('aria-expanded', 'false');
+        seasonDropdown.classList.remove('open');
+        if (!switchContent) return;
+        if (season === 3) {
+          s3El.style.display = '';
+          pastEl.style.display = 'none';
+          if (s3TabsEl)   s3TabsEl.style.display = '';
+          if (pastTabsEl) pastTabsEl.style.display = 'none';
+          document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
+          document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
+        } else {
+          s3El.style.display = 'none';
+          pastEl.style.display = '';
+          if (s3TabsEl)   s3TabsEl.style.display = 'none';
+          if (pastTabsEl) pastTabsEl.style.display = '';
+          document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelector('#standings-past-tabs .standings-tab[data-ptab="top8"]').classList.add('active');
+          document.querySelectorAll('#standings-past .standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.getElementById('standings-past-top8').classList.add('active');
+          loadAndRenderPastSeason(season);
+        }
+      }
+
+      // Toggle open/close
+      seasonDropBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const isOpen = seasonDropdown.classList.toggle('open');
+        seasonDropBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      // Item selection
+      seasonDropdown.querySelectorAll('.season-dropdown-item').forEach(item => {
+        item.addEventListener('click', () => setStandingsSeason(parseInt(item.dataset.sseason)));
+      });
+      // Close on outside click
+      document.addEventListener('click', () => {
+        if (seasonDropdown.classList.contains('open')) {
+          seasonDropdown.classList.remove('open');
+          seasonDropBtn.setAttribute('aria-expanded', 'false');
+        }
       });
 
       // Past season inner tab switching
@@ -5120,7 +5277,7 @@
         const ROUNDS = [
           { id: 'qf', name: 'Quarterfinals', label: 'Quarterfinal', matches: 4 },
           { id: 'sf', name: 'Semifinals',    label: 'Semifinal',    matches: 2 },
-          { id: 'gf', name: 'Finals',        label: null,           matches: 1 },
+          { id: 'gf', name: 'Finals',        label: null,           matchName: 'Grand Finals', matches: 1 },
         ];
 
         const winnerOf = key => top8[key]?.places?.[0]?.name || null;
@@ -5280,7 +5437,7 @@
         const matchLabelEl = document.createElement('span');
         matchLabelEl.textContent = round.label
           ? (round.matches > 1 ? `${round.label} ${matchNum}` : round.name)
-          : round.name;
+          : (round.matchName || round.name);
         matchRow.appendChild(matchLabelEl);
 
         if (isDone) {
