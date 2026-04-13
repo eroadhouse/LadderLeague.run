@@ -1,18 +1,12 @@
 {
-  "countdown":  "2026-05-01T06:00:00Z",
+  "countdown":  "2026-04-01T06:00:00Z",
   "seasonStart": "2026-05-09T17:00:00Z",
   "lcqEnd":     "2026-05-11T05:00:00Z",
   "ladderEnd":  "2026-06-25T05:00:00Z",
   "liveMatch":  false,
   "lcq":    {
-    "lcq_1": {
-      "start":"2026-05-09T13:00:00-04:00",
-      "players": ["Charzight","AnorakDT","thenzota","TwiceLyte","GildetPhantom","Anonymous"]
-    },
-    "lcq_2": {
-      "start":"2026-05-10T13:00:00-04:00",
-      "players": ["Charzight","AnorakDT","thenzota","TwiceLyte","GildetPhantom","Anonymous"]
-    }
+    "lcq_1": "2026-05-09T13:00:00-04:00",
+    "lcq_2": "2026-05-10T13:00:00-04:00"
   },
   "ladder": {
     },

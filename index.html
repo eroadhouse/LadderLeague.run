@@ -38,7 +38,7 @@
       overflow-x: hidden;
     }
 
-    /* ── BACKGROUND GLOW ── */
+    /* Background Glow */
     body::before {
       content: '';
       position: fixed;
@@ -53,7 +53,7 @@
 
 
 
-    /* ── LIVE MATCH ── */
+    /* Live Match */
     .bracket-match.live {
       border-color: #2a5a2a;
       background: rgba(60,180,60,.04);
@@ -101,7 +101,7 @@
       font-weight: 500;
     }
 
-    /* ── DONE MATCH ── */
+    /* Finished match */
     .bracket-match.done {
       border-color: #1e2535;
       opacity: .85;
@@ -162,7 +162,7 @@
     .bp-move.eliminated  { color: #ca4646; }
 
 
-    /* ── WEEK QUALIFIED SLOT ── */
+    /* Week Qualified Slot */
     .week-qualified-slot {
       display: flex;
       align-items: center;
@@ -204,7 +204,7 @@
     }
     .week-qualified-slot.empty .wqs-icon { display: none; }
 
-    /* ── STAR CANVAS ── */
+    /* Starfield */
     #starfield {
       position: fixed;
       inset: 0;
@@ -215,7 +215,7 @@
     }
 
 
-    /* ── NAV ── */
+    /* Navbar */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -272,7 +272,7 @@
       background: rgba(140,160,200,.06);
     }
 
-    /* ── PAGE SYSTEM ── */
+    /* Pages */
     .page { display: none; padding-top: var(--nav-h); min-height: 100vh; position: relative; z-index: 1; }
     .page.active { display: block; animation: fadeIn .35s ease; }
 
@@ -280,13 +280,10 @@
     @keyframes pulse  { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 @keyframes flicker { 0%,100% { opacity:1; } 92% { opacity:1; } 93% { opacity:.6; } 95% { opacity:1; } 97% { opacity:.8; } }
 
-    /* ── SECTION WRAPPER ── */
     .section { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; text-align: center; }
 
-    /* ── LADDER PAGE: slightly brighter greys ── */
     #standings { --dim: #6e7e92; }
 
-    /* ── TOP 8 PAGE: brighter greys in bracket, not in placement boxes ── */
     #standings-tab-top8 .top8-bracket-scroll { --dim: #8090a8; }
     #standings-tab-top8 .bracket-week-dates { color: var(--dim); }
     #standings-tab-top8 .bracket-round-results { --dim: #5a6478; }
@@ -315,9 +312,7 @@
       margin: 1.5rem auto;
     }
 
-    /* ════════════════════════════
-       HOME PAGE
-    ════════════════════════════ */
+    /* Home Page */
     #home .hero-scroll-cta {
       position: absolute;
       bottom: 2rem;
@@ -410,7 +405,7 @@
       transition: background .2s, transform .15s;
     }
 
-    /* ── Twitch live layout ── */
+    /* Twitch live embed */
     #home .hero-left {
       display: flex;
       flex-direction: column;
@@ -490,7 +485,6 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .stat-item { }
     .stat-value {
       font-family: 'Rubik', sans-serif;
       font-size: 2.5rem;
@@ -505,9 +499,7 @@
       text-transform: uppercase;
     }
 
-    /* ════════════════════════════
-       STANDINGS TABS
-    ════════════════════════════ */
+    /* Standings Page */
     .standings-bar {
       display: flex;
       align-items: stretch;
@@ -638,9 +630,7 @@
       text-transform: uppercase;
     }
 
-    /* ════════════════════════════
-       STANDINGS / BRACKET PAGE
-    ════════════════════════════ */
+    /* Bracket Part of Standings Page */
     .bracket-outer {
       overflow-x: auto;
       padding-bottom: 2rem;
@@ -655,7 +645,7 @@
       min-height: 70vh;
     }
 
-    /* ─ Top 8 Bracket Container ─ */
+    /* Top 8 bracket container */
     .top8-bracket-outer {
       overflow-x: auto;
       padding: .45rem 1rem;
@@ -674,7 +664,7 @@
       z-index: 1;
     }
 
-    /* Week column */
+    /* Week columns */
     .bracket-week {
       display: flex;
       flex-direction: column;
@@ -717,7 +707,7 @@
       justify-content: top;
     }
 
-    /* ─ Top 8 Bracket Round ─ */
+    /* Top 8 rounds */
     .bracket-round {
       display: flex;
       flex-direction: column;
@@ -750,7 +740,7 @@
       padding: 1rem 0;
     }
 
-    /* ─ Top 8 Match Box ─ */
+    /* Top 8 boxes */
     .top8-match {
       position: relative;
       background: var(--surface);
@@ -765,7 +755,7 @@
     }
     .top8-match:hover { border-color: var(--accent); }
 
-    /* ─ Top 8 Live Match ─ */
+    /* Top 8 live matches */
     .top8-match.live {
       border-color: #2a5a2a;
       background: rgba(60,180,60,.04);
@@ -778,7 +768,7 @@
       background: rgba(60,180,60,.08);
     }
 
-    /* ─ Top 8 Done Match ─ */
+    /* Top 8 finished matches */
     .top8-match.done {
       border-color: #1e2535;
       opacity: .85;
@@ -788,7 +778,7 @@
     }
     .top8-match.done:hover .top8-done-indicator { color: var(--accent); }
 
-    /* ─ Top 8 Indicators ─ */
+    /* Top 8 live indicator */
     .top8-live-indicator {
       display: flex;
       align-items: center;
@@ -850,7 +840,7 @@
       white-space: nowrap;
     }
 
-    /* ─ Top 8 Player Styles ─ */
+    /* Top 8 competitors */
     .top8-bracket-player {
       display: flex;
       align-items: center;
@@ -871,7 +861,7 @@
     .top8-bracket-player.won        { color: #6ec88a; }
     .top8-bracket-player.champion  { color: #d4b84a; }
 
-    /* ─ Top 8 Champion Box ─ */
+    /* Champion box */
     .top8-results-stack {
       display: flex;
       flex-direction: column;
@@ -1010,7 +1000,6 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* ─ Top 8 Match Rung Header ─ */
     .top8-match-rung {
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
@@ -1039,8 +1028,6 @@
       cursor: default;
     }
     .bracket-match:hover { border-color: var(--accent); }
-
-    /* Spacing between matches */
     .bracket-match + .bracket-match { margin-top: 10px; }
 
     .bracket-match-rung {
@@ -1114,7 +1101,7 @@
       pointer-events: none;
     }
 
-    /* Connector lines between weeks */
+    /* Connectors */
     .bracket-connector {
       display: flex;
       flex-direction: column;
@@ -1124,7 +1111,7 @@
       position: relative;
     }
 
-    /* Qualified sidebar */
+    /* Qualified list */
     .bracket-qualified {
       min-width: 170px;
       margin-left: 24px;
@@ -1230,7 +1217,7 @@
     }
     .wcs-divider { height: .5rem; }
 
-    /* Qualified sidebar */
+    /* Qualified list */
     .bracket-qualified {
       min-width: 170px;
       flex-shrink: 0;
@@ -1277,7 +1264,7 @@
       font-weight: 400;
     }
 
-    /* Eliminated sidebar */
+    /* Eliminated list */
     .bracket-eliminated {
       min-width: 170px;
       flex-shrink: 0;
@@ -1376,9 +1363,7 @@
       font-weight: 700;
     }
 
-    /* ════════════════════════════
-       PARTICIPANTS PAGE
-    ════════════════════════════ */
+    /* Participants page */
     .participants-season-tabs {
       display: flex;
       gap: 0;
@@ -1570,9 +1555,7 @@
     }
     .p-record strong { color: var(--text); }
 
-    /* ════════════════════════════
-       PREDICTIONS PAGE
-    ════════════════════════════ */
+    /* Predictions page (need to embed lazer's thing here still) */
     .prediction-grid {
       display: grid;
       gap: 1.25rem;
@@ -1659,9 +1642,7 @@
       color: var(--accent2);
     }
 
-    /* ════════════════════════════
-       FORMAT PAGE
-    ════════════════════════════ */
+    /* Format page */
     .format-sections {
       display: flex;
       flex-direction: column;
@@ -1826,7 +1807,7 @@
 
 
 
-    /* ── STATUS BAR ── */
+    /* Status (in footer) */
     .status-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -1885,7 +1866,7 @@
       .vs-badge { display: none; }
     }
 
-    /* ── SCROLL REVEAL ── */
+    /* Scroll reveal animation */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -1914,7 +1895,7 @@
       transform: scale(1);
     }
 
-    /* ── UPCOMING MATCHES (HOME) ── */
+    /* Upcoming matches sction */
     .upcoming-section { padding: 3rem 2rem 6rem; }
     .upcoming-title { font-family: 'Rubik', sans-serif; color: #fff; font-size: 2rem; margin-bottom: .5rem; }
     .upcoming-sub { font-family: 'Montserrat', sans-serif; color: var(--dim); font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
@@ -1992,9 +1973,7 @@
     .uc-result-2nd  { color: var(--accent); }
     .uc-result-3rd  { color: var(--dim); }
 
-    /* ════════════════════════════
-       LCQ PAGE
-    ════════════════════════════ */
+    /* LCQ tab */
     .lcq-outer {
       overflow-x: auto;
       padding: 2.6rem 0 3.9rem;
@@ -2080,9 +2059,7 @@
       font-weight: 400;
     }
 
-    /* ════════════════════════════
-       ABOUT PAGE
-    ════════════════════════════ */
+    /* About page */
     #about {
       position: relative;
       overflow: hidden;
@@ -2127,6 +2104,7 @@
       animation: aboutCardIn .6s ease backwards;
       transition: transform .5s ease-out, border-color .15s ease-out;
     }
+    /* Top has 4 cards cuz we only have 10 boxes, can add more maybe later */
     .about-card.visible:hover { transform: scale(1.14); border-color: var(--accent); }
     .about-card:nth-child(-n+4) { grid-column: span 3; }
     /* @media (max-width: 900px) { .about-card, .about-card:nth-child(-n+4) { grid-column: span 6; } } */
@@ -2190,10 +2168,10 @@
 </head>
 <body>
 
-  <!-- STAR CANVAS -->
+  <!-- Starfield -->
   <canvas id="starfield"></canvas>
 
-  <!-- NAV -->
+  <!-- Navbar -->
   <nav>
     <a class="nav-logo" href="#" data-page="home">
       <img src="logo.webp" alt="LADDER LEAGUE" class="nav-logo-img">
@@ -2208,7 +2186,7 @@
     </ul>
   </nav>
 
-  <!-- ══ HOME ══ -->
+  <!-- Home page -->
   <div class="page active" id="home">
     <div class="hero">
       <div class="hero-left">
@@ -2257,7 +2235,7 @@
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 16.5l-8-8 1.41-1.41L12 13.67l6.59-6.58L20 8.5z"/></svg>
       </button>
     </div>
-    <!-- UPCOMING MATCHES (reveals when scrolled into view) -->
+    <!-- Upcoming matches section -->
     <div class="upcoming-section reveal" id="upcoming-section">
       <div class="section">
         <div class="upcoming-title">Upcoming Matches</div>
@@ -2284,7 +2262,7 @@
     </div>
   </div>
 
-  <!-- ══ STANDINGS ══ -->
+  <!-- Standings page -->
   <div class="page" id="standings">
     <div class="standings-bar">
       <div class="standings-bar-left">
@@ -2342,7 +2320,7 @@
     </div>
   </div>
 
-  <!-- ══ PARTICIPANTS ══ -->
+  <!-- Participants page -->
   <div class="page" id="participants">
     <div class="section">
       <div class="page-title reveal">PARTICI<span>PANTS</span></div>
@@ -2378,7 +2356,7 @@
     </div>
   </div>
 
-  <!-- ══ PREDICTIONS ══ -->
+  <!-- Predictions page (again still need to put a link to lazer's site) -->
   <div class="page" id="predictions">
     <div class="section">
       <div class="page-title reveal">PREDIC<span>TIONS</span></div>
@@ -2388,7 +2366,7 @@
     </div>
   </div>
 
-  <!-- ══ FORMAT ══ -->
+  <!-- Format page (text needs to be changed) -->
   <div class="page" id="format">
     <div class="section">
       <div class="page-title reveal">FOR<span>MAT</span></div>
@@ -2446,7 +2424,7 @@
     </div>
   </div>
 
-  <!-- ══ ABOUT ══ -->
+  <!-- About page -->
   <div class="page" id="about">
     <div class="about-bg"></div>
     <div class="about-content section">
@@ -2511,7 +2489,7 @@
     </div>
   </div>
 
-  <!-- STATUS BAR -->
+  <!-- Status footer -->
   <div class="status-bar">
     <span class="status-item"><span class="status-dot" id="footer-status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
     <span class="status-item">Season 03</span>
@@ -2539,7 +2517,7 @@
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // ── PARTICIPANTS DATA ──
+    //participants data js
     const grid = document.getElementById('p-grid');
 
     function pOrdinal(n) {
@@ -2558,20 +2536,20 @@
       return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    const schedulePromise = fetch('schedule.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
-    const resultsPromise  = fetch('results.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
+    const schedulePromise      = fetch('schedule.json',      { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
+    const resultsPromise       = fetch('results.json',       { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
+    const participantsPromise  = fetch('participants.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
 
+    //src api call
     Promise.all([
       fetch('participants.json',  { cache: 'no-store' }).then(r => r.json()),
       fetch('results.json',       { cache: 'no-store' }).then(r => r.json()),
       fetch('past_seasons.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({})),
       fetch('https://www.speedrun.com/api/v1/leaderboards/46w33l1r/category/9d8p7ylk?embed=players&platform=PC&top=150&var-j84pew89=0q5v2grl').then(r => r.json()).catch(() => null),
     ]).then(([allParticipants, ladderResults, pastSeasons, lbData]) => {
-      // allParticipants is now { season1: [...], season2: [...], season3: [...] }
-      // For stats/results we always use season3
       const participants = allParticipants.season3 || [];
 
-      // Season tab switching — non-season3 tabs just show a simple list
+      //season tab switching (hardcoding previous seasons cuz its easier)
       let activeSeason = 'season3';
       document.querySelectorAll('.participants-season-tab[data-season]').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -2594,7 +2572,7 @@
               renderSeason3();
             }
           } else {
-            // Always show grid for past seasons, hide countdown regardless of timer state
+            //gating out countdown for past seasons and only using it on current one
             if (pCdEl) pCdEl.style.display = 'none';
             if (pGridEl) pGridEl.style.display = '';
             renderSimple(seasonList, activeSeason);
@@ -2642,6 +2620,7 @@
             }
           }
 
+          //accolade badges
           const acBadges = (() => {
             const ac = p.accolades;
             if (!ac) return '';
@@ -2652,6 +2631,7 @@
             return badges.length ? `<div class="p-accolades">${badges.join('')}</div>` : '';
           })();
 
+          //making participant card
           grid.innerHTML += `
             <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
               <div class="p-avatar" ${avatarStyle}>${avatarContent}</div>
@@ -2682,7 +2662,7 @@
         return `Week ${w} Rung ${r}`;
       }
 
-      // Per-player PB and times (ladder weeks 1–7 only, no LCQ or Top 8)
+      //pbs + ladder pbs
       const playerPB = {}, playerPBKey = {}, playerTimes = {};
       Object.entries(ladderResults).forEach(([key, result]) => {
         if (!result || !result.places) return;
@@ -2700,7 +2680,7 @@
         });
       });
 
-      // Ladder PB + average for past seasons, computed from past_seasons.json results
+      //prev seasons ladder pb/avg (calculating not hardcoding this part)
       const pastSeasonStats = {};
       ['season1', 'season2'].forEach(sKey => {
         const sData = pastSeasons[sKey];
@@ -2722,7 +2702,7 @@
         pastSeasonStats[sKey] = stats;
       });
 
-      // Qualification: rung 1 place 1 each ladder week + wildcard week 8
+      //top 8 seeds
       const playerQualSeed = {};
       for (let w = 1; w <= 8; w++) {
         const r = ladderResults[`${w}_1`];
@@ -2730,17 +2710,15 @@
         if (name) playerQualSeed[name] = w;
       }
 
-      // Elimination placements (9th onward)
-      // Wildcard loser stays at their original ladder slot; wildcard winner is
-      // removed from the eliminated list and everyone below them shifts up.
+      //placements
       const playerPlacement = {};
       const elimSlots = [];
       for (let w = 7; w >= 1; w--) {
         const mc = weekMatchCounts[w - 1];
+        //for wildcards just gonna leave the loser at their original eliminated placement
         for (let place = 2; place <= 3; place++) elimSlots.push({ week: w, rung: mc, place });
       }
-      // Compute wildcard participants (same logic as bracket page):
-      // fastest time + fastest average among non-qualified players.
+      //wildcard matchups
       const pWcBest = {}, pWcAllTimes = {};
       Object.entries(playerPB).forEach(([name, best]) => {
         if (!playerQualSeed[name]) { pWcBest[name] = best; pWcAllTimes[name] = playerTimes[name]; }
@@ -2752,8 +2730,7 @@
         .sort((a, b) => a[1] - b[1])[0]?.[0] || null;
       const wcParticipants = new Set([pWcFastest, pWcAvg].filter(Boolean));
 
-      // Wildcard exclusion: during wildcard limbo both participants are hidden;
-      // after the match only the winner is excluded (loser naturally sits at their original week slot).
+      //un-eliminating the ppl in the wildcard match until it's over
       const wcMatchWinner = (ladderResults['8_1']?.places?.[0] || {}).name || null;
       const pExcludeFromElim = new Set();
       if (wcMatchWinner) {
@@ -2764,12 +2741,13 @@
       let elimPlace = 9;
       elimSlots.forEach(s => {
         const r = ladderResults[`${s.week}_${s.rung}`];
+        //classic zac ternary operator spam easter egg
         const name = r ? (r.places[s.place - 1] || {}).name : null;
         if (!name || pExcludeFromElim.has(name)) return;
         playerPlacement[name] = elimPlace++;
       });
 
-      // Top 8 final placements (mirrors the bracket page logic)
+      //top 8 placements
       const top8Placement = {};
       const top8PlacementColors = { 1: '#d4b84a', 2: '#9aa8b8', 3: '#b07040' };
       (() => {
@@ -2784,27 +2762,27 @@
         qfLosers.forEach((p, i) => { top8Placement[p.name] = 5 + i; });
       })();
 
-      // Active top 8 stage (for players still competing)
+      //still in top 8
       const top8ActiveStatus = {};
       (() => {
         const gfDone = !!ladderResults['gf_1']?.places?.length;
         const tpDone = !!ladderResults['tp_1']?.places?.length;
 
-        // Grand finals participants (SF winners)
+        //in grands
         if (!gfDone) {
           ['sf_1','sf_2'].forEach(key => {
             const w = ladderResults[key]?.places?.[0]?.name;
             if (w) top8ActiveStatus[w] = 'IN GRAND FINALS';
           });
         }
-        // Third place match participants (SF losers)
+        //in third place match
         if (!tpDone) {
           ['sf_1','sf_2'].forEach(key => {
             const l = ladderResults[key]?.places?.[1]?.name;
             if (l) top8ActiveStatus[l] = '3rd–4th Place';
           });
         }
-        // Semifinals participants (QF winners who haven't played SF yet)
+        //in semis
         const sfDone = new Set(['sf_1','sf_2'].filter(k => ladderResults[k]?.places?.length).map(k => {
           return [ladderResults[k].places[0]?.name, ladderResults[k].places[1]?.name];
         }).flat().filter(Boolean));
@@ -2814,7 +2792,7 @@
         });
       })();
 
-      // LCQ eliminations — players who ran an LCQ but didn't finish top 3 in either
+      //didn't make it into ladder at all
       const lcqQualifiers = new Set();
       const lcqBestTime   = {};
       Object.entries(ladderResults).forEach(([key, result]) => {
@@ -2832,7 +2810,7 @@
       const lcqStartPlace = participants.length - lcqEliminated.length + 1;
       lcqEliminated.forEach(([name], i) => { playerPlacement[name] = lcqStartPlace + i; });
 
-      // Build SRC leaderboard PB map: lowercased username → seconds
+      //mapping everyones pb from src to their name
       const srcPBMap = {};
       if (lbData && lbData.data) {
         const playerIndex = {};
@@ -2846,7 +2824,6 @@
           const imageUri   = pl.assets?.image?.uri     || null;
           playerIndex[pl.id] = { slug, intl, colorFrom, colorTo, colorSolid, imageUri };
         });
-        // Runs are ordered by place; first-write-wins so best placement sticks
         lbData.data.runs.forEach(entry => {
           const pid  = entry.run?.players?.[0]?.id;
           const info = pid ? playerIndex[pid] : null;
@@ -2936,7 +2913,7 @@
       });
       observeAll();
 
-      // Attach styled tooltip to Ladder PB values
+      //ladder pb achieved in week x tooltip
       let pTip = document.getElementById('bp-shared-tooltip');
       if (!pTip) {
         pTip = document.createElement('div');
@@ -2962,12 +2939,12 @@
         });
         el.addEventListener('mouseleave', () => { pTip.style.display = 'none'; });
       });
-      } // end renderSeason3
+      }
 
       renderSeason3();
     }).catch(() => {});
 
-    // ── PREDICTIONS DATA ──
+    //predictions stuff this is all useless for now
     const matchups = [
       { a: 'USER 1',  b: 'USER 2',  date: 'TBD', oddsA: '—', oddsB: '—' },
       { a: 'USER 3',  b: 'USER 4',  date: 'TBD', oddsA: '—', oddsB: '—' },
@@ -3009,10 +2986,10 @@
       btn.classList.add(side === 'right' ? 'selected-right' : 'selected');
     }
 
-    // ── STANDINGS TABS ──
-    // Set default tab based on date (thresholds come from schedule.json).
+    //navbar on standings page
     let s3DefaultTab = 'ladder';
     schedulePromise.then(sd => {
+      //updating default tab depending on where we are in the schedule
       const now = new Date();
       const lcqEnd    = new Date(sd.lcqEnd    || '2026-05-11T05:00:00Z');
       const ladderEnd = new Date(sd.ladderEnd || '2026-06-25T05:00:00Z');
@@ -3041,7 +3018,6 @@
       });
     });
 
-    // ── NAVIGATION ──
     document.querySelectorAll('[data-page]').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -3056,7 +3032,7 @@
 
 
 
-    // ── ANIMATED STARFIELD ──
+    // this was the starfield animating but we do not need this anymore
     (function() {
       const canvas = document.getElementById('starfield');
       const ctx = canvas.getContext('2d');
@@ -3092,8 +3068,8 @@
         stars = Array.from({ length: COUNT }, createStar);
       }
 
+      //lowkey yoinked this entire animated star thing
       function update(s) {
-        // Gentle drift: occasionally nudge the star
         s.driftTimer++;
         if (s.driftTimer > s.driftInterval) {
           s.movingX = rand(-0.08, 0.08);
@@ -3103,17 +3079,14 @@
         }
         s.x += s.movingX;
         s.y += s.movingY;
-        // Slow deceleration
         s.movingX *= 0.97;
         s.movingY *= 0.97;
 
-        // Wrap edges
         if (s.x < 0) s.x = canvas.width;
         if (s.x > canvas.width) s.x = 0;
         if (s.y < 0) s.y = canvas.height;
         if (s.y > canvas.height) s.y = 0;
 
-        // Gentle twinkle
         if (Math.abs(s.alpha - s.targetAlpha) < 0.01) {
           s.targetAlpha = rand(0.1, 0.85);
         }
@@ -3137,7 +3110,7 @@
       draw();
     })();
 
-    // ── SCROLL REVEAL ──
+    //scroll reveal animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -3152,7 +3125,7 @@
       });
     }
 
-    // Re-observe on page switch
+    //auto refresh when switching pages so it doesn't break the first time
     document.querySelectorAll('[data-page]').forEach(link => {
       link.addEventListener('click', () => {
         setTimeout(observeAll, 50);
@@ -3175,7 +3148,7 @@
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       document.getElementById('standings').classList.add('active');
       document.querySelectorAll('.nav-links a[data-page="standings"]').forEach(a => a.classList.add('active'));
-      // Reset season dropdown to Season 3
+      //make season dropdown default to s3 in this case
       const _dd = document.getElementById('standings-season-dropdown');
       if (_dd) {
         const _lbl = document.getElementById('standings-season-label');
@@ -3191,7 +3164,6 @@
       if (pastEl) pastEl.style.display = 'none';
       if (s3Tabs)   s3Tabs.style.display = '';
       if (pastTabs) pastTabs.style.display = 'none';
-      // Activate the correct inner tab
       document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('#standings-s3 .standings-tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${tab}"]`).classList.add('active');
@@ -3200,11 +3172,10 @@
       setTimeout(observeAll, 50);
     }
 
-    // ── COUNTDOWN ──
+    //countdown
     let season3CountdownActive = false;
 
     schedulePromise.then(sd => {
-      // ── shared countdown unit helper ──
       function updateUnit(el, value, singular, plural, pad, hideIfZero = true) {
         if (!el) return;
         const item = el.parentElement;
@@ -3218,7 +3189,7 @@
         if (label) label.textContent = value === 1 ? singular : plural;
       }
 
-      // ── HOME: counts down to seasonStart ──
+      //countdown on home page (goes to season start instead)
       const homeTarget = sd.seasonStart ? new Date(sd.seasonStart) : null;
       if (homeTarget) {
         const elDays    = document.getElementById('cd-days');
@@ -3264,7 +3235,7 @@
         }
       }
 
-      // ── PARTICIPANTS + STANDINGS: counts down to countdown ──
+      //participants/standings countdown (goes to countdown rather than seasonStart)
       const target = sd.countdown ? new Date(sd.countdown) : null;
       if (!target) return;
 
@@ -3284,7 +3255,7 @@
         return;
       }
 
-      // Before countdown — show participants countdown, hide grid
+      //don't show the participants before the countdown is done (for s3 only)
       season3CountdownActive = true;
       const pCd = document.getElementById('participants-countdown');
       if (pCd) pCd.style.display = 'block';
@@ -3314,7 +3285,7 @@
       countdownInterval = setInterval(updateCountdown, 1000);
     });
 
-    // ── LAZY LOAD UPCOMING MATCHES ON SCROLL ──
+    //lazy loading stuff in upcoming matches so autoscroll works
     var upcomingLoaded = false;
     var upcomingAllMatches = [], upcomingOffset = 0;
 
@@ -3368,7 +3339,6 @@
         function entryTime(v)    { return typeof v === 'string' ? v : (v && (v.time || v.start)) || null; }
         function entryPlayers(v) { return typeof v === 'object' && v && Array.isArray(v.players) ? v.players : null; }
 
-        // Derive Top 8 seeds from weekly rung-1 winners (same logic as bracket section)
         const top8Seeds = Array.from({ length: 8 }, (_, i) => allResults?.[`${i + 1}_1`]?.places?.[0]?.name || null);
         const top8Winner = key => allResults?.[key]?.places?.[0]?.name || null;
         const top8Loser  = key => allResults?.[key]?.places?.[1]?.name || null;
@@ -3416,7 +3386,7 @@
 
         const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
 
-        // Generate every possible match slot across the whole tournament
+        //all matches
         const allSlots = [];
         allSlots.push({ section: 'lcq', key: 'lcq_1' }, { section: 'lcq', key: 'lcq_2' });
         WEEK_MATCH_COUNTS.forEach((count, idx) => {
@@ -3426,7 +3396,6 @@
 
         const matches = [];
         allSlots.forEach(({ section, key }) => {
-          // Skip if already completed
           const result = allResults && allResults[key];
           if (result && result.places && result.places.length > 0) return;
 
@@ -3536,9 +3505,7 @@
           return key;
         }
 
-        // Week end dates mirror the WEEK_DATES array on the ladder page.
-        // Match counts per week: [7, 6, 5, 4, 3, 2, 1, 1]
-        // Rung N of a week falls on the end date; rung N-1 the day before, etc.
+        //hardcoded end dates for the weeks + match counts per week don't change any of this
         const WEEK_ENDS        = ['2026-05-17','2026-05-24','2026-05-31','2026-06-07','2026-06-14','2026-06-21','2026-06-21','2026-06-22'];
         const WEEK_MATCH_COUNTS = [7, 6, 5, 4, 3, 2, 1, 1];
 
@@ -3549,8 +3516,7 @@
           return t ? new Date(t) : null;
         }
 
-        // Returns a Date for any match, using schedule.json when available and
-        // falling back to derived dates based on the known weekly schedule.
+        //default dates for matches so lowest rung is last day of week and goes backwards
         function matchDate(section, key) {
           const fromSchedule = scheduleTime(section, key);
           if (fromSchedule) return fromSchedule;
@@ -3567,7 +3533,7 @@
             const n = parseInt(key.replace('lcq_', '')) || 1;
             return new Date(n === 1 ? '2026-04-08' : '2026-05-10');
           }
-          // top8 fallback (all have schedule entries in practice)
+          //top8 default case should not ever be hit
           const top8Fallback = { qf_1:'2026-07-10T14:00:00Z', qf_2:'2026-07-10T23:00:00Z', qf_3:'2026-07-10T20:00:00Z', qf_4:'2026-07-10T17:00:00Z', sf_1:'2026-07-11T16:30:00Z', sf_2:'2026-07-11T20:00:00Z', tp_1:'2026-07-12T16:30:00Z', gf_1:'2026-07-12T20:00:00Z' };
           return new Date(top8Fallback[key] || '2026-07-10');
         }
@@ -3581,7 +3547,7 @@
             const fromSchedule = scheduleTime(section, key);
             return { key, section, result, dt: matchDate(section, key), hasScheduleDate: !!fromSchedule, name: matchName(section, key) };
           })
-          .sort((a, b) => b.dt - a.dt); // most recent first
+          .sort((a, b) => b.dt - a.dt);
 
         if (entries.length === 0) {
           resultsList.innerHTML = '<div class="uc-empty">No Recent Matches</div>';
@@ -3624,63 +3590,33 @@
       upObs.observe(upcomingSection);
     })();
 
-    // LCQ results — populated at runtime from results.json (keys: "lcq_1", "lcq_2")
     let LCQ_RESULTS = {};
 
-    // ── LADDER BRACKET ──
+    //LADDER
     (function() {
 
-      // ┌──────────────────────────────────────────────────────────┐
-      // │  LIVE MATCH CONFIG  (manual override)                   │
-      // │  Matches with a SCHEDULE entry go live automatically    │
-      // │  once their timestamp is reached.                       │
-      // │  Use this only for matches without a schedule entry.   │
-      // │  Set to null to disable.                                │
-      // │  Example:  { week: 1, rung: 3 }   or   null            │
-      // └──────────────────────────────────────────────────────────┘
+      //not useful anymore but live match override
       let LIVE_MATCH = null;
-      let SEASON_START = null; // set from schedule.json countdown; bracket shows blank slots before this date
-      let LADDER_START = null; // set from schedule.json lcqEnd; eliminated column hidden before this date
+      let SEASON_START = null; //also not useful anymore, manual override
+      let LADDER_START = null; //^
+      let SEASON3_SEEDED = []; //top 5 rungs (this gets populated later)
 
-      // ┌──────────────────────────────────────────────────────────┐
-      // │  QUALIFIED CONFIG                                        │
-      // │  One entry per week. Use null if not yet decided.       │
-      // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
-      // └──────────────────────────────────────────────────────────┘
-      // │  One entry per week. Use null if not yet decided.       │
-      // │  Index 0 = Week 1, index 1 = Week 2, etc.              │
-      // └──────────────────────────────────────────────────────────┘
-      const QUALIFIED = [
-        "ZacMuffin",   // Week 1
-        null,   // Week 2
-        null,   // Week 3
-        null,   // Week 4
-        null,   // Week 5
-        null,   // Week 6
-        null,   // Week 7
-        "WiiSuper",   // Wildcard
-      ];
+      //qualified config
+      // const QUALIFIED = [
+      //   "ZacMuffin",   // Week 1
+      //   null,   // Week 2
+      //   null,   // Week 3
+      //   null,   // Week 4
+      //   null,   // Week 5
+      //   null,   // Week 6
+      //   null,   // Week 7
+      //   "WiiSuper",   // Wildcard
+      // ];
 
-
-      // ┌────────────────────────────────────────────────────────────────┐
-      // │  RESULTS  — loaded from results.json (auto-refreshes every   │
-      // │  30 seconds). Edit results.json to publish match outcomes.   │
-      // │  Key: "week_rung"                                             │
-      // │  places[] = finish order (1st → last), each entry:           │
-      // │    { "name": "PlayerName", "time": "H:MM:SS" }               │
-      // │  status (optional): "leapfrogging" | "leapfrogged"           │
-      // └────────────────────────────────────────────────────────────────┘
       let RESULTS = {};
-
-      // ┌────────────────────────────────────────────────────────────────┐
-      // │  SCHEDULE CONFIG                                               │
-      // │  Key: "week_rung"  →  ISO 8601 datetime string                 │
-      // │  Displayed in each viewer's local time automatically.          │
-      // │  Format: "YYYY-MM-DDTHH:MM:SS±HH:MM"                           │
-      // │  Example (3PM Eastern Standard): "2025-05-13T15:00:00-05:00"   │
-      // └────────────────────────────────────────────────────────────────┘
       let SCHEDULE = {};
 
+      //first/second/third conventions
       function ordinal(n) {
         const s = ['th','st','nd','rd'];
         const v = n % 100;
@@ -3694,9 +3630,6 @@
         return `${date} · ${time}`;
       }
 
-      // Week structure: week i has (8 - i) matches, 7 weeks total
-      // Week 1: 7 matches (rungs 1-7), Week 2: 6 matches, ... Week 7: 1 match
-      // Rung 1 = top (winner qualifies), bottom rung = 2 losers eliminated
 
       const WEEKS = 8;
       const weekMatchCounts = [7, 6, 5, 4, 3, 2, 1, 1];
@@ -3716,22 +3649,14 @@
 
       let wildcardParticipants = ['—', '—'];
 
-      // Week 1 lineup (manually set)
-      // Rungs 6 and 7 are filled by the top 3 finishers of LCQ 1 and LCQ 2
+      //fill bottom 2 rungs in w1 with LCQ winners
       function lcqWinners(matchKey) {
         const r = LCQ_RESULTS[matchKey];
         if (!r || !r.places) return ['—', '—', '—'];
         return [0, 1, 2].map(i => (r.places[i] ? r.places[i].name : '—'));
       }
 
-      // Derive the expected lineup for a given week by simulating player movements
-      // from the previous week's results.
-      // Movement rules:
-      //   - Rung 1, 1st place  → qualified (removed from ladder)
-      //   - Rung 1, 2nd place  → stays in rung 1
-      //   - Any rung, 3rd place (loser) → drops to rung below (clamped to bottom rung)
-      //   - Bottom rung, 2nd & 3rd → eliminated
-      //   - All other 1st & 2nd place → move up one rung
+      //figure out lineup each week based on prev results
       function computeLineup(week) {
         if (week === 1) {
           if (SEASON_START && new Date() < SEASON_START) {
@@ -3739,15 +3664,14 @@
             for (let r = 1; r <= 7; r++) blank[r] = ['—', '—', '—'];
             return blank;
           }
-          return {
-            1: ["ZacMuffin",    "Dragon67",  "AnorakDT"],
-            2: ["itsjared97",   "ERoadhouse","Bricko"],
-            3: ["WiiSuper",     "Scynor",    "Wazzip"],
-            4: ["FlamingLazer", "Dimei",     "Colten"],
-            5: ["TheCrazedCap", "kwazrr",    "ejpman"],
-            6: lcqWinners("lcq_1"),
-            7: lcqWinners("lcq_2"),
-          };
+          const w1 = {};
+          for (let r = 1; r <= 5; r++) {
+            w1[r] = SEASON3_SEEDED.slice((r - 1) * 3, r * 3).map(p => p.name);
+            while (w1[r].length < 3) w1[r].push('—');
+          }
+          w1[6] = lcqWinners("lcq_1");
+          w1[7] = lcqWinners("lcq_2");
+          return w1;
         }
         const prevWeek = week - 1;
         const prevMatchCount = weekMatchCounts[prevWeek - 1];
@@ -3763,17 +3687,17 @@
             const place  = i + 1;
             const name   = entry.name;
             const status = entry.status || null;
-            if (isTop    && place === 1) return;           // qualified
-            if (isBottom && place  >  1) return;           // eliminated
-            if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays at top
-            if (place === 3)             { nextRung[name] = r + 1; return; } // drops
-            if (place === 1 && status === 'leapfrogging') { nextRung[name] = r - 2; return; } // moves up 2
-            if (place === 2 && status === 'leapfrogged')  { nextRung[name] = r;     return; } // stays
-            nextRung[name] = r - 1;                        // 1st or 2nd moves up normally
+            if (isTop    && place === 1) return;     //qualifies
+            if (isBottom && place  >  1) return;     //eliminated
+            if (isTop    && place === 2) { nextRung[name] = 1; return; } //stays in top rung
+            if (place === 3)             { nextRung[name] = r + 1; return; } //down a rung
+            if (place === 1 && status === 'leapfrogging') { nextRung[name] = r - 2; return; } //leapfrogging
+            if (place === 2 && status === 'leapfrogged')  { nextRung[name] = r;     return; } //leapfrogged
+            nextRung[name] = r - 1;
           });
         }
 
-        // Bucket players into their new rungs, clamping to valid range
+        //place players in correct rungs
         const lineup = {};
         for (let r = 1; r <= thisMatchCount; r++) lineup[r] = [];
         Object.entries(nextRung).forEach(([name, r]) => {
@@ -3781,14 +3705,14 @@
           lineup[clamped].push(name);
         });
 
-        // Pad any under-filled rungs with placeholders
+        //defaults for rungs without enough players
         for (let r = 1; r <= thisMatchCount; r++) {
           while (lineup[r].length < 3) lineup[r].push('—');
         }
         return lineup;
       }
 
-      // Return the expected players for a match (used when no results exist yet)
+      //number of players a match should have
       function getPlayers(week, rung) {
         if (week === WILDCARD_WEEK) return wildcardParticipants;
         return computeLineup(week)[rung] || ['—', '—', '—'];
@@ -3801,7 +3725,7 @@
       let wildcardEl = null;
       let week7El = null;
 
-      // ── Pre-compute wildcard standings (needed by getPlayers for wildcard match) ──
+      //wildcard standings
       const qualifiedPlayers = new Set();
       const eliminatedPlayers = new Set();
       Object.entries(RESULTS).forEach(([key, result]) => {
@@ -3818,7 +3742,7 @@
         });
       });
 
-      // Build stats for ALL players (weeks 1–7) — used for tooltips on both qualified & eliminated slots
+      //stats for tooltips on standings page
       const playerStats = {};
       Object.entries(RESULTS).forEach(([key, result]) => {
         const [wStr] = key.split('_');
@@ -3835,7 +3759,7 @@
         });
       });
 
-      // Wildcard standings exclude qualified players
+      //remove ppl in top 8 from wildcard standings
       const playerBest = {}, playerAllTimes = {};
       Object.entries(playerStats).forEach(([name, s]) => {
         if (!qualifiedPlayers.has(name)) {
@@ -3849,13 +3773,13 @@
         .map(([name, times]) => [name, times.reduce((a, b) => a + b, 0) / times.length])
         .sort((a, b) => a[1] - b[1]).slice(0, 3);
 
-      // Wildcard participants: fastest time vs fastest average (avoid duplicate)
+      //wildcard matchup prioritizing best time over avg if it's the same person in both
       const wcFastest = top3Best[0] ? top3Best[0][0] : null;
       const wcAvgPlayer = top3Avg.find(([name]) => name !== wcFastest);
       const wcAvg = wcAvgPlayer ? wcAvgPlayer[0] : null;
       wildcardParticipants = [wcFastest || '—', wcAvg || '—'];
 
-      // Build week-1 seed lookup: global seed = (rung-1)*3 + position in rung
+      //initial seeding
       const week1Seed = {};
       Object.entries(computeLineup(1)).forEach(([rung, players]) => {
         players.forEach((name, i) => {
@@ -3863,7 +3787,7 @@
         });
       });
 
-      // Shared tooltip for player names inside match cards (created once)
+      //tooltip for clicking on player names in the card
       let bpTooltipEl = document.getElementById('bp-shared-tooltip');
       if (!bpTooltipEl) {
         bpTooltipEl = document.createElement('div');
@@ -3872,7 +3796,7 @@
         document.addEventListener('click', () => { bpTooltipEl.style.display = 'none'; });
       }
 
-      // Hover tooltip for move icons
+      //tooltip for the icons
       function showIconTip(icon) {
         bpTooltipEl.style.minWidth = '0';
         bpTooltipEl.style.padding = '.25rem .55rem';
@@ -3899,7 +3823,7 @@
         if (icon && !icon.contains(e.relatedTarget)) bpTooltipEl.style.display = 'none';
       });
 
-      // Live elapsed-time ticker — updates all .live-elapsed spans every second
+      //timer on live boxes
       function tickElapsed() {
         document.querySelectorAll('.live-elapsed[data-start]').forEach(el => {
           const elapsed = Math.max(0, Math.floor((Date.now() - new Date(el.dataset.start)) / 1000));
@@ -3912,7 +3836,7 @@
       tickElapsed();
       setInterval(tickElapsed, 1000);
 
-      // Build weeks
+      //creating all the weeks
       for (let w = 1; w <= WEEKS; w++) {
         const matchCount = weekMatchCounts[w - 1];
         const weekEl = document.createElement('div');
@@ -3963,7 +3887,7 @@
           }
           card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
 
-          // Rung header
+          //header for rungs
           const rungRow = document.createElement('div');
           rungRow.className = 'bracket-match-rung';
           const rungLabel = document.createElement('span');
@@ -3997,7 +3921,7 @@
           }
           card.appendChild(rungRow);
 
-          // Players
+          //show players
           const displayPlayers = isDone ? result.places : players;
           displayPlayers.forEach((entry, pi) => {
             const p              = isDone ? entry.name : entry;
@@ -4012,13 +3936,12 @@
             const isLeapfrogging = status === 'leapfrogging';
             const isLeapfrogged  = status === 'leapfrogged';
 
+            //show on icons who is leapfrogging who
             let leapfrogPartner = null;
             if (isLeapfrogging) {
-              // jumped over the 2nd-place finisher in the rung above
               const aboveResult = RESULTS[`${w}_${r - 1}`];
               leapfrogPartner = aboveResult?.places?.[1]?.name ?? null;
             } else if (isLeapfrogged) {
-              // jumped over by the 1st-place finisher in the rung below
               const belowResult = RESULTS[`${w}_${r + 1}`];
               leapfrogPartner = belowResult?.places?.find(e => e.status === 'leapfrogging')?.name ?? null;
             }
@@ -4072,7 +3995,7 @@
           matchesWrap.appendChild(card);
         }
 
-        // Qualified slot below week label — derived from results
+        //top 8 qualified slot
         const topRungResult = RESULTS[`${w}_1`];
         const qualName = topRungResult ? (topRungResult.places[0] || {}).name : null;
         const qualSlot = document.createElement('div');
@@ -4107,7 +4030,7 @@
         }
       }
 
-      // ── Wildcard standings UI ──
+      //ui for wildcard standings
       const wcsEl = document.createElement('div');
       wcsEl.className = 'wildcard-standings';
       wcsEl.innerHTML = `<div class="wildcard-standings-label">Wildcard Standings</div>`;
@@ -4161,40 +4084,33 @@
       const div = document.createElement('div'); div.className = 'wcs-divider'; wcsEl.appendChild(div);
       wcsEl.appendChild(wcsSection('Fastest Average', top3Avg, wcAvg));
 
-      // WCS sits below week 7 (which has only 1 card), landing it at the ~rung-2 vertical position
+      //put wildcard standings on the right
       const week7Group = document.createElement('div');
       week7Group.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:12px; align-self:flex-start; margin-top:0;';
       if (week7El) week7Group.appendChild(week7El);
       wcsEl.style.marginTop = '60px';
       week7Group.appendChild(wcsEl);
 
-      // Button lives on document.body to escape the `transform` on .bracket-outer.reveal
-      // which would otherwise break position:fixed. Created once; subsequent buildBracket calls skip it.
-
 
       container.appendChild(week7Group);
 
-      // Eliminated list
+      //eliminated list
       const elimCol = document.createElement('div');
       elimCol.className = 'bracket-eliminated';
       const elabel = document.createElement('div');
       elabel.className = 'bracket-eliminated-label';
       elabel.textContent = '✕ Eliminated';
       elimCol.appendChild(elabel);
-      // Build elimination slots ordered best → worst, weeks only (no hardcoded wildcard slot).
-      // Wildcard loser naturally falls at their original week slot after the match resolves.
       const elimSlots = [];
       for (let w = WEEKS - 1; w >= 1; w--) {
         const matchCount = weekMatchCounts[w - 1];
         const bottomRung = matchCount;
-        for (let place = 2; place <= 3; place++) {    // 2nd place first (better), then 3rd
+        for (let place = 2; place <= 3; place++) {
           elimSlots.push({ week: w, rung: bottomRung, place });
         }
       }
 
-      // Wildcard exclusion: during limbo both participants are hidden;
-      // after the match only the winner is excluded (loser returns to their original week slot).
-      // wildcardParticipants is already computed above from fastest/avg stats.
+      //un-eliminating wildcard match runners until it's done
       const bracketWildcardWinner = (RESULTS['8_1']?.places?.[0] || {}).name || null;
       const bracketExcludeFromElim = new Set();
       if (bracketWildcardWinner) {
@@ -4203,13 +4119,13 @@
         wildcardParticipants.forEach(p => bracketExcludeFromElim.add(p));
       }
 
-      // Collect elim entries, skipping excluded players and closing the gap
+      //updating eliminated list
       const elimEntries = [];
       elimSlots.forEach(s => {
         const result = RESULTS[`${s.week}_${s.rung}`];
         const name = result ? (result.places[s.place - 1] || {}).name : null;
-        if (name && bracketExcludeFromElim.has(name)) return; // remove from list, close gap
-        elimEntries.push(name); // may be null (empty slot)
+        if (name && bracketExcludeFromElim.has(name)) return;
+        elimEntries.push(name);
       });
 
       elimEntries.forEach((name, i) => {
@@ -4236,14 +4152,13 @@
         elimCol.appendChild(slotEl);
       });
 
-      // Stack Wildcard + Eliminated vertically at the end
       const wildcardGroup = document.createElement('div');
       wildcardGroup.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:12px; align-self:stretch;';
       if (wildcardEl) wildcardGroup.appendChild(wildcardEl);
       const ladderIsLive = !LADDER_START || new Date() >= LADDER_START;
       if (ladderIsLive) wildcardGroup.appendChild(elimCol);
       container.appendChild(wildcardGroup);
-      } // end buildBracket
+      }
 
       function scheduleAutoLive() {
         const now = Date.now();
@@ -4268,7 +4183,7 @@
         try {
           applyResults(await loadResults());
         } catch (e) {
-          console.error('Could not load results.json — make sure you are serving via HTTP, not file://', e);
+          console.error('Could not load results.json', e);
         }
         buildBracket();
         scheduleAutoLive();
@@ -4279,35 +4194,30 @@
               applyResults(data);
               buildBracket();
             }
-          } catch (e) { /* network blip, try again next poll */ }
+          } catch (e) { /*probably network error so retry*/}
         }, 30_000);
       }
 
-      schedulePromise.then(sd => {
+      Promise.all([schedulePromise, participantsPromise]).then(([sd, allParticipants]) => {
         SCHEDULE      = sd.ladder    || {};
         LIVE_MATCH    = sd.liveMatch || null;
         SEASON_START  = sd.countdown ? new Date(sd.countdown) : null;
         LADDER_START  = sd.lcqEnd    ? new Date(sd.lcqEnd)    : null;
+        SEASON3_SEEDED = (allParticipants.season3 || [])
+          .filter(p => !p.lcq)
+          .sort((a, b) => a.seed - b.seed)
+          .slice(0, 15);
         init();
       });
 
     })();
 
-    // ── TOP 8 BRACKET ──
+    //TOP 8
     (function() {
 
       let TOP8_RESULTS = {};
-      // Seeds 1–8 derived from weekly rung-1 winners (weeks 1–7) + wildcard (week 8)
       let TOP8_SEEDS = Array(8).fill(null);
-
-      // ┌────────────────────────────────────────────────────────────────┐
-      // │  TOP 8 SCHEDULE CONFIG                                         │
-      // │  Key: "round_match"  →  ISO 8601 datetime string               │
-      // │  Rounds: "qf" (quarterfinals), "sf" (semifinals), "gf" (finals)│
-      // │  Match numbers start at 1 for each round                       │
-      // │  Example: "qf_1", "sf_1", "gf_1"                              │
-      // └────────────────────────────────────────────────────────────────┘
-      let TOP8_SCHEDULE = {};
+      let TOP8_SCHEDULE = {}; //obsolete
 
       const ROUNDS_CONFIG = [
         { id: 'qf', name: 'Quarterfinals', matches: 4 },
@@ -4338,14 +4248,14 @@
         const tbd = { name: '—', seed: null };
         const player = name => name ? { name, seed: seedOf(name) } : tbd;
 
-        // If schedule.json explicitly lists players for this match, use them.
+        //grab players from schedule.json
         const schedEntry = TOP8_SCHEDULE[`${roundId}_${matchNum}`];
         if (schedEntry && typeof schedEntry === 'object' && Array.isArray(schedEntry.players)) {
           return schedEntry.players.map(n => (n && n !== 'TBD') ? player(n) : tbd);
         }
 
         if (roundId === 'qf') {
-          // Standard seeding: 1v8, 4v5, 3v6, 2v7
+          //top 8 seeding (so like 1v8 2v7 etc)
           const pairings = [[0,7],[3,4],[2,5],[1,6]];
           const [i, j] = pairings[matchNum - 1];
           return [
@@ -4354,7 +4264,6 @@
           ];
         }
         if (roundId === 'sf') {
-          // SF1: winners of QF1 & QF2 — SF2: winners of QF3 & QF4
           const base = (matchNum - 1) * 2 + 1;
           return [player(winnerOf(`qf_${base}`)), player(winnerOf(`qf_${base + 1}`))];
         }
@@ -4364,6 +4273,7 @@
         if (roundId === 'tp') {
           return [player(loserOf('sf_1')), player(loserOf('sf_2'))];
         }
+        //default if we don't have anything yet
         return [tbd, tbd];
       }
 
@@ -4423,7 +4333,7 @@
             card.className = 'top8-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
             card.id = `top8-card-${roundConfig.id}-${m}`;
 
-            // Match header
+            //header for match
             const matchRow = document.createElement('div');
             matchRow.className = 'top8-match-rung';
             const matchLabel = document.createElement('span');
@@ -4454,8 +4364,6 @@
             }
             card.appendChild(matchRow);
 
-            // Players
-            // Always use bracket-position order; look up result by name for done matches
             const winner = isDone ? result.places[0]?.name : null;
             players.forEach((entry) => {
               const p     = entry.name;
@@ -4478,7 +4386,7 @@
             matchesWrap.appendChild(card);
           }
 
-          // For the GF round, also render the 3rd place match below
+          //third place match in grands column
           if (roundConfig.id === 'gf') {
             const tpPlayers = getTop8Players('tp', 1);
             const tpResult = TOP8_RESULTS['tp_1'];
@@ -4541,7 +4449,6 @@
               pEl.innerHTML = `<span class="bp-num">${entry.seed || ''}</span>${p}` + (time ? `<span class="bp-time">${time}</span>` : '');
               tpCard.appendChild(pEl);
             });
-            // Absolutely position the 3rd place card so it can align independently with SF2
             roundEl.style.position = 'relative';
             const tpWrapper = document.createElement('div');
             tpWrapper.id = 'tp-match-wrapper';
@@ -4554,7 +4461,7 @@
           container.appendChild(roundEl);
         });
 
-        // Results column
+        //results section on right
         const resultsCol = document.createElement('div');
         resultsCol.className = 'bracket-round bracket-round-results';
         const resultsLabel = document.createElement('div');
@@ -4586,7 +4493,7 @@
         resultsCol.appendChild(resultsStack);
         container.appendChild(resultsCol);
 
-        // Champion / runner-up / 3rd place boxes — set content and visibility state (no animation here)
+        //main 3 boxes
         const champion   = TOP8_RESULTS['gf_1']?.places?.[0]?.name || null;
         const runnerUp   = TOP8_RESULTS['gf_1']?.places?.[1]?.name || null;
         const thirdPlace = TOP8_RESULTS['tp_1']?.places?.[0]?.name || null;
@@ -4608,8 +4515,7 @@
           bronzeName.textContent = thirdPlace || '';
           bronzeBox.classList.toggle('visible', !!thirdPlace);
         }
-        // 4th–8th box
-        // 4th = tp_1 runner-up; 5th–8th = QF losers sorted by fastest time
+        //4th+ boxes
         function parseTime(t) {
           if (!t) return Infinity;
           const parts = t.split(':').map(Number);
@@ -4672,7 +4578,6 @@
 
         const cr = container.getBoundingClientRect();
 
-        // [top source id, bottom source id] → target id
         const groups = [
           [['top8-card-qf-1', 'top8-card-qf-2'], 'top8-card-sf-1'],
           [['top8-card-qf-3', 'top8-card-qf-4'], 'top8-card-sf-2'],
@@ -4715,13 +4620,11 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
 
-          // Derive seeds: weeks 1–7 use rung 1 winner; week 8 is the wildcard
           TOP8_SEEDS = Array.from({ length: 8 }, (_, i) => {
             const week = i + 1;
             return data[`${week}_1`]?.places?.[0]?.name || null;
           });
 
-          // Filter for Top 8 bracket results (qf_1, sf_1, gf_1, etc.)
           return Object.keys(data).reduce((acc, key) => {
             if (key.match(/^(qf|sf|gf|tp)_\d+$/)) {
               acc[key] = data[key];
@@ -4729,7 +4632,7 @@
             return acc;
           }, {});
         } catch (e) {
-          console.error('Could not load Top 8 results:', e);
+          console.error('Failed to load top 8 results:', e);
           return {};
         }
       }
@@ -4746,7 +4649,7 @@
         try {
           TOP8_RESULTS = await loadTop8Results();
         } catch (e) {
-          console.error('Could not initialize Top 8:', e);
+          console.error('Failed to initialize top 8:', e);
         }
         buildTop8Bracket();
         scheduleTop8AutoLive();
@@ -4762,7 +4665,7 @@
               TOP8_RESULTS = data;
               buildTop8Bracket();
             }
-          } catch (e) { /* network blip, try again next poll */ }
+          } catch (e) { /*network error same thing*/ }
         }, 30_000);
       }
 
@@ -4773,25 +4676,20 @@
 
     })();
 
-    // ══ LCQ ══
+    //LCQ section
     (function() {
 
-      // LCQ_RESULTS is defined at script level (shared with ladder)
-
-      // ┌────────────────────────────────────────────────────────────────┐
-      // │  LCQ SCHEDULE  (ISO 8601, auto-goes-live at timestamp)        │
-      // └────────────────────────────────────────────────────────────────┘
       let LCQ_SCHEDULE = {};
 
-      // Force a match live (set to 1 or 2), or null to disable
+      //another manual override don't need this
       let LCQ_LIVE_MATCH = null;
 
-      // LCQ_PLAYERS is populated from participants.json (entries with lcq: true)
       let LCQ_PLAYERS = [];
-      let SEASON_START = null; // set from schedule.json countdown; LCQ shows blank slots before this date
+      let SEASON_START = null;
 
-      const LCQ_PLAYERS_PER_MATCH = 9; // fallback placeholder count when participants not yet loaded
-      const LCQ_WINNERS = 3;            // top N get green arrows
+      //default when we haven't filled in the lcqs yet
+      const LCQ_PLAYERS_PER_MATCH = 9;
+      const LCQ_WINNERS = 3;
       const LIVE_STREAM = 'https://twitch.tv/legospeedruns';
 
       const LIVE_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>';
@@ -4831,7 +4729,6 @@
           label.textContent = `LCQ ${m}`;
           weekEl.appendChild(label);
 
-          // Card element (link if live/done, div otherwise)
           let card;
           if (isLive) {
             card = document.createElement('a');
@@ -4844,7 +4741,6 @@
           }
           card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
 
-          // Card header row
           const rungRow = document.createElement('div');
           rungRow.className = 'bracket-match-rung';
           const matchLabel = document.createElement('span');
@@ -4875,24 +4771,23 @@
           }
           card.appendChild(rungRow);
 
-          // Player rows
+          //players
           let players;
           if (isDone) {
             players = result.places;
           } else if (schedulePlayers) {
-            // Schedule override: explicit player list for this LCQ
             const beforeSeason = SEASON_START && new Date() < SEASON_START;
             players = beforeSeason
               ? Array(schedulePlayers.length).fill(null)
               : schedulePlayers.map(n => ({ name: n }));
           } else if (m === 1) {
-            // LCQ 1: all participants with lcq: true (blank before season starts)
+            //LCQ 1 everyone not in the ladder already
             const beforeSeason = SEASON_START && new Date() < SEASON_START;
             players = beforeSeason || !LCQ_PLAYERS.length
               ? Array(LCQ_PLAYERS_PER_MATCH).fill(null)
               : LCQ_PLAYERS.map(n => ({ name: n }));
           } else {
-            // LCQ 2: populated from LCQ 1 losers once LCQ 1 is finished; blank until then
+            //LCQ 2 everyone who did not make it out of lcq 1
             const lcq1 = LCQ_RESULTS['lcq_1'];
             if (lcq1 && lcq1.places) {
               players = lcq1.places.slice(LCQ_WINNERS).map(e => ({ name: e.name }));
@@ -4977,21 +4872,21 @@
                 LCQ_RESULTS = fresh;
                 buildLCQ();
               }
-            } catch (e) { /* network blip */ }
+            } catch (e) {/*network error*/}
           }, 30_000);
         })();
       });
 
     })();
 
-    // ── PAST SEASONS STANDINGS (S1, S2) ──
+    //prev season standings pages
     (function() {
       const s3El   = document.getElementById('standings-s3');
       const pastEl = document.getElementById('standings-past');
 
       const VOD_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" style="vertical-align:middle"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>';
 
-      // Season custom dropdown
+      //s1/2/3 dropdown on left
       const s3TabsEl   = document.getElementById('standings-s3-tabs');
       const pastTabsEl = document.getElementById('standings-past-tabs');
       const seasonDropdown = document.getElementById('standings-season-dropdown');
@@ -5001,7 +4896,6 @@
 
       function setStandingsSeason(season, switchContent = true) {
         currentSeason = season;
-        // Update label + active item
         seasonLabel.textContent = `Season ${season}`;
         seasonDropdown.querySelectorAll('.season-dropdown-item').forEach(el => {
           el.classList.toggle('active', parseInt(el.dataset.sseason) === season);
@@ -5031,17 +4925,14 @@
         }
       }
 
-      // Toggle open/close
       seasonDropBtn.addEventListener('click', e => {
         e.stopPropagation();
         const isOpen = seasonDropdown.classList.toggle('open');
         seasonDropBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
-      // Item selection
       seasonDropdown.querySelectorAll('.season-dropdown-item').forEach(item => {
         item.addEventListener('click', () => setStandingsSeason(parseInt(item.dataset.sseason)));
       });
-      // Close on outside click
       document.addEventListener('click', () => {
         if (seasonDropdown.classList.contains('open')) {
           seasonDropdown.classList.remove('open');
@@ -5049,7 +4940,7 @@
         }
       });
 
-      // Past season inner tab switching
+      //tabs within seasons
       document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
@@ -5096,7 +4987,7 @@
           return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
         }
 
-        // Pre-compute fastest times for auto-wildcard standings panel
+        //s2 wildcard system
         let fastestTimes = [];
         if (isAutoWildcardSeason) {
           const qualifiedSet = new Set();
@@ -5142,7 +5033,6 @@
             weekEl.appendChild(labelEl);
           }
 
-          // Auto-wildcard: fastest time qualifies with no match (Season 2 format)
           if (isWildcard && isAutoWildcardSeason) {
             const autoQual = data.wildcardAutoQualifier;
             const qualSlot = document.createElement('div');
@@ -5225,6 +5115,7 @@
                 leapfrogPartner = belowResult?.places?.find(e => e.status === 'leapfrogging')?.name ?? null;
               }
 
+              //s2 leapfrog
               let moveArrow = '';
               if      (qualifies)          moveArrow = `<span class="bp-move qualified"    data-tip="Qualified for Top 8">★</span>`;
               else if (eliminated)         moveArrow = `<span class="bp-move eliminated"   data-tip="Eliminated">✖</span>`;
@@ -5247,13 +5138,13 @@
           }
           weekEl.appendChild(matchesWrap);
           if (isAutoWildcardSeason && wildcardWeek && w === wildcardWeek - 1) {
-            lastRegWeekEl = weekEl; // group with WCS after the loop
+            lastRegWeekEl = weekEl;
           } else {
             container.appendChild(weekEl);
           }
         }
 
-        // Post-loop: build WCS-style "Fastest Time" panel grouped with last regular week
+        //visual wildcard standings for s2
         if (isAutoWildcardSeason && lastRegWeekEl && pastWcEl) {
           const wcsEl = document.createElement('div');
           wcsEl.className = 'wildcard-standings';
@@ -5292,7 +5183,7 @@
 
         const noThirdPlace = !!data.noThirdPlace;
 
-        // Derive Top 8 seeds from ladder results (week N rung-1 winner = seed N)
+        //top 8 seeds for prev seasons
         const parseT = t => { if (!t) return Infinity; const [h,m,s] = t.split(':').map(Number); return h*3600+m*60+s; };
         const { weekMatchCounts = [], wildcardWeek = null, results = {} } = data;
         const pastTop8Seeds = {};
@@ -5342,7 +5233,7 @@
           container.appendChild(roundEl);
         });
 
-        // ── Results column ──
+        //results section
         const fastestWinner = places => places?.reduce((best, p) => (!p.time || (best && parseT(best.time) <= parseT(p.time))) ? best : p, null);
         const fastestLoser  = places => { const w = fastestWinner(places); return w ? (places?.find(p => p.name !== w.name) || null) : null; };
 
@@ -5369,7 +5260,7 @@
         ruBoxEl.innerHTML = `<div class="top8-runnerup-label">Runner-Up</div><div class="top8-runnerup-name">${runnerUp || ''}</div>`;
         resultsStack.appendChild(ruBoxEl);
 
-        // SF losers sorted by fastest time → 3rd and 4th
+        //semifinals placements
         const sfLosers = ['sf_1','sf_2']
           .map(key => { const p = fastestLoser(top8[key]?.places); return p ? { name: p.name, time: p.time } : null; })
           .filter(Boolean)
@@ -5381,7 +5272,7 @@
         bronzeBoxEl.innerHTML = `<div class="top8-bronze-label">3rd Place</div><div class="top8-bronze-name">${thirdPlace || ''}</div>`;
         resultsStack.appendChild(bronzeBoxEl);
 
-        // Rest box: 4th (slower SF loser) + 5th–8th (QF losers)
+        //everyone else placements
         const qfLosers = ['qf_1','qf_2','qf_3','qf_4']
           .map(key => { const p = fastestLoser(top8[key]?.places); return p ? { name: p.name, time: p.time } : null; })
           .filter(Boolean)
@@ -5510,9 +5401,9 @@
 
     })();
 
-    // ── Twitch live embed ──
+    //home page twitch EMBED
     (async function initTwitchEmbed() {
-      // Check if any match is currently live using schedule + results data
+      //only show if a match is live according to schedule
       async function anyMatchLive() {
         try {
           const [sched, results] = await Promise.all([
@@ -5535,7 +5426,7 @@
           }
           if (sched.liveMatch) return true;
           if (sched.lcqLiveMatch) return true;
-        } catch (e) { /* network error */ }
+        } catch (e) { /* network error */}
         return false;
       }
 
@@ -5548,11 +5439,10 @@
           const hostname = window.location.hostname || 'localhost';
           const w = embedContainer.offsetWidth || 640;
           const h = Math.round(w * 9 / 16);
-          // Set explicit pixel height on the container — aspect-ratio alone isn't
-          // enough for Twitch's "style visibility" autoplay check inside the iframe.
+          //need to set height for twitch to allow autoplay for whatever reason
           embedContainer.style.height = h + 'px';
           const iframe = document.createElement('iframe');
-          iframe.src = `https://player.twitch.tv/?channel=captainpaxo&parent=${hostname}&autoplay=true&muted=true&volume=0`;
+          iframe.src = `https://player.twitch.tv/?channel=legospeedruns&parent=${hostname}&autoplay=true&muted=true&volume=0`;
           iframe.width  = w;
           iframe.height = h;
           iframe.setAttribute('allowfullscreen', '');
@@ -5562,7 +5452,7 @@
         }
       }
 
-      // Check live state immediately, then re-poll every 60s for runtime transitions
+      //checking for live state once a minute
       setLive(await anyMatchLive());
       setInterval(async () => setLive(await anyMatchLive()), 60_000);
     })();
