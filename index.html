@@ -1555,93 +1555,6 @@
     }
     .p-record strong { color: var(--text); }
 
-    /* Predictions page (need to embed lazer's thing here still) */
-    .prediction-grid {
-      display: grid;
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
-    .matchup-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 1rem;
-      transition: border-color .2s;
-    }
-    .matchup-card:hover { border-color: var(--border); }
-
-    .matchup-team {
-      display: flex;
-      flex-direction: column;
-    }
-    .matchup-team.right { align-items: flex-end; text-align: right; }
-
-    .m-name {
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.6rem;
-      color: #fff;
-      letter-spacing: 2px;
-      line-height: 1;
-    }
-    .m-odds {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 400;
-      font-size: .75rem;
-      color: var(--dim);
-      margin-top: .3rem;
-    }
-
-    .vs-badge {
-      font-family: 'Rubik', sans-serif;
-      font-size: 1.8rem;
-      color: var(--accent2);
-      letter-spacing: 2px;
-      text-align: center;
-    }
-    .match-date {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 400;
-      font-size: .65rem;
-      color: var(--dim);
-      text-align: center;
-      display: block;
-      margin-top: .25rem;
-    }
-
-    .pred-btn-row {
-      grid-column: 1 / -1;
-      display: flex;
-      gap: .75rem;
-      margin-top: .5rem;
-    }
-    .pred-btn {
-      flex: 1;
-      padding: .5rem 1rem;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900;
-      font-size: .85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      transition: all .2s;
-    }
-    .pred-btn:hover, .pred-btn.selected {
-      border-color: var(--accent);
-      background: rgba(140,160,200,.1);
-      color: var(--accent);
-    }
-    .pred-btn.selected-right:hover, .pred-btn.selected-right {
-      border-color: var(--accent2);
-      background: rgba(180,190,210,.08);
-      color: var(--accent2);
-    }
-
     /* Format page */
     .format-sections {
       display: flex;
@@ -2180,7 +2093,7 @@
       <li><a href="#" class="active" data-page="home">Home</a></li>
       <li><a href="#" data-page="standings">Standings</a></li>
       <li><a href="#" data-page="participants">Participants</a></li>
-      <li><a href="#" data-page="predictions">Predictions</a></li>
+      <li><a href="https://predictions.ladderleague.run" target="_blank">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
@@ -2356,16 +2269,6 @@
     </div>
   </div>
 
-  <!-- Predictions page (again still need to put a link to lazer's site) -->
-  <div class="page" id="predictions">
-    <div class="section">
-      <div class="page-title reveal">PREDIC<span>TIONS</span></div>
-      <div class="page-subtitle reveal" style="transition-delay:.15s">Upcoming matches</div>
-      <div class="divider"></div>
-      <div class="prediction-grid reveal" style="transition-delay:.3s" id="pred-grid"></div>
-    </div>
-  </div>
-
   <!-- Format page -->
   <div class="page" id="format">
     <div class="section">
@@ -2373,35 +2276,35 @@
       <div class="page-subtitle reveal" style="transition-delay:.15s">Ladder League format · Season 03</div>
       <div class="divider"></div>
       <div class="format-sections">
-        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage6.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage6.webp'); transition-delay:.3s">
           <div class="format-copy">
             <div class="format-section-title">Main Ladder</div>
             <p class="format-desc">Ladder League is a tournament format designed for consistent, high octane matches. Each week, all rungs of the ladder will play 1 match. In rung 1, the winner will qualify for Top 8 with their respective Seed (Seed 1 for Week 1's winner). Second place in this match will remain in the rung, and the loser will move down to the lower rung. In the bottom rung, only the winner will move on, while the two losers will be eliminated. In every other rung, the top two finishers will move up while the loser moves down.</p>
           </div>
           <img class="format-panel-img" src="2_MainLadder.webp" alt="Main Ladder diagram">
         </section>
-        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage5.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage5.webp'); transition-delay:.3s">
           <img class="format-panel-img" src="1_LadderSeeding.webp" alt="Ladder Seeding diagram">
           <div class="format-copy">
             <div class="format-section-title">Ladder Seeding</div>
             <p class="format-desc">Ladder League will begin by seeding the top 15 runners into the top 5 rungs of the bracket in Week 1. The remaining competitors with times under 2:45 will take part in 2 Last Chance Qualifier races, or "LCQs." The top 3 finishers of the first LCQ will qualify to Rung 6, and the the second to Rung 7. From there, the ladder will begin.</p>
           </div>
         </section>
-        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage7.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage7.webp'); transition-delay:.3s">
           <img class="format-panel-img" src="3_Wildcard.webp" alt="Wildcard diagram">
           <div class="format-copy">
             <div class="format-section-title">Wildcard</div>
             <p class="format-desc">The Ladder stage will qualify 7 of the 8 playoff participants. The 8th seed will be decided through a wildcard match between the non-qualified runner with the fastest single run in the ladder stage and the non-qualified runner with the best average time across the entire ladder stage. The winner of this match earns the 8th seed in playoffs. If one runner has both the best single time and best average of the remaining runners, the runner with the second best average will join them in the wildcard match. </p>
           </div>
         </section>
-        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage8.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--right reveal" style="background-image:url('tcsimage8.webp'); transition-delay:.3s">
           <div class="format-copy">
             <div class="format-section-title">Leapfrog</div>
             <p class="format-desc">To reward first place finishes in the middle rungs and enable more mobility for runners in the ladder, the leapfrog mechanic allows any runner below rung 2 to move up 2 rungs at once. If the winner of a rung has a time faster than that of the second place finisher in the rung above them, they will move up 2 rungs, while the runner above will remain in their rung.</p>
           </div>
           <img class="format-panel-img" src="4_Leapfrog.webp" alt="Leapfrog diagram">
         </section>
-        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage16.png'); transition-delay:.3s">
+        <section class="format-panel format-panel--left reveal" style="background-image:url('tcsimage16.webp'); transition-delay:.3s">
           <img class="format-panel-img" src="5_Top8.webp" alt="Top 8 diagram">
           <div class="format-copy">
             <div class="format-section-title">Top 8</div>
@@ -2944,48 +2847,6 @@
       renderSeason3();
     }).catch(() => {});
 
-    //predictions stuff this is all useless for now
-    const matchups = [
-      { a: 'USER 1',  b: 'USER 2',  date: 'TBD', oddsA: '—', oddsB: '—' },
-      { a: 'USER 3',  b: 'USER 4',  date: 'TBD', oddsA: '—', oddsB: '—' },
-      { a: 'USER 5',  b: 'USER 6',  date: 'TBD', oddsA: '—', oddsB: '—' },
-      { a: 'USER 7',  b: 'USER 8',  date: 'TBD', oddsA: '—', oddsB: '—' },
-      { a: 'USER 9',  b: 'USER 10', date: 'TBD', oddsA: '—', oddsB: '—' },
-    ];
-
-    const predGrid = document.getElementById('pred-grid');
-    matchups.forEach((m, i) => {
-      predGrid.innerHTML += `
-        <div class="matchup-card">
-          <div class="matchup-team">
-            <div class="m-name">${m.a}</div>
-            <div class="m-odds">${m.oddsA}</div>
-          </div>
-          <div>
-            <div class="vs-badge">VS</div>
-            <span class="match-date">${m.date}</span>
-          </div>
-          <div class="matchup-team right">
-            <div class="m-name">${m.b}</div>
-            <div class="m-odds">${m.oddsB}</div>
-          </div>
-          <div class="pred-btn-row">
-            <button class="pred-btn" onclick="predict(this, ${i}, 'left')">Pick ${m.a}</button>
-            <button class="pred-btn" onclick="predict(this, ${i}, 'right')">Pick ${m.b}</button>
-          </div>
-        </div>`;
-    });
-
-    const predictions = {};
-    function predict(btn, idx, side) {
-      const row = btn.closest('.pred-btn-row');
-      const btns = row.querySelectorAll('.pred-btn');
-      btns.forEach(b => { b.classList.remove('selected', 'selected-right'); });
-      if (predictions[idx] === side) { delete predictions[idx]; return; }
-      predictions[idx] = side;
-      btn.classList.add(side === 'right' ? 'selected-right' : 'selected');
-    }
-
     //navbar on standings page
     let s3DefaultTab = 'ladder';
     schedulePromise.then(sd => {
@@ -3133,15 +2994,6 @@
     });
 
     observeAll();
-
-    function goToPredictions() {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      document.getElementById('predictions').classList.add('active');
-      document.querySelectorAll('.nav-links a[data-page="predictions"]').forEach(a => a.classList.add('active'));
-      window.scrollTo(0, 0);
-      setTimeout(observeAll, 50);
-    }
 
     function goToStandings(tab) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -4204,7 +4056,7 @@
         SEASON_START  = sd.countdown ? new Date(sd.countdown) : null;
         LADDER_START  = sd.lcqEnd    ? new Date(sd.lcqEnd)    : null;
         SEASON3_SEEDED = (allParticipants.season3 || [])
-          .filter(p => !p.lcq)
+          .filter(p => p.seed <= 15)
           .sort((a, b) => a.seed - b.seed)
           .slice(0, 15);
         init();
@@ -4843,7 +4695,7 @@
         ]);
         if (pRes.ok) {
           const data = await pRes.json();
-          LCQ_PLAYERS = (data.season3 || []).filter(p => p.lcq).map(p => p.name);
+          LCQ_PLAYERS = (data.season3 || []).filter(p => p.seed > 15).map(p => p.name);
         }
         if (rRes.ok) {
           const data = await rRes.json();

@@ -1,6 +1,6 @@
 {
   "season1": [
-    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "placement": 4,  "seededPB": "2:21:44", "accolades": { "WR": 23, "tourney-wins": "OG S3" }, "username": "Zacc" },
+    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "placement": 4,  "seededPB": "2:21:44", "accolades": { "WR": 24, "tourney-wins": "OG S3" }, "username": "Zacc" },
     { "name": "Ginger",       "seed": 2,  "country": "US", "placement": 7,  "seededPB": "2:22:28", "accolades": { "tourney-runnerups": "OG S2" }, "username": "GingerLegend" },
     { "name": "itsjared97",   "seed": 3,  "country": "US", "placement": 2,  "seededPB": "2:22:56", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
     { "name": "ERoadhouse",   "seed": 4,  "country": "US", "placement": 1,  "seededPB": "2:23:19", "accolades": { "tourney-wins": "LLS1", "WR": 11 } },
@@ -56,7 +56,7 @@
     { "name": "Bennymoon",    "seed": 26, "country": "US", "placement": 24, "seededPB": "2:49:56", "username": "Bennymoon129" }
   ],
   "season3": [
-    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 23, "tourney-wins": "OG S3" } },
+    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 24, "tourney-wins": "OG S3" } },
     { "name": "Dragon76",     "seed": 2,  "country": "FI",                                  "accolades": { "WR": 1 } , "username": "Dragon67" },
     { "name": "AnorakDT",     "seed": 4,  "country": "US" },
     { "name": "itsjared97",   "seed": 5,  "country": "US",                                  "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
@@ -71,14 +71,14 @@
     { "name": "kwazrr",       "seed": 12, "country": "BE" },
     { "name": "ejpman",       "seed": 14, "country": "US" },
     { "name": "Charzight",    "seed": 15, "country": "US" },
-    { "name": "Coolisen",     "seed": 16, "country": "SE", "lcq": true, "username": "Coolisengaming2" },
-    { "name": "MelloVro",     "seed": 17, "country": "US", "lcq": true},
-    { "name": "ChessWiz",     "seed": 19, "country": "US" , "lcq": true},
-    { "name": "Gamer_Olive",  "seed": 18, "country": "AU", "lcq": true, "username": "Gamer_Olive666" },
-    { "name": "CaptainPaxo",  "seed": 20, "country": "UK", "lcq": true },
-    { "name": "Chroma_Q",     "seed": 21, "country": "US", "lcq": true},
-    { "name": "Nolan",        "seed": 22, "country": "US", "lcq": true,"username": "Nolan_" },
-    { "name": "AppleMan",   "seed": 24, "country": "AU" , "lcq": true,"username": "The_AppleMan"},
-    { "name": "doubtt",     "seed": 23, "country": "US", "lcq": true,"username": "_doubtt"}
+    { "name": "Coolisen",     "seed": 16, "country": "SE", "username": "Coolisengaming2" },
+    { "name": "MelloVro",     "seed": 17, "country": "US" },
+    { "name": "ChessWiz",     "seed": 19, "country": "US" },
+    { "name": "Gamer_Olive",  "seed": 18, "country": "AU", "username": "Gamer_Olive666" },
+    { "name": "CaptainPaxo",  "seed": 20, "country": "UK" },
+    { "name": "Chroma_Q",     "seed": 21, "country": "US" },
+    { "name": "Nolan",        "seed": 22, "country": "US", "username": "Nolan_" },
+    { "name": "AppleMan",     "seed": 24, "country": "AU", "username": "The_AppleMan" },
+    { "name": "doubtt",       "seed": 23, "country": "US", "username": "_doubtt" }
   ]
 }
