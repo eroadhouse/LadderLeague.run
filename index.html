@@ -272,7 +272,7 @@
       background: rgba(140,160,200,.06);
     }
 
-    /* Hamburger button (mobile only) */
+    /* Hamburger button */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -1793,18 +1793,14 @@
     .social-link:hover { color: var(--accent2); }
     .social-link svg { width: 11px; height: 11px; fill: currentColor; flex-shrink: 0; }
 
-    /* Hide "View Matches" when there isn't enough vertical space */
     @media (max-height: 750px) {
       #home .hero-scroll-cta { display: none; }
     }
 
     @media (max-width: 680px) {
-      /* Hide "View Matches" on mobile — not needed on phones */
       #home .hero-scroll-cta { display: none; }
-      /* Footer: hide social links, keep status + season label on one line */
       .status-bar-right { display: none; }
       .status-bar { gap: 1rem; padding: 0 1rem; }
-      /* Hamburger: show button, collapse nav-links into dropdown */
       .hamburger { display: flex; }
       .nav-links {
         display: none;
@@ -1836,6 +1832,8 @@
       .participant-card { padding: 2.5rem 1.5rem 2rem; }
       .p-handle { font-size: 1.7rem; letter-spacing: 3px; }
       .p-stat-row { flex-wrap: wrap; justify-content: center; }
+
+      .page-title { font-size: clamp(2rem, 8vw, 6rem); letter-spacing: 3px; }
     }
 
     /* Scroll reveal animation */
@@ -2956,20 +2954,19 @@
         document.getElementById(target).classList.add('active');
         document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => a.classList.add('active'));
         window.scrollTo(0, 0);
-        // close mobile menu on navigation
+        //close mobile menu on navigation
         hamburgerBtn.classList.remove('open');
         navLinks.classList.remove('open');
       });
     });
 
-    // Hamburger menu toggle
+    //Hamburger menu
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const navLinks     = document.getElementById('nav-links');
     hamburgerBtn.addEventListener('click', () => {
       hamburgerBtn.classList.toggle('open');
       navLinks.classList.toggle('open');
     });
-    // Close menu when clicking the Predictions external link too
     navLinks.querySelectorAll('a[target="_blank"]').forEach(a => {
       a.addEventListener('click', () => {
         hamburgerBtn.classList.remove('open');
