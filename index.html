@@ -272,6 +272,37 @@
       background: rgba(140,160,200,.06);
     }
 
+    .nav-link-disabled {
+      opacity: .35 !important;
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+
+    .nav-links li:has(.nav-link-disabled) { position: relative; }
+    .nav-links li:has(.nav-link-disabled)::after {
+      content: 'Predictions Open on May 9th';
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .65rem;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: .4rem .75rem;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .15s;
+      z-index: 200;
+    }
+    .nav-links li:has(.nav-link-disabled):hover::after { opacity: 1; }
+
     /* Hamburger button */
     .hamburger {
       display: none;
@@ -1807,9 +1838,8 @@
         position: fixed;
         top: var(--nav-h);
         left: 0; right: 0;
-        background: rgba(8,11,16,.97);
+        background: #07080f;
         border-bottom: 1px solid var(--border);
-        backdrop-filter: blur(12px);
         flex-direction: column;
         padding: .5rem 0;
         z-index: 99;
@@ -1824,6 +1854,7 @@
         border-bottom: 1px solid var(--border);
         border-radius: 0;
         background: none !important;
+        color: var(--accent2);
       }
       .nav-links li:last-child a { border-bottom: none; }
 
@@ -2156,7 +2187,7 @@
       <li><a href="#" class="active" data-page="home">Home</a></li>
       <li><a href="#" data-page="standings">Standings</a></li>
       <li><a href="#" data-page="participants">Participants</a></li>
-      <li><a href="https://predictions.ladderleague.run" target="_blank">Predictions</a></li>
+      <li><a href="https://predictions.ladderleague.run" target="_blank" class="nav-link-disabled" id="predictions-nav-link">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
@@ -3146,6 +3177,8 @@
           if (footerStatusItem) footerStatusItem.style.color = '#4caf50';
           const footerStatusDot = document.getElementById('footer-status-dot');
           if (footerStatusDot) { footerStatusDot.style.background = '#4caf50'; footerStatusDot.classList.add('live'); }
+          const predictionsLink = document.getElementById('predictions-nav-link');
+          if (predictionsLink) predictionsLink.classList.remove('nav-link-disabled');
         }
 
         function updateHomeCountdown() {
