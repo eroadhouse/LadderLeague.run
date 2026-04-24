@@ -2187,7 +2187,7 @@
       <li><a href="#" class="active" data-page="home">Home</a></li>
       <li><a href="#" data-page="standings">Standings</a></li>
       <li><a href="#" data-page="participants">Participants</a></li>
-      <li><a href="https://predictions.ladderleague.run" target="_blank" class="nav-link-disabled" id="predictions-nav-link">Predictions</a></li>
+      <li><a data-href="https://predictions.ladderleague.run" target="_blank" class="nav-link-disabled" id="predictions-nav-link">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
@@ -3178,7 +3178,10 @@
           const footerStatusDot = document.getElementById('footer-status-dot');
           if (footerStatusDot) { footerStatusDot.style.background = '#4caf50'; footerStatusDot.classList.add('live'); }
           const predictionsLink = document.getElementById('predictions-nav-link');
-          if (predictionsLink) predictionsLink.classList.remove('nav-link-disabled');
+          if (predictionsLink) {
+            predictionsLink.classList.remove('nav-link-disabled');
+            predictionsLink.href = predictionsLink.dataset.href;
+          }
         }
 
         function updateHomeCountdown() {
