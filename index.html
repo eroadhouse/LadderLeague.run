@@ -2838,7 +2838,8 @@
 
       function renderSeason3() {
       grid.innerHTML = '';
-      participants.forEach(p => {
+      const sorted3 = [...participants].sort((a, b) => (a.seed ?? Infinity) - (b.seed ?? Infinity));
+      sorted3.forEach(p => {
         const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
         const iso      = (p.country === 'UK' ? 'GB' : p.country).toLowerCase();
         const pb      = playerPB[p.name]    != null ? pFmtTime(playerPB[p.name]) : '—';
