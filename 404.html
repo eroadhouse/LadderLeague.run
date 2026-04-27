@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // Redirect unknown paths back to index.html with the path stored as ?route=
+    // so the SPA router can restore the correct page.
+    var path = window.location.pathname;
+    window.location.replace('/?route=' + encodeURIComponent(path));
+  </script>
+</head>
+<body></body>
+</html>

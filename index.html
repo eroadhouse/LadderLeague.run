@@ -2517,6 +2517,41 @@
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const route = params.get('route');
+      if (route) {
+        params.delete('route');
+        const qs = params.toString();
+        history.replaceState(null, '', route + (qs ? '?' + qs : ''));
+      }
+    })();
+
+    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about' };
+    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about' };
+
+    function showPage(target, addHistory) {
+      const page = document.getElementById(target);
+      if (!page) return;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      page.classList.add('active');
+      document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => a.classList.add('active'));
+      if (addHistory) history.pushState({ page: target }, '', PAGE_TO_PATH[target] || '/');
+    }
+
+    window.addEventListener('popstate', e => {
+      const page = (e.state && e.state.page) || PATH_TO_PAGE[window.location.pathname.replace(/\/$/, '') || '/'] || 'home';
+      showPage(page, false);
+      window.scrollTo(0, 0);
+    });
+
+    //set initial page
+    const _initialPath = window.location.pathname.replace(/\/$/, '') || '/';
+    const _initialPage = PATH_TO_PAGE[_initialPath] || 'home';
+    history.replaceState({ page: _initialPage }, '', window.location.href);
+    if (_initialPage !== 'home') showPage(_initialPage, false);
+
     //participants data js
     const grid = document.getElementById('p-grid');
 
@@ -2980,13 +3015,8 @@
     document.querySelectorAll('[data-page]').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        const target = link.dataset.page;
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
-        document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => a.classList.add('active'));
+        showPage(link.dataset.page, true);
         window.scrollTo(0, 0);
-        //close mobile menu on navigation
         hamburgerBtn.classList.remove('open');
         navLinks.classList.remove('open');
       });
@@ -3111,10 +3141,7 @@
     observeAll();
 
     function goToStandings(tab) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      document.getElementById('standings').classList.add('active');
-      document.querySelectorAll('.nav-links a[data-page="standings"]').forEach(a => a.classList.add('active'));
+      showPage('standings', true);
       //make season dropdown default to s3 in this case
       const _dd = document.getElementById('standings-season-dropdown');
       if (_dd) {
