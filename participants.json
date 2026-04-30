@@ -56,7 +56,7 @@
     { "name": "Bennymoon",    "seed": 26, "country": "US", "placement": 24, "seededPB": "2:49:56", "username": "Bennymoon129" }
   ],
   "season3": [
-    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 24, "tourney-wins": "OG S3" } },
+    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 25, "tourney-wins": "OG S3" } },
     { "name": "Dragon76",     "seed": 2,  "country": "FI",                                  "accolades": { "WR": 1 } , "username": "Dragon67" },
     { "name": "AnorakDT",     "seed": 5,  "country": "US" },
     { "name": "itsjared97",   "seed": 3,  "country": "US",                                  "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
