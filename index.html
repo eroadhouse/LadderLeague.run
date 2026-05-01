@@ -2846,7 +2846,8 @@
       lcqEliminated.forEach(([name], i) => { playerPlacement[name] = lcqStartPlace + i; });
 
       //mapping everyones pb from src to their name
-      const srcPBMap = {};
+      window.srcPBMap = {};
+      const srcPBMap = window.srcPBMap;
       if (lbData && lbData.data) {
         const playerIndex = {};
         (lbData.data.players?.data || []).forEach(pl => {
@@ -4685,6 +4686,8 @@
 
       let LCQ_PLAYERS = [];
       let SEASON_START = null;
+      let LCQ_PARTICIPANT_MAP = {}; // name -> { seed, seededPB }
+      let LCQ_RESULT_STATS = {};    // name -> best time in seconds across all LCQ races
 
       //default when we haven't filled in the lcqs yet
       const LCQ_PLAYERS_PER_MATCH = 9;
@@ -4698,6 +4701,18 @@
         const d = new Date(isoStr);
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
           + ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      }
+
+      function lcqParseTime(t) {
+        if (!t) return null;
+        const [h, m, s] = t.split(':').map(Number);
+        return h * 3600 + m * 60 + s;
+      }
+      function lcqFmtTime(secs) {
+        const h = Math.floor(secs / 3600);
+        const m = Math.floor((secs % 3600) / 60);
+        const s = Math.round(secs % 60);
+        return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
       }
 
       function buildLCQ() {
@@ -4795,6 +4810,24 @@
               players = Array(blanks).fill(null);
             }
           }
+          // Sort by seed when the race hasn't happened yet
+          if (!isDone) {
+            players.sort((a, b) => {
+              if (!a || !b) return 0;
+              const seedA = (LCQ_PARTICIPANT_MAP[a.name] || {}).seed ?? Infinity;
+              const seedB = (LCQ_PARTICIPANT_MAP[b.name] || {}).seed ?? Infinity;
+              return seedA - seedB;
+            });
+          }
+
+          let lcqTipEl = document.getElementById('bp-shared-tooltip');
+          if (!lcqTipEl) {
+            lcqTipEl = document.createElement('div');
+            lcqTipEl.id = 'bp-shared-tooltip';
+            document.body.appendChild(lcqTipEl);
+            document.addEventListener('click', () => { lcqTipEl.style.display = 'none'; });
+          }
+
           players.forEach((entry, pi) => {
             const place    = pi + 1;
             const name     = entry ? entry.name : '—';
@@ -4809,11 +4842,42 @@
               else              moveArrow = `<span class="bp-move" style="color:var(--dim)">–</span>`;
             }
 
+            const nameHtml = isTbd ? name : `<span class="bp-name">${name}</span>`;
             const pEl = document.createElement('div');
             pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (!isWinner && isDone ? ' lost' : '');
-            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${name}`
+            pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${nameHtml}`
               + (time ? `<span class="bp-time">${time}</span>` : '')
               + moveArrow;
+
+            if (!isTbd) {
+              const pInfo   = LCQ_PARTICIPANT_MAP[name] || {};
+              const tipSeed = pInfo.seed != null ? `#${pInfo.seed}` : '—';
+              const srUser  = (pInfo.username || name).toLowerCase();
+              pEl.querySelector('.bp-name').addEventListener('click', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                const srcEntry = window.srcPBMap ? window.srcPBMap[srUser] : null;
+                const tipPB    = srcEntry ? lcqFmtTime(srcEntry.t) : '—';
+                lcqTipEl.style.minWidth = '190px';
+                lcqTipEl.style.padding = '.7rem .9rem';
+                lcqTipEl.innerHTML = `<div class="elim-tip-name" style="color:var(--text)">${name}</div>`
+                  + `<div class="elim-tip-row"><span>Seed</span><span>${tipSeed}</span></div>`
+                  + `<div class="elim-tip-row"><span>PB</span><span>${tipPB}</span></div>`;
+                lcqTipEl.style.display = 'block';
+                lcqTipEl.style.left = '0px';
+                lcqTipEl.style.top = '0px';
+                const tipRect  = lcqTipEl.getBoundingClientRect();
+                const nameRect = e.currentTarget.getBoundingClientRect();
+                const top = nameRect.top - tipRect.height - 8 >= 0
+                  ? nameRect.top - tipRect.height - 8
+                  : nameRect.bottom + 8;
+                let left = nameRect.left;
+                if (left + tipRect.width > window.innerWidth - 8) left = window.innerWidth - tipRect.width - 8;
+                lcqTipEl.style.left = `${left}px`;
+                lcqTipEl.style.top = `${top}px`;
+              });
+            }
+
             card.appendChild(pEl);
           });
 
@@ -4842,11 +4906,26 @@
         ]);
         if (pRes.ok) {
           const data = await pRes.json();
-          LCQ_PLAYERS = (data.season3 || []).filter(p => p.seed > 15).map(p => p.name);
+          const season3 = data.season3 || [];
+          LCQ_PLAYERS = season3.filter(p => p.seed > 15).map(p => p.name);
+          season3.forEach(p => {
+            LCQ_PARTICIPANT_MAP[p.name] = { seed: p.seed, seededPB: p.seededPB || null, username: p.username || null };
+          });
         }
         if (rRes.ok) {
           const data = await rRes.json();
           LCQ_RESULTS = { lcq_1: data.lcq_1, lcq_2: data.lcq_2 };
+          ['lcq_1', 'lcq_2'].forEach(key => {
+            const result = data[key];
+            if (!result || !result.places) return;
+            result.places.forEach(entry => {
+              const secs = lcqParseTime(entry.time);
+              if (secs === null) return;
+              if (LCQ_RESULT_STATS[entry.name] == null || secs < LCQ_RESULT_STATS[entry.name]) {
+                LCQ_RESULT_STATS[entry.name] = secs;
+              }
+            });
+          });
         }
       }
 
