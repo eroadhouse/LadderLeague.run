@@ -4686,8 +4686,8 @@
 
       let LCQ_PLAYERS = [];
       let SEASON_START = null;
-      let LCQ_PARTICIPANT_MAP = {}; // name -> { seed, seededPB }
-      let LCQ_RESULT_STATS = {};    // name -> best time in seconds across all LCQ races
+      let LCQ_PARTICIPANT_MAP = {};
+      let LCQ_RESULT_STATS = {};
 
       //default when we haven't filled in the lcqs yet
       const LCQ_PLAYERS_PER_MATCH = 9;
@@ -4810,7 +4810,6 @@
               players = Array(blanks).fill(null);
             }
           }
-          // Sort by seed when the race hasn't happened yet
           if (!isDone) {
             players.sort((a, b) => {
               if (!a || !b) return 0;
