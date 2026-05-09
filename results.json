@@ -1,6 +1,6 @@
 {
     "lcq_1": {
-    "vod": "https://www.twitch.tv/videos/2768002395",
+    "vod": "https://youtu.be/K0C_W_txQ1w",
     "places": [
       { "name": "Coolisen",   "time": "2:28:20" },
       { "name": "MelloVro",    "time": "2:29:04" },
@@ -13,8 +13,8 @@
       { "name": "Staunch",  "time": "2:50:08" },
       { "name": "CaptainPaxo",  "time": "DNF" },
       { "name": "AppleMan",  "time": "DNF" },
-        { "name": "doubtt",    "time": "FORFEIT" },
-        { "name": "thenzota",    "time": "FORFEIT" }
+        { "name": "doubtt",    "time": "N/A" },
+        { "name": "thenzota",    "time": "N/A" }
     ]
   }
 }
