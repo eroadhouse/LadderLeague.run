@@ -4155,8 +4155,7 @@
       const wildcardGroup = document.createElement('div');
       wildcardGroup.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:12px; align-self:stretch;';
       if (wildcardEl) wildcardGroup.appendChild(wildcardEl);
-      const ladderIsLive = !LADDER_START || new Date() >= LADDER_START;
-      if (ladderIsLive) wildcardGroup.appendChild(elimCol);
+      wildcardGroup.appendChild(elimCol);
       container.appendChild(wildcardGroup);
       }
 
