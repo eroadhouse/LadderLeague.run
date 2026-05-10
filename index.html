@@ -3865,7 +3865,7 @@
           const result        = RESULTS[`${w}_${r}`];
           const isDone        = !!result;
           const scheduleEntry = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
-          const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.start) : null;
+          const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.time || scheduleEntry.start) : null;
           const timerStartRaw = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
           const isAutoLive    = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
           const isManualLive = !isDone && LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
