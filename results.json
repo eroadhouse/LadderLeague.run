@@ -1,5 +1,5 @@
 {
-    "lcq_1": {
+  "lcq_1": {
     "vod": "https://youtu.be/K0C_W_txQ1w",
     "places": [
       { "name": "Coolisen",   "time": "2:28:20" },
@@ -7,14 +7,29 @@
       { "name": "Charzight",    "time": "2:30:08" },
       { "name": "ChessWiz",    "time": "2:30:12" },
       { "name": "Gamer_Olive", "time": "2:30:19" },
-      { "name": "Wytew", "time": "2:32:18" },
+      { "name": "Wyteww", "time": "2:32:16" },
       { "name": "Nolan",     "time": "2:34:21" },
       { "name": "Chroma_Q",       "time": "2:36:54" },
       { "name": "Staunch",  "time": "2:50:08" },
       { "name": "CaptainPaxo",  "time": "DNF" },
       { "name": "AppleMan",  "time": "DNF" },
-        { "name": "doubtt",    "time": "N/A" },
-        { "name": "thenzota",    "time": "N/A" }
+      { "name": "doubtt",  "time": "N/A" },
+      { "name": "thenzota",  "time": "N/A" }
+    ]
+  },  
+  "lcq_2": {
+    "vod": "https://youtu.be/K0C_W_txQ1w",
+    "places": [
+      { "name": "Gamer_Olive",   "time": "2:31:11" },
+      { "name": "ChessWiz",    "time": "2:31:19" },
+      { "name": "Wyteww",    "time": "2:32:04" },
+      { "name": "CaptainPaxo",    "time": "2:33:52" },
+      { "name": "thenzota", "time": "2:34:01" },
+      { "name": "AppleMan", "time": "2:35:13" },
+      { "name": "Nolan",     "time": "2:38:36" },
+      { "name": "Chroma_Q",       "time": "2:39:36" },
+      { "name": "Staunch",  "time": "2:44:07" },
+      { "name": "doubtt",  "time": "2:45:26" }
     ]
   }
 }

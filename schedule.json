@@ -9,7 +9,13 @@
     "lcq_2": "2026-05-10T13:00:00-04:00"
   },
   "ladder": {
-    },
+    "1_1": { "time": "2026-05-13T15:00:00-04:00", "players": ["ZacMuffin", "Dragon76", "itsjared97"] },
+    "1_4": { "time": "2026-05-14T21:30:00-04:00", "players": ["FlamingLazer", "Dimei", "ejpman"] },
+    "1_6": { "time": "2026-05-16T10:00:00-04:00", "players": ["Coolisen", "MelloVro", "Charzight"] },
+    "1_5": { "time": "2026-05-16T13:00:00-04:00", "players": ["Colten", "kwazrr", "GildetPhantom"] },
+    "1_3": { "time": "2026-05-16T16:00:00-04:00", "players": ["WiiSuper", "Wazzip", "Scynor"] },
+    "1_2": { "time": "2026-05-17T20:00:00-04:00", "players": ["ERoadhouse", "Anorak", "Bricko"] }
+  },
   "top8": {
     "qf_1": "2026-07-10T10:00:00-04:00",
     "qf_4": "2026-07-10T13:00:00-04:00",
