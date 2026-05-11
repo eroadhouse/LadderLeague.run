@@ -2586,6 +2586,12 @@
       const _staticSchedule = _nativeFetch('schedule.json', { cache: 'no-store' })
         .then(r => r.json()).catch(() => ({}));
 
+      //Name map (so stuff is not case sensitive)
+      const _nameMap = _nativeFetch('participants.json', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(data => new Map((data.season3 || []).map(p => [p.name.toLowerCase(), p.name])))
+        .catch(() => new Map());
+
        window.fetch = function(url, opts) {
         const u = typeof url === 'string' ? url : String(url);
         if (u === 'results.json')  return _resultsReady.then(() => new Response(JSON.stringify(_cachedResults),  { headers: { 'Content-Type': 'application/json' } }));
@@ -2621,7 +2627,8 @@
         return h * 3600 + m * 60 + s;
       }
 
-      function transform(state) {
+      function transform(state, nameMap) {
+        const normName = n => (n && nameMap.get(n.toLowerCase())) || n;
         const results = {};
         const ladder = {}, top8 = {}, lcq = {};
         let liveMatch = false, lcqLiveMatch = null;
@@ -2635,7 +2642,7 @@
           const section = isTop8 ? top8 : isLcq ? lcq : ladder;
 
           const players = Object.keys(event.runner_state || {})
-            .map(id => state.people?.[id]?.name).filter(Boolean);
+            .map(id => normName(state.people?.[id]?.name)).filter(Boolean);
 
           if (event.event_start_time)
             section[key] = { time: event.event_start_time, players };
@@ -2647,7 +2654,7 @@
 
           const places = [];
           for (const [id, rs] of Object.entries(event.runner_state || {})) {
-            const name = state.people?.[id]?.name;
+            const name = normName(state.people?.[id]?.name);
             const time = rs.result?.SingleScore?.score?.final_result ?? rs.result?.SplitTimes?.final_result;
             if (name && time) places.push({ name, time });
           }
@@ -2660,7 +2667,8 @@
 
       async function applyState(raw) {
         const state = typeof raw === 'string' ? JSON.parse(raw) : raw;
-        const { results, schedule: evSched } = transform(state);
+        const nameMap = await _nameMap;
+        const { results, schedule: evSched } = transform(state, nameMap);
         const staticSched = await _staticSchedule;
 
         _cachedResults  = results;
