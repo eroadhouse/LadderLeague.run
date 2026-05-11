@@ -2571,6 +2571,122 @@
       return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
+    //Automarathon websocket
+    (function initAutomarathon() {
+      let _resolveResults, _resolveSchedule;
+      const _resultsReady  = new Promise(r => (_resolveResults  = r));
+      const _scheduleReady = new Promise(r => (_resolveSchedule = r));
+      let _cachedResults  = null;
+      let _cachedSchedule = null;
+      let _firstMessage   = false;
+
+      const _nativeFetch = window.fetch.bind(window);
+
+      //Fetch static config fields
+      const _staticSchedule = _nativeFetch('schedule.json', { cache: 'no-store' })
+        .then(r => r.json()).catch(() => ({}));
+
+       window.fetch = function(url, opts) {
+        const u = typeof url === 'string' ? url : String(url);
+        if (u === 'results.json')  return _resultsReady.then(() => new Response(JSON.stringify(_cachedResults),  { headers: { 'Content-Type': 'application/json' } }));
+        if (u === 'schedule.json') return _scheduleReady.then(() => new Response(JSON.stringify(_cachedSchedule), { headers: { 'Content-Type': 'application/json' } }));
+        return _nativeFetch(url, opts);
+      };
+
+      const _fallbackTimer = setTimeout(() => {
+        if (_firstMessage) return;
+        _cachedResults  = {};
+        _cachedSchedule = {};
+        _resolveResults(_cachedResults);
+        _resolveSchedule(_cachedSchedule);
+      }, 15000);
+
+      function parseKey(name) {
+        if (!name) return null;
+        const n = name.trim().toUpperCase();
+        let m;
+        if ((m = n.match(/^WEEK (\d+) RUNG (\d+)$/)))  return `${m[1]}_${m[2]}`;
+        if ((m = n.match(/^LCQ (\d+)$/)))               return `lcq_${m[1]}`;
+        if ((m = n.match(/^QUARTERFINAL (\d+)$/)))      return `qf_${m[1]}`;
+        if ((m = n.match(/^SEMIFINAL (\d+)$/)))         return `sf_${m[1]}`;
+        if (n === 'GRAND FINALS')                       return 'gf_1';
+        if (n === 'THIRD PLACE MATCH')                  return 'tp_1';
+        if (n === 'WILDCARD MATCH')                     return '8_1';
+        return null;
+      }
+
+      function toSecs(t) {
+        if (!t || t === 'DNF' || t === 'N/A') return Infinity;
+        const [h, m, s] = t.split(':').map(Number);
+        return h * 3600 + m * 60 + s;
+      }
+
+      function transform(state) {
+        const results = {};
+        const ladder = {}, top8 = {}, lcq = {};
+        let liveMatch = false, lcqLiveMatch = null;
+
+        for (const event of (state.events || [])) {
+          const key = parseKey(event.name);
+          if (!key) continue;
+
+          const isTop8 = /^(qf|sf|gf|tp)_/.test(key);
+          const isLcq  = key.startsWith('lcq_');
+          const section = isTop8 ? top8 : isLcq ? lcq : ladder;
+
+          const players = Object.keys(event.runner_state || {})
+            .map(id => state.people?.[id]?.name).filter(Boolean);
+
+          if (event.event_start_time)
+            section[key] = { time: event.event_start_time, players };
+
+          if (event.event_start_time && new Date() > new Date(event.event_start_time) && !event.complete) {
+            if (isLcq) lcqLiveMatch = key;
+            else liveMatch = key;
+          }
+
+          const places = [];
+          for (const [id, rs] of Object.entries(event.runner_state || {})) {
+            const name = state.people?.[id]?.name;
+            const time = rs.result?.SingleScore?.score?.final_result ?? rs.result?.SplitTimes?.final_result;
+            if (name && time) places.push({ name, time });
+          }
+          places.sort((a, b) => toSecs(a.time) - toSecs(b.time));
+          if (places.length) results[key] = { places, vod: event.console || null };
+        }
+
+        return { results, schedule: { ladder, top8, lcq, liveMatch, lcqLiveMatch } };
+      }
+
+      async function applyState(raw) {
+        const state = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        const { results, schedule: evSched } = transform(state);
+        const staticSched = await _staticSchedule;
+
+        _cachedResults  = results;
+        _cachedSchedule = { ...staticSched, ...evSched };
+
+        if (!_firstMessage) {
+          _firstMessage = true;
+          clearTimeout(_fallbackTimer);
+          _resolveResults(_cachedResults);
+          _resolveSchedule(_cachedSchedule);
+        }
+
+        document.dispatchEvent(new CustomEvent('amUpdate'));
+      }
+
+      function connect() {
+        const ws = new WebSocket('wss://automarathon.opengg.dev/ws');
+        ws.onmessage = e => applyState(e.data).catch(err => console.error('[automarathon]', err));
+        ws.onclose   = () => setTimeout(connect, 5000);
+        ws.onerror   = () => ws.close();
+      }
+
+      connect();
+    })();
+    // ────────────────────────────────────────────────────────────────────────────
+
     const schedulePromise      = fetch('schedule.json',      { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
     const resultsPromise       = fetch('results.json',       { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
     const participantsPromise  = fetch('participants.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
@@ -2747,12 +2863,6 @@
 
       //placements
       const playerPlacement = {};
-      const elimSlots = [];
-      for (let w = 7; w >= 1; w--) {
-        const mc = weekMatchCounts[w - 1];
-        //for wildcards just gonna leave the loser at their original eliminated placement
-        for (let place = 2; place <= 3; place++) elimSlots.push({ week: w, rung: mc, place });
-      }
       //wildcard matchups
       const pWcBest = {}, pWcAllTimes = {};
       Object.entries(playerPB).forEach(([name, best]) => {
@@ -2765,21 +2875,54 @@
         .sort((a, b) => a[1] - b[1])[0]?.[0] || null;
       const wcParticipants = new Set([pWcFastest, pWcAvg].filter(Boolean));
 
-      //un-eliminating the ppl in the wildcard match until it's over
       const wcMatchWinner = (ladderResults['8_1']?.places?.[0] || {}).name || null;
-      const pExcludeFromElim = new Set();
-      if (wcMatchWinner) {
-        pExcludeFromElim.add(wcMatchWinner);
-      } else {
-        wcParticipants.forEach(p => pExcludeFromElim.add(p));
+      const week7DoneP = !!(ladderResults[`7_${weekMatchCounts[6]}`]?.places?.length);
+
+      function pBuildElimBase() {
+        const base = [];
+        for (let w = 7; w >= 1; w--) {
+          const mc = weekMatchCounts[w - 1];
+          for (let place = 2; place <= 3; place++) {
+            const r = ladderResults[`${w}_${mc}`];
+            base.push(r ? (r.places[place - 1] || {}).name || null : null);
+          }
+        }
+        return base;
       }
-      let elimPlace = 9;
-      elimSlots.forEach(s => {
-        const r = ladderResults[`${s.week}_${s.rung}`];
-        //classic zac ternary operator spam easter egg
-        const name = r ? (r.places[s.place - 1] || {}).name : null;
-        if (!name || pExcludeFromElim.has(name)) return;
-        playerPlacement[name] = elimPlace++;
+
+      let pElimEntries;
+      if (wcMatchWinner) {
+        const base = pBuildElimBase();
+        const winnerIdx = base.findIndex(n => n === wcMatchWinner);
+        const filtered = [...base];
+        if (winnerIdx >= 0) filtered.splice(winnerIdx, 1);
+        pElimEntries = filtered.slice(0, 13);
+      } else if (week7DoneP) {
+        const base = pBuildElimBase();
+        const candidates = new Set([pWcFastest, pWcAvg].filter(Boolean));
+        const removed = new Set();
+        const filtered = [];
+        for (const name of base) {
+          if (name && candidates.has(name) && !removed.has(name)) {
+            removed.add(name);
+          } else {
+            filtered.push(name);
+          }
+        }
+        pElimEntries = [null, ...filtered.slice(0, 12)];
+      } else {
+        pElimEntries = [null];
+        for (let w = 6; w >= 1; w--) {
+          const mc = weekMatchCounts[w - 1];
+          for (let place = 2; place <= 3; place++) {
+            const r = ladderResults[`${w}_${mc}`];
+            pElimEntries.push(r ? (r.places[place - 1] || {}).name || null : null);
+          }
+        }
+      }
+
+      pElimEntries.forEach((name, i) => {
+        if (name) playerPlacement[name] = 9 + i;
       });
 
       //top 8 placements
@@ -4101,32 +4244,55 @@
       elabel.className = 'bracket-eliminated-label';
       elabel.textContent = '✕ Eliminated';
       elimCol.appendChild(elabel);
-      const elimSlots = [];
-      for (let w = WEEKS - 1; w >= 1; w--) {
-        const matchCount = weekMatchCounts[w - 1];
-        const bottomRung = matchCount;
-        for (let place = 2; place <= 3; place++) {
-          elimSlots.push({ week: w, rung: bottomRung, place });
+
+      const bracketWildcardWinner = (RESULTS['8_1']?.places?.[0] || {}).name || null;
+      const [wc1, wc2] = wildcardParticipants;
+      const week7Done = !!(RESULTS[`${WEEKS - 1}_${weekMatchCounts[WEEKS - 2]}`]?.places?.length);
+
+      function buildElimBase14() {
+        const base = [];
+        for (let w = WEEKS - 1; w >= 1; w--) {
+          const matchCount = weekMatchCounts[w - 1];
+          for (let place = 2; place <= 3; place++) {
+            const result = RESULTS[`${w}_${matchCount}`];
+            const name = result ? (result.places[place - 1] || {}).name || null : null;
+            base.push(name);
+          }
+        }
+        return base;
+      }
+
+      let elimEntries;
+      if (bracketWildcardWinner) {
+        const base = buildElimBase14();
+        const winnerIdx = base.findIndex(n => n === bracketWildcardWinner);
+        const filtered = [...base];
+        if (winnerIdx >= 0) filtered.splice(winnerIdx, 1);
+        elimEntries = filtered.slice(0, 13);
+      } else if (week7Done) {
+        const base = buildElimBase14();
+        const candidates = new Set([wc1, wc2].filter(p => p && p !== '—'));
+        const removed = new Set();
+        const filtered = [];
+        for (const name of base) {
+          if (name && candidates.has(name) && !removed.has(name)) {
+            removed.add(name);
+          } else {
+            filtered.push(name);
+          }
+        }
+        elimEntries = [null, ...filtered.slice(0, 12)];
+      } else {
+        elimEntries = [null];
+        for (let w = WEEKS - 2; w >= 1; w--) {
+          const matchCount = weekMatchCounts[w - 1];
+          for (let place = 2; place <= 3; place++) {
+            const result = RESULTS[`${w}_${matchCount}`];
+            const name = result ? (result.places[place - 1] || {}).name || null : null;
+            elimEntries.push(name);
+          }
         }
       }
-
-      //un-eliminating wildcard match runners until it's done
-      const bracketWildcardWinner = (RESULTS['8_1']?.places?.[0] || {}).name || null;
-      const bracketExcludeFromElim = new Set();
-      if (bracketWildcardWinner) {
-        bracketExcludeFromElim.add(bracketWildcardWinner);
-      } else {
-        wildcardParticipants.forEach(p => bracketExcludeFromElim.add(p));
-      }
-
-      //updating eliminated list
-      const elimEntries = [];
-      elimSlots.forEach(s => {
-        const result = RESULTS[`${s.week}_${s.rung}`];
-        const name = result ? (result.places[s.place - 1] || {}).name : null;
-        if (name && bracketExcludeFromElim.has(name)) return;
-        elimEntries.push(name);
-      });
 
       elimEntries.forEach((name, i) => {
         const placement = 9 + i;
@@ -4161,7 +4327,9 @@
 
       function scheduleAutoLive() {
         const now = Date.now();
-        Object.values(SCHEDULE).forEach(isoStr => {
+        Object.values(SCHEDULE).forEach(entry => {
+          const isoStr = typeof entry === 'string' ? entry : entry?.time;
+          if (!isoStr) return;
           const ms = new Date(isoStr).getTime() - now;
           if (ms > 0) setTimeout(buildBracket, ms);
         });
@@ -4195,6 +4363,21 @@
             }
           } catch (e) { /*probably network error so retry*/}
         }, 30_000);
+        document.addEventListener('amUpdate', async () => {
+          try {
+            const [sd, data] = await Promise.all([
+              fetch('schedule.json', { cache: 'no-store' }).then(r => r.json()),
+              loadResults(),
+            ]);
+            const liveChanged = (sd.liveMatch || null) !== LIVE_MATCH;
+            LIVE_MATCH  = sd.liveMatch  || null;
+            SCHEDULE    = sd.ladder     || {};
+            if (liveChanged || JSON.stringify(data) !== JSON.stringify(RESULTS)) {
+              applyResults(data);
+              buildBracket();
+            }
+          } catch (e) {}
+        });
       }
 
       Promise.all([schedulePromise, participantsPromise]).then(([sd, allParticipants]) => {
@@ -4638,7 +4821,9 @@
 
       function scheduleTop8AutoLive() {
         const now = Date.now();
-        Object.values(TOP8_SCHEDULE).forEach(isoStr => {
+        Object.values(TOP8_SCHEDULE).forEach(entry => {
+          const isoStr = typeof entry === 'string' ? entry : entry?.time;
+          if (!isoStr) return;
           const ms = new Date(isoStr).getTime() - now;
           if (ms > 0) setTimeout(buildTop8Bracket, ms);
         });
@@ -4666,6 +4851,15 @@
             }
           } catch (e) { /*network error same thing*/ }
         }, 30_000);
+        document.addEventListener('amUpdate', async () => {
+          try {
+            const data = await loadTop8Results();
+            if (JSON.stringify(data) !== JSON.stringify(TOP8_RESULTS)) {
+              TOP8_RESULTS = data;
+              buildTop8Bracket();
+            }
+          } catch (e) {}
+        });
       }
 
       schedulePromise.then(sd => {
@@ -4938,7 +5132,7 @@
             console.error('Could not load LCQ data', e);
           }
           buildLCQ();
-          setInterval(async () => {
+          const _lcqRebuild = async () => {
             try {
               const res = await fetch('results.json', { cache: 'no-store' });
               if (!res.ok) return;
@@ -4948,8 +5142,10 @@
                 LCQ_RESULTS = fresh;
                 buildLCQ();
               }
-            } catch (e) {/*network error*/}
-          }, 30_000);
+            } catch (e) {}
+          };
+          setInterval(_lcqRebuild, 30_000);
+          document.addEventListener('amUpdate', _lcqRebuild);
         })();
       });
 
@@ -5482,27 +5678,10 @@
       //only show if a match is live according to schedule
       async function anyMatchLive() {
         try {
-          const [sched, results] = await Promise.all([
-            fetch('schedule.json').then(r => r.json()),
-            fetch('results.json').then(r => r.json()).catch(() => ({}))
-          ]);
-          const now = new Date();
-          const ladder = sched.ladder || {};
-          for (const key of Object.keys(ladder)) {
-            if (results[key]) continue;
-            const entry = ladder[key];
-            const start = typeof entry === 'string' ? entry : entry?.start;
-            if (start && now >= new Date(start)) return true;
-          }
-          const top8 = sched.top8 || {};
-          for (const key of Object.keys(top8)) {
-            const entry = top8[key];
-            const start = typeof entry === 'string' ? entry : entry?.start;
-            if (start && now >= new Date(start)) return true;
-          }
+          const sched = await fetch('schedule.json').then(r => r.json());
           if (sched.liveMatch) return true;
           if (sched.lcqLiveMatch) return true;
-        } catch (e) { /* network error */}
+        } catch (e) { /* network error */ }
         return false;
       }
 
