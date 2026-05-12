@@ -3085,7 +3085,7 @@
       });
       const lcqEliminated = Object.entries(lcq2Time)
         .filter(([name]) => !lcqQualifiers.has(name))
-        .sort((a, b) => a[1] - b[1]); // fastest LCQ 2 time first → highest placement
+        .sort((a, b) => a[1] - b[1]);
       const lcqStartPlace = participants.length - lcqEliminated.length + 1;
       lcqEliminated.forEach(([name], i) => { playerPlacement[name] = lcqStartPlace + i; });
 
@@ -3838,13 +3838,12 @@
 
     let LCQ_RESULTS = {};
 
-    // Theory bracket mode
     const theoryToggleBtn  = document.getElementById('theory-toggle');
     const standingsBarEl   = document.querySelector('.standings-bar');
     const standingsPageEl  = document.getElementById('standings');
     let   theoryMode       = false;
     const theoryPicks      = {};
-    const theoryLeapfrogs  = {}; // matchKey → player index (0|1|2) who is leapfrogging, or undefined
+    const theoryLeapfrogs  = {};
 
     function updateTheoryToggleVisibility() {
       if (!theoryToggleBtn) return;
@@ -3873,7 +3872,6 @@
     });
 
     document.getElementById('bracket-scroll').addEventListener('click', e => {
-      // Leapfrog button
       const leapBtn = e.target.closest('.theory-leap');
       if (leapBtn) {
         e.preventDefault();
@@ -3889,7 +3887,6 @@
         return;
       }
 
-      // Place pick buttons
       const pickBtn = e.target.closest('.theory-pick');
       if (!pickBtn) return;
       e.preventDefault();
@@ -3904,7 +3901,6 @@
       const alreadySelected = theoryPicks[matchKey][pi] === place;
       theoryPicks[matchKey].forEach((v, i) => { if (v === place) theoryPicks[matchKey][i] = null; });
       theoryPicks[matchKey][pi] = alreadySelected ? null : place;
-      // If this player no longer holds 1st, clear their leapfrog
       if (theoryLeapfrogs[matchKey] === pi && theoryPicks[matchKey][pi] !== 1) {
         theoryLeapfrogs[matchKey] = undefined;
         picksSpan.querySelector('.theory-leap')?.classList.remove('active');
@@ -4043,15 +4039,13 @@
         return computeLineup(week)[rung] || ['—', '—', '—'];
       }
 
-      // Like computeLineup but folds in theoryPicks for matches without real results
       function computeTheoryPlayers(week, rung) {
         if (week === 1) return computeLineup(1)[rung] || ['—', '—', '—'];
         const prevWeek       = week - 1;
         const prevMatchCount = weekMatchCounts[prevWeek - 1];
         const thisMatchCount = weekMatchCounts[week - 1];
 
-        // Step 1: resolve ordered {name, status} entries for every prev-week rung
-        const rungEntries = {}; // r → [{name, status}]
+        const rungEntries = {};
         for (let r = 1; r <= prevMatchCount; r++) {
           const realResult = RESULTS[`${prevWeek}_${r}`];
           if (realResult) {
@@ -4073,7 +4067,6 @@
           }
         }
 
-        // Step 2: apply movement rules; track theory leapfrog rungs separately
         const nextRung = {};
         const theoryLeapfrogRungs = new Set();
         for (let r = 1; r <= prevMatchCount; r++) {
@@ -4090,9 +4083,9 @@
             if (isBottom && place  >  1) return;                         // eliminated
             if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays top
             if (place === 3)             { nextRung[name] = r + 1; return; } // down
-            if (status === 'leapfrogged') { nextRung[name] = r; return; } // real leapfrogged: stays
+            if (status === 'leapfrogged') { nextRung[name] = r; return; } // leapfrogged
             const isTheoryLeap = !isRealResult && place === 1 && r > 2
-                                 && theoryLeapfrogs[matchKey] === idx;
+                                 && theoryLeapfrogs[matchKey] !== undefined;
             if (status === 'leapfrogging' || isTheoryLeap) {
               nextRung[name] = r - 2;
               if (isTheoryLeap) theoryLeapfrogRungs.add(r);
@@ -4102,12 +4095,11 @@
           });
         }
 
-        // Step 3: for each theory leapfrog, keep rung r-1's 2nd-place player in place
         theoryLeapfrogRungs.forEach(r => {
           const above       = r - 1;
           const secondPlace = rungEntries[above]?.[1]?.name;
           if (!secondPlace || secondPlace === '—') return;
-          nextRung[secondPlace] = above; // leapfrogged: stays in rung above
+          nextRung[secondPlace] = above; // leapfrogged
         });
 
         const lineup = {};
@@ -4589,8 +4581,6 @@
       wildcardGroup.appendChild(elimCol);
       container.appendChild(wildcardGroup);
 
-      // Re-register the theory refresh function so it closes over the current
-      // playerStats / week1Seed / bpTooltipEl from this build pass
       window._refreshTheoryBracket = function() {
         const scroll = document.getElementById('bracket-scroll');
         if (!scroll) return;
