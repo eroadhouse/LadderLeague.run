@@ -58,8 +58,8 @@
   "season3": [
     { "name": "Zac",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 25, "tourney-wins": "OG S3" } },
     { "name": "Dragon76",     "seed": 2,  "country": "FI",                                  "accolades": { "WR": 1 } , "username": "Dragon67" },
-    { "name": "Anorak",     "seed": 5,  "country": "US" },
-    { "name": "Jared",   "seed": 3,  "country": "US",                                  "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
+    { "name": "Anorak",     "seed": 5,  "country": "US" , "username": "AnorakDT"},
+    { "name": "Jared",   "seed": 3,  "country": "US",                                  "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 }, "username": "itsjared97" },
     { "name": "ERoadhouse",   "seed": 4,  "country": "US",                                  "accolades": { "tourney-wins": "LLS1", "WR": 11 } },
     { "name": "Bricko",       "seed": 6,  "country": "US" },
     { "name": "WiiSuper",     "seed": 8,  "country": "US",                                  "accolades": { "tourney-runnerups": ["OG S1", "OG S3", "LLS2"], "WR": 26 } },
