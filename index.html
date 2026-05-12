@@ -571,7 +571,94 @@
     }
     .standings-bar-right {
       flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 1rem;
     }
+    .standings-bar.theory-mode {
+      background: #110505;
+      border-bottom-color: #3d0c0c;
+      transition: background .25s, border-bottom-color .25s;
+    }
+    .standings-bar.theory-mode .standings-tab.active {
+      color: #cc3333;
+      border-bottom-color: #cc3333;
+    }
+    .theory-toggle {
+      display: none;
+      align-items: center;
+      gap: .3rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--dim);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .32rem .65rem;
+      cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+      white-space: nowrap;
+      outline: none;
+      user-select: none;
+    }
+    .theory-toggle:hover { color: var(--text); border-color: var(--accent2); }
+    .theory-toggle.active { color: #cc3333; border-color: #882222; background: rgba(180,40,40,.1); }
+    .theory-picks {
+      display: none;
+      align-items: center;
+      gap: 2px;
+      margin-left: auto;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+    .theory-mode .bracket-match:not(.done) .theory-picks {
+      display: flex;
+      pointer-events: all;
+    }
+    .theory-pick {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: .55rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .1s, color .1s, background .1s;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+    }
+    .theory-pick:hover { border-color: #cc3333; color: #cc3333; }
+    .theory-pick.selected { border-color: #cc3333; color: #cc3333; background: rgba(204,51,51,.15); }
+    .theory-leap {
+      font-size: .7rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 1px solid rgba(48,150,212,.25);
+      border-radius: 2px;
+      background: transparent;
+      color: rgba(48,150,212,.35);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .1s, color .1s, background .1s;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+    }
+    .theory-picks:has(.theory-pick[data-place="1"].selected) .theory-leap { display: flex; }
+    .theory-leap.active { color: #3096d4; border-color: #3096d4; background: rgba(48,150,212,.12); }
     .season-dropdown {
       position: relative;
     }
@@ -2297,7 +2384,12 @@
         <div class="standings-tab active" data-ptab="ladder">Ladder</div>
         <div class="standings-tab" data-ptab="top8">Top 8</div>
       </div>
-      <div class="standings-bar-right"></div>
+      <div class="standings-bar-right">
+        <button class="theory-toggle" id="theory-toggle" type="button">
+          <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          Theory
+        </button>
+      </div>
     </div>
     <div id="standings-s3">
       <div class="standings-tab-panel" id="standings-tab-lcq">
@@ -2980,19 +3072,20 @@
 
       //didn't make it into ladder at all
       const lcqQualifiers = new Set();
-      const lcqBestTime   = {};
+      const lcq2Time      = {};
       Object.entries(ladderResults).forEach(([key, result]) => {
         if (!key.startsWith('lcq_') || !result || !result.places) return;
         result.places.forEach((entry, idx) => {
           if (idx < 3) lcqQualifiers.add(entry.name);
-          const secs = pParseTime(entry.time);
-          if (secs !== null && (lcqBestTime[entry.name] == null || secs < lcqBestTime[entry.name]))
-            lcqBestTime[entry.name] = secs;
+          if (key === 'lcq_2') {
+            const secs = pParseTime(entry.time);
+            if (secs !== null) lcq2Time[entry.name] = secs;
+          }
         });
       });
-      const lcqEliminated = Object.entries(lcqBestTime)
+      const lcqEliminated = Object.entries(lcq2Time)
         .filter(([name]) => !lcqQualifiers.has(name))
-        .sort((a, b) => a[1] - b[1]); // best time first → highest placement
+        .sort((a, b) => a[1] - b[1]); // fastest LCQ 2 time first → highest placement
       const lcqStartPlace = participants.length - lcqEliminated.length + 1;
       lcqEliminated.forEach(([name], i) => { playerPlacement[name] = lcqStartPlace + i; });
 
@@ -3142,6 +3235,7 @@
       s3DefaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
       document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
+      updateTheoryToggleVisibility();
     });
 
     document.querySelectorAll('#standings-s3-tabs .standings-tab').forEach(tab => {
@@ -3161,6 +3255,7 @@
             }
           });
         }
+        updateTheoryToggleVisibility();
       });
     });
 
@@ -3743,6 +3838,85 @@
 
     let LCQ_RESULTS = {};
 
+    // Theory bracket mode
+    const theoryToggleBtn  = document.getElementById('theory-toggle');
+    const standingsBarEl   = document.querySelector('.standings-bar');
+    const standingsPageEl  = document.getElementById('standings');
+    let   theoryMode       = false;
+    const theoryPicks      = {};
+    const theoryLeapfrogs  = {}; // matchKey → player index (0|1|2) who is leapfrogging, or undefined
+
+    function updateTheoryToggleVisibility() {
+      if (!theoryToggleBtn) return;
+      const isLadder = !!document.querySelector('#standings-s3-tabs .standings-tab[data-tab="ladder"].active');
+      const isS3     = document.getElementById('standings-s3')?.style.display !== 'none';
+      const show     = isLadder && isS3;
+      theoryToggleBtn.style.display = show ? 'flex' : 'none';
+      if (!show && theoryMode) {
+        theoryMode = false;
+        theoryToggleBtn.classList.remove('active');
+        standingsBarEl.classList.remove('theory-mode');
+        standingsPageEl.classList.remove('theory-mode');
+      }
+    }
+
+    theoryToggleBtn.addEventListener('click', () => {
+      theoryMode = !theoryMode;
+      theoryToggleBtn.classList.toggle('active', theoryMode);
+      standingsBarEl.classList.toggle('theory-mode', theoryMode);
+      standingsPageEl.classList.toggle('theory-mode', theoryMode);
+      if (!theoryMode) {
+        Object.keys(theoryPicks).forEach(k => delete theoryPicks[k]);
+        Object.keys(theoryLeapfrogs).forEach(k => delete theoryLeapfrogs[k]);
+        window._buildBracket?.();
+      }
+    });
+
+    document.getElementById('bracket-scroll').addEventListener('click', e => {
+      // Leapfrog button
+      const leapBtn = e.target.closest('.theory-leap');
+      if (leapBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = leapBtn.closest('.bracket-match');
+        if (!card || !card.dataset.match) return;
+        const matchKey = card.dataset.match;
+        const pi       = parseInt(leapBtn.closest('.theory-picks').dataset.pi);
+        const isActive = theoryLeapfrogs[matchKey] === pi;
+        theoryLeapfrogs[matchKey] = isActive ? undefined : pi;
+        leapBtn.classList.toggle('active', !isActive);
+        window._refreshTheoryBracket?.();
+        return;
+      }
+
+      // Place pick buttons
+      const pickBtn = e.target.closest('.theory-pick');
+      if (!pickBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const card = pickBtn.closest('.bracket-match');
+      if (!card || !card.dataset.match) return;
+      const matchKey  = card.dataset.match;
+      const picksSpan = pickBtn.closest('.theory-picks');
+      const pi        = parseInt(picksSpan.dataset.pi);
+      const place     = parseInt(pickBtn.dataset.place);
+      if (!theoryPicks[matchKey]) theoryPicks[matchKey] = [null, null, null];
+      const alreadySelected = theoryPicks[matchKey][pi] === place;
+      theoryPicks[matchKey].forEach((v, i) => { if (v === place) theoryPicks[matchKey][i] = null; });
+      theoryPicks[matchKey][pi] = alreadySelected ? null : place;
+      // If this player no longer holds 1st, clear their leapfrog
+      if (theoryLeapfrogs[matchKey] === pi && theoryPicks[matchKey][pi] !== 1) {
+        theoryLeapfrogs[matchKey] = undefined;
+        picksSpan.querySelector('.theory-leap')?.classList.remove('active');
+      }
+      card.querySelectorAll('.theory-picks').forEach((span, i) => {
+        span.querySelectorAll('.theory-pick').forEach(btn => {
+          btn.classList.toggle('selected', theoryPicks[matchKey][i] === parseInt(btn.dataset.place));
+        });
+      });
+      window._refreshTheoryBracket?.();
+    });
+
     //LADDER
     (function() {
 
@@ -3867,6 +4041,84 @@
       function getPlayers(week, rung) {
         if (week === WILDCARD_WEEK) return wildcardParticipants;
         return computeLineup(week)[rung] || ['—', '—', '—'];
+      }
+
+      // Like computeLineup but folds in theoryPicks for matches without real results
+      function computeTheoryPlayers(week, rung) {
+        if (week === 1) return computeLineup(1)[rung] || ['—', '—', '—'];
+        const prevWeek       = week - 1;
+        const prevMatchCount = weekMatchCounts[prevWeek - 1];
+        const thisMatchCount = weekMatchCounts[week - 1];
+
+        // Step 1: resolve ordered {name, status} entries for every prev-week rung
+        const rungEntries = {}; // r → [{name, status}]
+        for (let r = 1; r <= prevMatchCount; r++) {
+          const realResult = RESULTS[`${prevWeek}_${r}`];
+          if (realResult) {
+            rungEntries[r] = realResult.places.map(e => ({ name: e.name, status: e.status || null }));
+          } else {
+            const picks = theoryPicks[`${prevWeek}_${r}`];
+            if (!picks || picks.every(p => p === null)) continue;
+            const players = computeTheoryPlayers(prevWeek, r);
+            const placed  = [null, null, null];
+            const leftover = [];
+            players.forEach((name, i) => {
+              const p = picks[i];
+              if (p !== null && p !== undefined) placed[p - 1] = name;
+              else leftover.push(name);
+            });
+            let li = 0;
+            for (let i = 0; i < 3; i++) { if (placed[i] === null) placed[i] = leftover[li++] || '—'; }
+            rungEntries[r] = placed.map(name => ({ name, status: null }));
+          }
+        }
+
+        // Step 2: apply movement rules; track theory leapfrog rungs separately
+        const nextRung = {};
+        const theoryLeapfrogRungs = new Set();
+        for (let r = 1; r <= prevMatchCount; r++) {
+          if (!rungEntries[r]) continue;
+          const isTop      = r === 1;
+          const isBottom   = r === prevMatchCount;
+          const matchKey   = `${prevWeek}_${r}`;
+          const isRealResult = !!RESULTS[matchKey];
+          rungEntries[r].forEach((entry, idx) => {
+            const { name, status } = entry;
+            const place = idx + 1;
+            if (!name || name === '—') return;
+            if (isTop    && place === 1) return;                         // qualifies
+            if (isBottom && place  >  1) return;                         // eliminated
+            if (isTop    && place === 2) { nextRung[name] = 1; return; } // stays top
+            if (place === 3)             { nextRung[name] = r + 1; return; } // down
+            if (status === 'leapfrogged') { nextRung[name] = r; return; } // real leapfrogged: stays
+            const isTheoryLeap = !isRealResult && place === 1 && r > 2
+                                 && theoryLeapfrogs[matchKey] === idx;
+            if (status === 'leapfrogging' || isTheoryLeap) {
+              nextRung[name] = r - 2;
+              if (isTheoryLeap) theoryLeapfrogRungs.add(r);
+              return;
+            }
+            nextRung[name] = r - 1;
+          });
+        }
+
+        // Step 3: for each theory leapfrog, keep rung r-1's 2nd-place player in place
+        theoryLeapfrogRungs.forEach(r => {
+          const above       = r - 1;
+          const secondPlace = rungEntries[above]?.[1]?.name;
+          if (!secondPlace || secondPlace === '—') return;
+          nextRung[secondPlace] = above; // leapfrogged: stays in rung above
+        });
+
+        const lineup = {};
+        for (let r = 1; r <= thisMatchCount; r++) lineup[r] = [];
+        Object.entries(nextRung).forEach(([name, tRung]) => {
+          lineup[Math.max(1, Math.min(thisMatchCount, tRung))].push(name);
+        });
+        for (let r = 1; r <= thisMatchCount; r++) {
+          while (lineup[r].length < 3) lineup[r].push('—');
+        }
+        return lineup[rung] || ['—', '—', '—'];
       }
 
       function buildBracket() {
@@ -4037,6 +4289,7 @@
             card = document.createElement('div');
           }
           card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
+          card.dataset.match = `${w}_${r}`;
 
           //header for rungs
           const rungRow = document.createElement('div');
@@ -4109,7 +4362,11 @@
             const pEl = document.createElement('div');
             pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '') + (dropsDown || eliminated ? ' lost' : '');
             const nameHtml = isTbd ? p : `<span class="bp-name">${p}</span>`;
+            const theoryPicksHtml = (!isDone && !isWildcard && !isTbd)
+              ? `<span class="theory-picks" data-pi="${pi}">${r > 2 ? '<button class="theory-leap">⇑</button>' : ''}<button class="theory-pick" data-place="1">1</button><button class="theory-pick" data-place="2">2</button><button class="theory-pick" data-place="3">3</button></span>`
+              : '';
             pEl.innerHTML = `<span class="bp-num">${isTbd ? '' : place}</span>${nameHtml}`
+              + theoryPicksHtml
               + (time ? `<span class="bp-time">${time}</span>` : '')
               + moveArrow;
             if (!isTbd) {
@@ -4331,6 +4588,66 @@
       if (wildcardEl) wildcardGroup.appendChild(wildcardEl);
       wildcardGroup.appendChild(elimCol);
       container.appendChild(wildcardGroup);
+
+      // Re-register the theory refresh function so it closes over the current
+      // playerStats / week1Seed / bpTooltipEl from this build pass
+      window._refreshTheoryBracket = function() {
+        const scroll = document.getElementById('bracket-scroll');
+        if (!scroll) return;
+        scroll.querySelectorAll('.bracket-match:not(.done)[data-match]').forEach(card => {
+          const parts = card.dataset.match.split('_');
+          const w = parseInt(parts[0]), r = parseInt(parts[1]);
+          if (w === WILDCARD_WEEK) return;
+          const newPlayers = computeTheoryPlayers(w, r);
+          const playerEls  = card.querySelectorAll('.bracket-player');
+          let changed = false;
+          playerEls.forEach((pEl, i) => {
+            const cur = pEl.querySelector('.bp-name')?.textContent ?? '—';
+            if (cur !== (newPlayers[i] || '—')) changed = true;
+          });
+          if (!changed) return;
+          delete theoryPicks[card.dataset.match];
+          delete theoryLeapfrogs[card.dataset.match];
+          playerEls.forEach((pEl, i) => {
+            const name  = newPlayers[i] || '—';
+            const isTbd = name === '—';
+            pEl.className = 'bracket-player' + (isTbd ? ' tbd' : '');
+            if (isTbd) {
+              pEl.innerHTML = '<span class="bp-num"></span>—';
+            } else {
+              const leapHtml = r > 2 ? '<button class="theory-leap">⇑</button>' : '';
+              pEl.innerHTML = `<span class="bp-num"></span><span class="bp-name">${name}</span>`
+                + `<span class="theory-picks" data-pi="${i}">${leapHtml}<button class="theory-pick" data-place="1">1</button><button class="theory-pick" data-place="2">2</button><button class="theory-pick" data-place="3">3</button></span>`;
+              const tipSeed  = week1Seed[name] != null ? `#${week1Seed[name]}` : '—';
+              const tipStats = playerStats[name];
+              const tipBest  = tipStats ? fmtTime(tipStats.best) : '—';
+              const tipAvg   = tipStats ? fmtTime(tipStats.times.reduce((a, b) => a + b, 0) / tipStats.times.length) : '—';
+              pEl.querySelector('.bp-name').addEventListener('click', ev => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                bpTooltipEl.style.minWidth = '190px';
+                bpTooltipEl.style.padding = '.7rem .9rem';
+                bpTooltipEl.innerHTML = `<div class="elim-tip-name" style="color:var(--text)">${name}</div>`
+                  + `<div class="elim-tip-row"><span>Starting Seed</span><span>${tipSeed}</span></div>`
+                  + `<div class="elim-tip-row"><span>Ladder PB</span><span>${tipBest}</span></div>`
+                  + `<div class="elim-tip-row"><span>Ladder Avg</span><span>${tipAvg}</span></div>`;
+                bpTooltipEl.style.display = 'block';
+                bpTooltipEl.style.left = '0px';
+                bpTooltipEl.style.top = '0px';
+                const tipRect  = bpTooltipEl.getBoundingClientRect();
+                const nameRect = ev.currentTarget.getBoundingClientRect();
+                const top = nameRect.top - tipRect.height - 8 >= 0
+                  ? nameRect.top - tipRect.height - 8
+                  : nameRect.bottom + 8;
+                let left = nameRect.left;
+                if (left + tipRect.width > window.innerWidth - 8) left = window.innerWidth - tipRect.width - 8;
+                bpTooltipEl.style.left = `${left}px`;
+                bpTooltipEl.style.top  = `${top}px`;
+              });
+            }
+          });
+        });
+      };
       }
 
       function scheduleAutoLive() {
@@ -4399,6 +4716,8 @@
           .slice(0, 15);
         init();
       });
+
+      window._buildBracket = buildBracket;
 
     })();
 
@@ -5203,6 +5522,7 @@
           document.getElementById('standings-past-top8').classList.add('active');
           loadAndRenderPastSeason(season);
         }
+        updateTheoryToggleVisibility();
       }
 
       seasonDropBtn.addEventListener('click', e => {
