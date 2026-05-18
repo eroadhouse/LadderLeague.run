@@ -3619,7 +3619,7 @@
             const idx = w - 1;
             if (idx < 0 || idx >= WEEK_ENDS.length) return null;
             const d = new Date(WEEK_ENDS[idx]);
-            d.setDate(d.getDate() - (WEEK_MATCH_COUNTS[idx] - r));
+            d.setUTCHours(23, 59, 59 - (WEEK_MATCH_COUNTS[idx] - r));
             return d;
           }
           if (section === 'lcq') {
@@ -3772,7 +3772,7 @@
             const idx = w - 1;
             if (idx < 0 || idx >= WEEK_ENDS.length) return new Date(0);
             const d = new Date(WEEK_ENDS[idx]);
-            d.setDate(d.getDate() - (WEEK_MATCH_COUNTS[idx] - r));
+            d.setUTCHours(23, 59, 59 - (WEEK_MATCH_COUNTS[idx] - r));
             return d;
           }
           if (section === 'lcq') {
