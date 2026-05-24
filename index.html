@@ -1357,6 +1357,34 @@
       font-variant-numeric: tabular-nums;
     }
     .wcs-divider { height: .5rem; }
+    .wcs-expand-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      margin: .35rem auto 0;
+      cursor: pointer;
+      color: var(--dim);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      outline: none;
+      flex-shrink: 0;
+      transition: color .15s, border-color .15s;
+    }
+    .wcs-expand-btn:hover { color: var(--accent2); border-color: var(--accent); }
+    .wcs-expand-btn svg { transition: transform .25s ease; }
+    .wcs-expand-btn.open svg { transform: rotate(180deg); }
+    .wcs-extra { display: none; opacity: 0; }
+    @keyframes wcsRowIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes wcsRowOut {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-5px); }
+    }
 
     /* Qualified list */
     .bracket-qualified {
@@ -4174,14 +4202,14 @@
         }
       });
 
-      const top3Best = Object.entries(playerBest).sort((a, b) => a[1] - b[1]).slice(0, 3);
-      const top3Avg = Object.entries(playerAllTimes)
+      const top10Best = Object.entries(playerBest).sort((a, b) => a[1] - b[1]).slice(0, 10);
+      const top10Avg = Object.entries(playerAllTimes)
         .map(([name, times]) => [name, times.reduce((a, b) => a + b, 0) / times.length])
-        .sort((a, b) => a[1] - b[1]).slice(0, 3);
+        .sort((a, b) => a[1] - b[1]).slice(0, 10);
 
       //wildcard matchup prioritizing best time over avg if it's the same person in both
-      const wcFastest = top3Best[0] ? top3Best[0][0] : null;
-      const wcAvgPlayer = top3Avg.find(([name]) => name !== wcFastest);
+      const wcFastest = top10Best[0] ? top10Best[0][0] : null;
+      const wcAvgPlayer = top10Avg.find(([name]) => name !== wcFastest);
       const wcAvg = wcAvgPlayer ? wcAvgPlayer[0] : null;
       wildcardParticipants = [wcFastest || '—', wcAvg || '—'];
 
@@ -4451,11 +4479,12 @@
         lbl.className = 'wcs-section-label';
         lbl.textContent = title;
         frag.appendChild(lbl);
-        for (let i = 0; i < 3; i++) {
+        const extraRowEls = [];
+        rows.forEach((entry, i) => {
           const row = document.createElement('div');
-          const entry = rows[i];
           const isLeader = entry && entry[0] === highlightName;
-          row.className = 'wcs-row' + (entry ? (isLeader ? ' leader' : '') : ' empty');
+          const isExtra = i >= 3;
+          row.className = 'wcs-row' + (entry ? (isLeader ? ' leader' : '') : ' empty') + (isExtra ? ' wcs-extra' : '');
           row.innerHTML = entry
             ? `<span class="wcs-rank">${ordinal(i + 1)}</span><span class="bp-name">${entry[0]}</span><span class="wcs-time">${fmtTime(entry[1])}</span>`
             : `<span class="wcs-rank">${ordinal(i + 1)}</span>—`;
@@ -4485,14 +4514,34 @@
               bpTooltipEl.style.top = `${top}px`;
             });
           }
+          if (isExtra) extraRowEls.push(row);
           frag.appendChild(row);
+        });
+        if (extraRowEls.length > 0) {
+          const btn = document.createElement('button');
+          btn.className = 'wcs-expand-btn';
+          btn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>`;
+          btn.addEventListener('click', () => {
+            const isOpen = btn.classList.toggle('open');
+            if (isOpen) {
+              extraRowEls.forEach((r, i) => {
+                r.style.display = 'flex';
+                r.style.animation = 'none';
+                r.offsetHeight;
+                r.style.animation = `wcsRowIn .18s ease ${i * 60}ms both`;
+              });
+            } else {
+              extraRowEls.forEach(r => { r.style.display = 'none'; r.style.animation = ''; });
+            }
+          });
+          frag.appendChild(btn);
         }
         return frag;
       }
 
-      wcsEl.appendChild(wcsSection('Fastest Time', top3Best, wcFastest));
+      wcsEl.appendChild(wcsSection('Fastest Time', top10Best, wcFastest));
       const div = document.createElement('div'); div.className = 'wcs-divider'; wcsEl.appendChild(div);
-      wcsEl.appendChild(wcsSection('Fastest Average', top3Avg, wcAvg));
+      wcsEl.appendChild(wcsSection('Fastest Average', top10Avg, wcAvg));
 
       //put wildcard standings on the right
       const week7Group = document.createElement('div');
