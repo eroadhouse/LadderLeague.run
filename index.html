@@ -2305,6 +2305,7 @@
       <li><a data-href="https://predictions.ladderleague.run" target="_blank" class="nav-link-disabled" id="predictions-nav-link">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
       <li><a href="#" data-page="about">About</a></li>
+      <li><a href="#" data-page="stats">Stats</a></li>
     </ul>
     <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -2609,6 +2610,18 @@
     </div>
   </div>
 
+  <!-- Stats page -->
+  <div class="page" id="stats">
+    <div class="section">
+      <div class="page-title reveal">STA<span>TS</span></div>
+      <div class="page-subtitle reveal" style="transition-delay:.15s">LADDER LEAGUE DATA</div>
+      <div class="divider"></div>
+      <div id="stats-content" style="color:var(--text);font-family:'Montserrat',sans-serif;font-size:.9rem;">
+        <p style="color:var(--dim)">Waiting for data...</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Status footer -->
   <div class="status-bar">
     <span class="status-item"><span class="status-dot" id="footer-status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
@@ -2647,8 +2660,8 @@
       }
     })();
 
-    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about' };
-    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about' };
+    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/stats' };
+    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/stats': 'stats' };
 
     function showPage(target, addHistory) {
       const page = document.getElementById(target);
@@ -2658,6 +2671,7 @@
       page.classList.add('active');
       document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => a.classList.add('active'));
       if (addHistory) history.pushState({ page: target }, '', PAGE_TO_PATH[target] || '/');
+      if (target === 'stats' && window._statsRender) window._statsRender();
     }
 
     window.addEventListener('popstate', e => {
@@ -2787,6 +2801,8 @@
 
       async function applyState(raw) {
         const state = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        window._amRawState = state;
+        console.log('[automarathon] state received, events:', (state?.events || []).length);
         const nameMap = await _nameMap;
         const { results, schedule: evSched } = transform(state, nameMap);
         const staticSched = await _staticSchedule;
@@ -2949,7 +2965,7 @@
         if (isNaN(w) || w < 1 || w > 7) return;
         result.places.forEach(entry => {
           const secs = pParseTime(entry.time);
-          if (secs === null) return;
+          if (secs === null || isNaN(secs)) return;
           if (playerPB[entry.name] == null) {
             playerPB[entry.name] = secs; playerPBKey[entry.name] = key; playerTimes[entry.name] = [secs];
           } else {
@@ -3143,6 +3159,15 @@
           if (info.intl && info.intl !== info.slug && !srcPBMap[info.intl]) srcPBMap[info.intl] = val;
         });
       }
+
+      window._nameColorMap = {};
+      participants.forEach(p => {
+        const entry = srcPBMap[(p.username || p.name).toLowerCase()];
+        if (!entry) return;
+        window._nameColorMap[p.name.toLowerCase()] = entry.colorFrom || entry.colorSolid
+          ? { colorFrom: entry.colorFrom, colorTo: entry.colorTo, colorSolid: entry.colorSolid }
+          : null;
+      });
 
       function renderSeason3() {
       grid.innerHTML = '';
@@ -4184,7 +4209,7 @@
         if (!(w >= 1 && w < WILDCARD_WEEK)) return; // only weeks 1–7, no top 8
         (result.places || []).forEach(entry => {
           const secs = parseTime(entry.time);
-          if (secs === null) return;
+          if (secs === null || isNaN(secs)) return;
           if (!playerStats[entry.name]) playerStats[entry.name] = { best: secs, times: [secs] };
           else {
             if (secs < playerStats[entry.name].best) playerStats[entry.name].best = secs;
@@ -6087,6 +6112,190 @@
       //checking for live state once a minute
       setLive(await anyMatchLive());
       setInterval(async () => setLive(await anyMatchLive()), 60_000);
+    })();
+
+    // Stats page
+    (function initStats() {
+      const fmtMs = ms => {
+        const t = ms / 1000;
+        const h = Math.floor(t / 3600);
+        const m = Math.floor((t % 3600) / 60);
+        const s = (t % 60).toFixed(2).padStart(5, '0');
+        if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${s}`;
+        return `${m}:${s}`;
+      };
+
+      const spToMs = sp => sp == null ? null : (typeof sp === 'number' ? sp : (sp.time_ms ?? sp.realtime_ms ?? sp.time ?? null));
+
+      const SPLIT_NAMES = [
+        'Negotiations','Invasion','Escape','Podrace','Theed','Maul','BHP',
+        'Kamino','Droid Factory','Jedi Battle','Gunship','Dooku',
+        'Secret Plans','Jundland','Spaceport','Princess','DSE','Rebel Attack',
+        "Jabba's",'Carkoon','Speeder','Endor','Destiny','ITDS',
+        'Coruscant','Chancellor','Grievous','Kashyyyk','Ruin','Vader',
+        'Hoth','Echo Base','Falcon Flight','Dagobah','CCT','Bespin'
+      ];
+
+      // EP_ENDS: end split index (0-based) for each group in data order
+      // EP_NUMS: which episode number each group maps to
+      // EP_ORDER: display order
+      const EP_ENDS  = [5, 11, 17, 23, 29, 35];
+      const EP_NUMS  = [1,  2,  4,  6,  3,  5];
+      const EP_ORDER = [1,  2,  4,  6,  3,  5];
+
+      function getRunnerStyle(name) {
+        const c = window._nameColorMap?.[name.toLowerCase()];
+        if (!c) return '';
+        if (c.colorFrom && c.colorTo)
+          return `background:linear-gradient(90deg,${c.colorFrom},${c.colorTo});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;`;
+        if (c.colorSolid) return `color:${c.colorSolid};`;
+        return '';
+      }
+
+      function getSplits(rs) {
+        const st = rs.result?.SplitTimes;
+        if (!st) return null;
+        return st.splits ?? st.score?.splits ?? null;
+      }
+
+      function renderStats() {
+        const el = document.getElementById('stats-content');
+        if (!el) return;
+
+        const state = window._amRawState;
+        if (!state) {
+          el.innerHTML = '<p style="color:var(--dim)">No data yet.</p>';
+          return;
+        }
+
+        const fastest = [];   // fastest[splitIndex] = { ms, runnerName, eventName }
+        const fastestEp = {}; // fastestEp[epNum 1-6] = { ms, runnerName, eventName }
+
+        for (const ev of (state.events || []).filter(ev => !ev.name?.toUpperCase().includes('LCQ'))) {
+          for (const [id, rs] of Object.entries(ev.runner_state || {})) {
+            const splits = getSplits(rs);
+            if (!Array.isArray(splits)) continue;
+            const runnerName = (state.people?.[id]?.name) || id;
+
+            // resolve final_result ms once
+            const finalResult = rs.result?.SplitTimes?.final_result;
+            const finalMs = (finalResult && finalResult !== 'DNF')
+              ? (() => { const [fh, fm, fs] = finalResult.split(':').map(Number); return (fh * 3600 + fm * 60 + fs) * 1000; })()
+              : null;
+
+            // helper: cumulative ms at split index, with final_result fallback at 35
+            const cumAt = i => {
+              const ms = spToMs(splits[i]);
+              if (ms != null) return ms;
+              if (i === 35 && finalMs != null) return finalMs;
+              return null;
+            };
+
+            // fastest splits (segment times)
+            splits.forEach((sp, i) => {
+              const cumMs = cumAt(i);
+              if (cumMs == null || cumMs <= 0) return;
+              const prevMs = cumAt(i - 1) ?? 0;
+              const segMs = cumMs - prevMs;
+              if (segMs <= 0) return;
+              if (!fastest[i] || segMs < fastest[i].ms) fastest[i] = { ms: segMs, runnerName, eventName: ev.name || '—' };
+            });
+            // final_result fallback for split 35
+            if (spToMs(splits[35]) == null && finalMs != null) {
+              const prevMs = cumAt(34) ?? 0;
+              const segMs = finalMs - prevMs;
+              if (segMs > 0 && (!fastest[35] || segMs < fastest[35].ms))
+                fastest[35] = { ms: segMs, runnerName, eventName: ev.name || '—' };
+            }
+
+            // fastest episodes
+            EP_ENDS.forEach((endIdx, epIdx) => {
+              const epNum = EP_NUMS[epIdx];
+              const endMs = cumAt(endIdx);
+              if (endMs == null) return;
+              const startMs = epIdx > 0 ? cumAt(EP_ENDS[epIdx - 1]) : 0;
+              if (epIdx > 0 && startMs == null) return;
+              const epMs = endMs - startMs;
+              if (epMs <= 0) return;
+              if (!fastestEp[epNum] || epMs < fastestEp[epNum].ms)
+                fastestEp[epNum] = { ms: epMs, runnerName, eventName: ev.name || '—' };
+            });
+          }
+        }
+
+        if (!fastest.some(Boolean)) {
+          el.innerHTML = '<p style="color:var(--dim)">No split data found across any events.</p>';
+          return;
+        }
+
+        const thStyle = `text-align:center;padding:.4rem 1rem .4rem 0;color:var(--dim);font-size:.83rem;font-weight:600;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap`;
+        const td = `padding:.2rem 1rem .2rem 0;font-size:.94rem;text-align:center`;
+        const thMatch = `text-align:center;padding:.4rem 0 .4rem 2.5rem;color:var(--dim);font-size:.83rem;font-weight:600;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap`;
+        const tdMatch = `padding:.2rem 0 .2rem 2.5rem;font-size:.94rem;text-align:center;white-space:nowrap`;
+
+        const runnerTd = (name) => `<td style="${td};font-weight:700;${getRunnerStyle(name) || 'color:var(--accent2);'}">${name}</td>`;
+
+        // Splits table
+        const sob = fastest.reduce((sum, e) => sum + (e ? e.ms : 0), 0);
+        let html = `<div><div style="display:inline-block"><table style="border-collapse:collapse">
+          <thead><tr>
+            <th style="${thStyle}">SPLIT</th>
+            <th style="${thStyle}">RUNNER</th>
+            <th style="${thStyle}">TIME</th>
+            <th style="${thMatch}">MATCH</th>
+          </tr></thead><tbody>`;
+
+        fastest.forEach((entry, i) => {
+          if (!entry) return;
+          html += `<tr>
+            <td style="${td};color:var(--dim);white-space:nowrap">${SPLIT_NAMES[i] ?? `Split ${i + 1}`}</td>
+            ${runnerTd(entry.runnerName)}
+            <td style="${td};color:var(--text);font-variant-numeric:tabular-nums;font-weight:700">${fmtMs(entry.ms)}</td>
+            <td style="${tdMatch};color:var(--dim)">${entry.eventName}</td>
+          </tr>`;
+        });
+
+        html += `</tbody><tfoot><tr>
+          <td style="${td};color:var(--accent);font-weight:700;font-size:1.1rem;padding-top:.6rem">Ladder SOB</td>
+          <td style="${td};padding-top:.6rem"></td>
+          <td style="${td};color:var(--text);font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;padding-top:.6rem">${fmtMs(sob)}</td>
+          <td style="${tdMatch};padding-top:.6rem"></td>
+        </tr></tfoot></table></div>`;
+
+        // Episodes table
+        const epSob = EP_ORDER.reduce((sum, n) => sum + (fastestEp[n] ? fastestEp[n].ms : 0), 0);
+        html += `<div style="display:inline-block;margin-top:2rem"><table style="border-collapse:collapse">
+          <thead><tr>
+            <th style="${thStyle}">EPISODE</th>
+            <th style="${thStyle}">RUNNER</th>
+            <th style="${thStyle}">TIME</th>
+            <th style="${thMatch}">MATCH</th>
+          </tr></thead><tbody>`;
+
+        EP_ORDER.forEach(epNum => {
+          const entry = fastestEp[epNum];
+          if (!entry) return;
+          html += `<tr>
+            <td style="${td};color:var(--dim);white-space:nowrap">Episode ${epNum}</td>
+            ${runnerTd(entry.runnerName)}
+            <td style="${td};color:var(--text);font-variant-numeric:tabular-nums;font-weight:700">${fmtMs(entry.ms)}</td>
+            <td style="${tdMatch};color:var(--dim)">${entry.eventName}</td>
+          </tr>`;
+        });
+
+        html += `</tbody><tfoot><tr>
+          <td style="${td};color:var(--accent);font-weight:700;font-size:1.1rem;padding-top:.6rem">Episode SOB</td>
+          <td style="${td};padding-top:.6rem"></td>
+          <td style="${td};color:var(--text);font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;padding-top:.6rem">${fmtMs(epSob)}</td>
+          <td style="${tdMatch};padding-top:.6rem"></td>
+        </tr></tfoot></table></div></div>`;
+
+        el.innerHTML = html;
+      }
+
+      window._statsRender = renderStats;
+      document.addEventListener('amUpdate', renderStats);
+      renderStats();
     })();
 
   </script>
