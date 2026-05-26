@@ -6373,7 +6373,7 @@
 
         if (ladderWeeks.length > 0) {
           html += `<div style="flex:3;min-width:0">
-            <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">RACE GRAPHS</div>
+            <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">RACE OVERVIEWS</div>
             <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.5rem">
               <span style="color:var(--dim);font-size:.8rem;font-weight:600;letter-spacing:.1em">WEEK</span>
               <div id="stats-week-tabs" style="display:flex;gap:.4rem">
@@ -6392,7 +6392,6 @@
 
         if (ladderWeeks.length > 0) {
           const GW = 400, GH = 150, ML = 8, MR = 8, MT = 8, MB = 24;
-
           const fmtSplit = ms => {
             const t = Math.round(ms / 1000);
             const h = Math.floor(t / 3600);
@@ -6405,6 +6404,11 @@
             const c = window._nameColorMap?.[name.toLowerCase()];
             return c?.colorSolid || c?.colorFrom || '#888888';
           }
+          function getColorTo(name) {
+            const c = window._nameColorMap?.[name.toLowerCase()];
+            return (!c?.colorSolid && c?.colorFrom && c?.colorTo) ? c.colorTo : null;
+          }
+          let _gradCounter = 0;
 
           function buildRaceGraph(ev) {
             const runners = [];
@@ -6423,9 +6427,17 @@
                 if (i === 35 && finalMs != null) return finalMs;
                 return null;
               });
+              const missingSplits = cumulativeSplits.filter(t => t == null).length;
+              if (missingSplits > 10) continue;
               runners.push({ name, cumulativeSplits });
             }
             if (!runners.length) return null;
+
+            for (const runner of runners) {
+              runner.color = getColor(runner.name);
+              runner.colorTo = getColorTo(runner.name);
+              runner._gradId = runner.colorTo ? _gradCounter++ : null;
+            }
 
             const avgAtSplit = Array.from({ length: 36 }, (_, i) => {
               const times = runners.map(r => r.cumulativeSplits[i]);
@@ -6467,11 +6479,16 @@
             //avg line
             const y0 = yOf(0).toFixed(1);
             inner += `<line x1="0" y1="${y0}" x2="${GW}" y2="${y0}" stroke="var(--dim)" stroke-width="1" opacity="0.4" stroke-dasharray="4,4"/>`;
+            inner += `<line x1="0" y1="${y0}" x2="${GW}" y2="${y0}" stroke="transparent" stroke-width="10" data-avg="1" style="cursor:help"/>`;
 
             inner += `<line x1="0" y1="${GH}" x2="${GW}" y2="${GH}" stroke="var(--border)" stroke-width="1" opacity="0.5"/>`;
 
+            let defs = '';
             for (const runner of runners) {
-              const color = getColor(runner.name);
+              const color = runner.color;
+              const stroke = runner.colorTo ? `url(#sg${runner._gradId})` : color;
+              if (runner.colorTo)
+                defs += `<linearGradient id="sg${runner._gradId}" x1="0" y1="0" x2="${GW}" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="${runner.color}"/><stop offset="100%" stop-color="${runner.colorTo}"/></linearGradient>`;
               let d = ''; let started = false;
               runner.cumulativeSplits.forEach((t, i) => {
                 if (t == null) return;
@@ -6479,14 +6496,18 @@
                 d += !started ? `M${x} ${y} ` : `L${x} ${y} `;
                 started = true;
               });
-              if (d.trim()) inner += `<path d="${d.trim()}" stroke="${color}" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
+              if (d.trim()) {
+                inner += `<path d="${d.trim()}" stroke="${stroke}" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round" data-runner="${runner.name}" style="transition:opacity .15s"/>`;
+                inner += `<path d="${d.trim()}" stroke="transparent" stroke-width="12" fill="none" data-runner="${runner.name}" style="cursor:crosshair"/>`;
+              }
               runner.cumulativeSplits.forEach((t, i) => {
                 if (t == null || runner.origCumulativeSplits[i] == null) return;
                 const x = xOf(i).toFixed(1), y = yOf(t).toFixed(1);
                 const splitName = SPLIT_NAMES[i] ?? `Split ${i + 1}`;
-                inner += `<circle cx="${x}" cy="${y}" r="8" fill="transparent" data-tip="${runner.name}|${fmtSplit(runner.origCumulativeSplits[i])}|${splitName}" data-color="${color}" style="cursor:crosshair"/>`;
+                inner += `<circle cx="${x}" cy="${y}" r="8" fill="transparent" data-tip="${runner.name}|${fmtSplit(runner.origCumulativeSplits[i])}|${splitName}" data-color="${color}" data-runner="${runner.name}" style="cursor:crosshair"/>`;
               });
             }
+            if (defs) inner = `<defs>${defs}</defs>` + inner;
 
             const svgW = GW + ML + MR, svgH = GH + MT + MB;
             return {
@@ -6509,15 +6530,17 @@
               }
               const { svg, runners } = result;
               const legend = runners.map(r => {
-                const c = getColor(r.name);
-                return `<span style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem">
-                  <svg width="14" height="3" style="flex-shrink:0;overflow:visible"><line x1="0" y1="1.5" x2="14" y2="1.5" stroke="${c}" stroke-width="2.5"/></svg>
-                  <span style="color:${c};font-weight:600;font-size:.78rem;letter-spacing:.03em">${r.name}</span>
-                </span>`;
+                const lineEl = r.colorTo
+                  ? `<span style="flex-shrink:0;width:14px;height:2.5px;border-radius:2px;background:linear-gradient(to right,${r.color},${r.colorTo})"></span>`
+                  : `<svg width="14" height="3" style="flex-shrink:0;overflow:visible"><line x1="0" y1="1.5" x2="14" y2="1.5" stroke="${r.color}" stroke-width="2.5"/></svg>`;
+                const nameEl = r.colorTo
+                  ? `<span style="font-weight:600;font-size:.78rem;letter-spacing:.03em;background:linear-gradient(to right,${r.color},${r.colorTo});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${r.name}</span>`
+                  : `<span style="color:${r.color};font-weight:600;font-size:.78rem;letter-spacing:.03em">${r.name}</span>`;
+                return `<span data-runner="${r.name}" style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem;cursor:pointer;transition:opacity .15s">${lineEl}${nameEl}</span>`;
               }).join('');
               return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto">
                 <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">RUNG ${rung}</div>
-                <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center">${legend}</div>
+                <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center">${legend}</div>
                 <div>${svg}</div>
               </div>`;
             }).join('');
@@ -6563,9 +6586,15 @@
           const racesDiv = document.getElementById('stats-race-graphs');
           racesDiv.addEventListener('mousemove', e => {
             const c = e.target.closest('circle[data-tip]');
+            const avgLine = e.target.closest('line[data-avg]');
             if (c) {
               const [name, time, split] = c.dataset.tip.split('|');
               tip.innerHTML = `<span style="color:${c.dataset.color};font-weight:700;margin-right:.5rem">${name}</span><span style="color:var(--dim);margin-right:.5rem;font-size:.75rem">${split}</span><span style="color:var(--text);font-variant-numeric:tabular-nums">${time}</span>`;
+              tip.style.display = 'block';
+              tip.style.left = (e.clientX + 14) + 'px';
+              tip.style.top = (e.clientY - 32) + 'px';
+            } else if (avgLine) {
+              tip.innerHTML = `<span style="color:var(--dim);font-size:.75rem;letter-spacing:.05em">AVERAGE SPLIT TIME</span>`;
               tip.style.display = 'block';
               tip.style.left = (e.clientX + 14) + 'px';
               tip.style.top = (e.clientY - 32) + 'px';
@@ -6573,7 +6602,26 @@
               tip.style.display = 'none';
             }
           });
-          racesDiv.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+          function applyHighlight(container, name) {
+            racesDiv.querySelectorAll('path[data-runner]').forEach(el => { el.style.opacity = ''; });
+            racesDiv.querySelectorAll('span[data-runner]').forEach(el => { el.style.opacity = ''; });
+            if (!container || !name) return;
+            container.querySelectorAll('path[data-runner]').forEach(el => {
+              el.style.opacity = el.dataset.runner !== name ? '0.15' : '';
+            });
+            container.querySelectorAll('span[data-runner]').forEach(el => {
+              el.style.opacity = el.dataset.runner !== name ? '0.25' : '';
+            });
+          }
+          racesDiv.addEventListener('mouseover', e => {
+            const el = e.target.closest('[data-runner]');
+            const container = e.target.closest('.graph-anim');
+            applyHighlight(container, el ? el.dataset.runner : null);
+          });
+          racesDiv.addEventListener('mouseleave', () => {
+            tip.style.display = 'none';
+            applyHighlight(null, null);
+          });
         }
       }
 
