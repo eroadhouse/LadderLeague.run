@@ -6522,12 +6522,7 @@
             const rungs = (weekMap.get(weekNum) || []).slice().sort((a, b) => a.rung - b.rung);
             racesEl.innerHTML = rungs.map(({ rung, ev }) => {
               const result = buildRaceGraph(ev);
-              if (!result) {
-                return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto">
-                  <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">RUNG ${rung}</div>
-                  <span style="color:var(--dim);font-size:.85rem">No data</span>
-                </div>`;
-              }
+              if (!result) return '';
               const { svg, runners } = result;
               const legend = runners.map(r => {
                 const lineEl = r.colorTo
