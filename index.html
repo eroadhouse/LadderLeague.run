@@ -3193,6 +3193,7 @@
           ? { colorFrom: entry.colorFrom, colorTo: entry.colorTo, colorSolid: entry.colorSolid }
           : null;
       });
+      document.dispatchEvent(new CustomEvent('nameColorMapReady'));
 
       function renderSeason3() {
       grid.innerHTML = '';
@@ -6622,6 +6623,7 @@
 
       window._statsRender = renderStats;
       document.addEventListener('amUpdate', renderStats);
+      document.addEventListener('nameColorMapReady', renderStats);
       renderStats();
     })();
 
