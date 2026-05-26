@@ -2685,8 +2685,8 @@
       }
     })();
 
-    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/stats' };
-    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/stats': 'stats' };
+    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/statistics' };
+    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/statistics': 'stats' };
 
     function showPage(target, addHistory) {
       const page = document.getElementById(target);
@@ -6233,7 +6233,7 @@
         const fastest = [];
         const fastestEp = {};
 
-        for (const ev of (state.events || []).filter(ev => !ev.name?.toUpperCase().includes('LCQ'))) {
+        for (const ev of (state.events || []).filter(ev => /^WEEK \d+ RUNG \d+$/i.test(ev.name?.trim()))) {
           for (const [id, rs] of Object.entries(ev.runner_state || {})) {
             const splits = getSplits(rs);
             if (!Array.isArray(splits)) continue;
@@ -6297,7 +6297,7 @@
 
         //Splits table
         const sob = fastest.reduce((sum, e) => sum + (e ? e.ms : 0), 0);
-        let html = `<div style="display:flex;gap:3rem;align-items:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;gap:2rem;align-items:center"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST LADDER SPLITS</div><table style="border-collapse:collapse">
+        let html = `<div style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;gap:2rem;align-items:center"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST LADDER SPLITS</div><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">SPLIT</th>
             <th style="${thStyle}">RUNNER</th>
@@ -6372,7 +6372,7 @@
         ));
 
         if (ladderWeeks.length > 0) {
-          html += `<div style="flex:3;min-width:0">
+          html += `<div style="flex:1 1 400px;min-width:0">
             <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">RACE OVERVIEWS</div>
             <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.5rem">
               <span style="color:var(--dim);font-size:.8rem;font-weight:600;letter-spacing:.1em">WEEK</span>
