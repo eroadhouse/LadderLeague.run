@@ -3882,7 +3882,14 @@
         const sectionLabel = { lcq: 'LCQ', ladder: 'Ladder', top8: 'Top 8' };
 
         const entries = Object.entries(allResults || {})
-          .filter(([, r]) => r && r.places && r.places.length > 0)
+          .filter(([key, r]) => {
+            if (!r || !r.places || r.places.length === 0) return false;
+            const section = matchSection(key);
+            if (section === 'lcq') return true;
+            if (section === 'top8') return r.places.length >= 2;
+            const w = parseInt(key.split('_')[0]);
+            return r.places.length >= (w === 8 ? 2 : 3);
+          })
           .map(([key, result]) => {
             const section = matchSection(key);
             const fromSchedule = scheduleTime(section, key);
@@ -4388,7 +4395,7 @@
           const players  = getPlayers(w, r);
 
           const result        = RESULTS[`${w}_${r}`];
-          const isDone        = !!result;
+          const isDone        = !!result && (result.places || []).length >= players.length;
           const scheduleEntry = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
           const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.time || scheduleEntry.start) : null;
           const timerStartRaw = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
