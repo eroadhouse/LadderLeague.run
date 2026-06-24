@@ -2084,7 +2084,7 @@
     .upcoming-section-label { font-family: 'Rubik', sans-serif; color: #fff; font-size: 2rem; margin-bottom: .5rem; margin-top: 3rem; }
     .uc-places { display: flex; flex-direction: column; gap: .25rem; margin-top: .2rem; }
     .uc-result-row { font-size: .8rem; display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
-    .uc-result-time { color: var(--dim); font-size: .75rem; white-space: nowrap; }
+    .uc-result-time { color: var(--dim); font-size: .75rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .uc-result-gold { color: #d4b84a; font-weight: 700; }
     .uc-result-won  { color: #6ec88a; }
     .uc-result-lost { color: #d65757; }
@@ -2344,8 +2344,12 @@
           LEGO Star Wars: The Complete Saga's premier speedrunning tournament returns for a third season. Make predictions and follow along
           as the season unfolds.
         </p>
-        <a href="https://www.youtube.com/playlist?list=PLaoVS_Comfpu5OwwgzdzS3Tw8DwChPaXw" target="_blank" rel="noopener" class="hero-cta reveal">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-        </a>
+        <div class="reveal" style="display:flex;gap:.75rem;flex-wrap:wrap;transition-delay:.5s">
+          <a href="https://www.youtube.com/playlist?list=PLaoVS_Comfpu5OwwgzdzS3Tw8DwChPaXw" target="_blank" rel="noopener" class="hero-cta">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+          <a href="https://youtube.com/playlist?list=PLaoVS_ComfpsMOj-6iHDkV6TvMFUhDfhR&si=k5NHCkW75n3huRzv" target="_blank" rel="noopener" class="hero-cta">View Content<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+        </div>
         <div id="countdown-container">
           <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
           <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
@@ -2363,6 +2367,27 @@
             </div>
             <div class="stat-item">
               <div class="stat-value" id="cd-seconds">00</div>
+              <div class="stat-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+        <div id="top8-countdown-container" style="display:none">
+          <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Top 8 Starts In</p>
+          <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
+            <div class="stat-item">
+              <div class="stat-value" id="t8-cd-days">0</div>
+              <div class="stat-label">Days</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="t8-cd-hours">00</div>
+              <div class="stat-label">Hours</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="t8-cd-minutes">00</div>
+              <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="t8-cd-seconds">00</div>
               <div class="stat-label">Seconds</div>
             </div>
           </div>
@@ -3309,8 +3334,12 @@
     schedulePromise.then(sd => {
       //updating default tab depending on where we are in the schedule
       const now = new Date();
-      const lcqEnd    = new Date(sd.lcqEnd    || '2026-05-11T05:00:00Z');
-      const ladderEnd = new Date(sd.ladderEnd || '2026-06-25T05:00:00Z');
+      const lcqEnd = new Date(sd.lcqEnd || '2026-05-11T05:00:00Z');
+      const wildcardEntry   = sd.ladder && sd.ladder['8_1'];
+      const wildcardTimeStr = wildcardEntry ? (typeof wildcardEntry === 'string' ? wildcardEntry : wildcardEntry.time || wildcardEntry.start || null) : null;
+      const ladderEnd = wildcardTimeStr
+        ? new Date(new Date(wildcardTimeStr).getTime() + 3 * 60 * 60 * 1000)
+        : sd.ladderEnd ? new Date(sd.ladderEnd) : new Date('2026-06-25T05:00:00Z');
       s3DefaultTab = now < lcqEnd ? 'lcq' : now < ladderEnd ? 'ladder' : 'top8';
       document.querySelector(`#standings-s3-tabs .standings-tab[data-tab="${s3DefaultTab}"]`).classList.add('active');
       document.getElementById(`standings-tab-${s3DefaultTab}`).classList.add('active');
@@ -3560,6 +3589,42 @@
         }
       }
 
+      (function() {
+        const top8Start   = new Date('2026-07-10T09:30:00-04:00');
+        const wildcardEntry   = sd.ladder && sd.ladder['8_1'];
+        const wildcardTimeStr = wildcardEntry ? (typeof wildcardEntry === 'string' ? wildcardEntry : wildcardEntry.time || wildcardEntry.start || null) : null;
+        const ladderEnd = wildcardTimeStr
+          ? new Date(new Date(wildcardTimeStr).getTime() + 3 * 60 * 60 * 1000)
+          : sd.ladderEnd ? new Date(sd.ladderEnd) : new Date('2026-06-22T00:00:00Z');
+        const t8Container = document.getElementById('top8-countdown-container');
+        if (!t8Container) return;
+        const now = new Date();
+        if (now < ladderEnd || now >= top8Start) return;
+
+        t8Container.style.display = '';
+        const t8Days    = document.getElementById('t8-cd-days');
+        const t8Hours   = document.getElementById('t8-cd-hours');
+        const t8Minutes = document.getElementById('t8-cd-minutes');
+        const t8Seconds = document.getElementById('t8-cd-seconds');
+
+        let t8Interval;
+        function updateTop8Countdown() {
+          const diff = Math.max(0, top8Start.getTime() - Date.now());
+          if (diff === 0) {
+            clearInterval(t8Interval);
+            t8Container.style.display = 'none';
+            return;
+          }
+          const totalSec = Math.floor(diff / 1000);
+          updateUnit(t8Days,    Math.floor(totalSec / 86400),                  'Day',    'Days',    false);
+          updateUnit(t8Hours,   Math.floor((totalSec % 86400) / 3600),         'Hour',   'Hours',   true);
+          updateUnit(t8Minutes, Math.floor((totalSec % 3600) / 60),            'Minute', 'Minutes', true);
+          updateUnit(t8Seconds, totalSec % 60,                                 'Second', 'Seconds', true, false);
+        }
+        updateTop8Countdown();
+        t8Interval = setInterval(updateTop8Countdown, 1000);
+      })();
+
       //participants/standings countdown (goes to countdown rather than seasonStart)
       const target = sd.countdown ? new Date(sd.countdown) : null;
       if (!target) return;
@@ -3669,7 +3734,7 @@
         const top8Loser  = key => allResults?.[key]?.places?.[1]?.name || null;
 
         function top8Players(key) {
-          const pairings = { qf_1:[0,7], qf_2:[3,4], qf_3:[2,5], qf_4:[1,6] };
+          const pairings = { qf_1:[0,7], qf_2:[3,4], qf_3:[1,6], qf_4:[2,5] };
           if (pairings[key]) {
             const [i, j] = pairings[key];
             const a = top8Seeds[i], b = top8Seeds[j];
@@ -3973,11 +4038,15 @@
 
     function updateTheoryToggleVisibility() {
       if (!theoryToggleBtn) return;
-      const isLadder = !!document.querySelector('#standings-s3-tabs .standings-tab[data-tab="ladder"].active');
-      const isS3     = document.getElementById('standings-s3')?.style.display !== 'none';
-      const show     = isLadder && isS3;
+      const isLadder   = !!document.querySelector('#standings-s3-tabs .standings-tab[data-tab="ladder"].active');
+      const isS3       = document.getElementById('standings-s3')?.style.display !== 'none';
+      const show       = isLadder && isS3;
+      const onlyWildcard = !!window._ladderOnlyWildcardLeft;
       theoryToggleBtn.style.display = show ? 'flex' : 'none';
-      if (!show && theoryMode) {
+      theoryToggleBtn.disabled = onlyWildcard;
+      theoryToggleBtn.style.opacity = onlyWildcard ? '0.4' : '';
+      theoryToggleBtn.style.cursor  = onlyWildcard ? 'not-allowed' : '';
+      if ((!show || onlyWildcard) && theoryMode) {
         theoryMode = false;
         theoryToggleBtn.classList.remove('active');
         standingsBarEl.classList.remove('theory-mode');
@@ -4825,6 +4894,8 @@
           console.error('Could not load results.json', e);
         }
         buildBracket();
+        window._ladderOnlyWildcardLeft = checkOnlyWildcardLeft();
+        updateTheoryToggleVisibility();
         scheduleAutoLive();
         setInterval(async () => {
           try {
@@ -4832,6 +4903,8 @@
             if (JSON.stringify(data) !== JSON.stringify(RESULTS)) {
               applyResults(data);
               buildBracket();
+              window._ladderOnlyWildcardLeft = checkOnlyWildcardLeft();
+              updateTheoryToggleVisibility();
             }
           } catch (e) { /*probably network error so retry*/}
         }, 30_000);
@@ -4864,7 +4937,21 @@
         init();
       });
 
-      window._buildBracket = buildBracket;
+      function checkOnlyWildcardLeft() {
+        for (let w = 1; w < WILDCARD_WEEK; w++) {
+          const count = weekMatchCounts[w - 1];
+          for (let r = 1; r <= count; r++) {
+            if (!RESULTS[`${w}_${r}`]) return false;
+          }
+        }
+        return !RESULTS[`${WILDCARD_WEEK}_1`];
+      }
+
+      window._buildBracket = function() {
+        buildBracket();
+        window._ladderOnlyWildcardLeft = checkOnlyWildcardLeft();
+        updateTheoryToggleVisibility();
+      };
 
     })();
 
@@ -4904,15 +4991,9 @@
         const tbd = { name: '—', seed: null };
         const player = name => name ? { name, seed: seedOf(name) } : tbd;
 
-        //grab players from schedule.json
-        const schedEntry = TOP8_SCHEDULE[`${roundId}_${matchNum}`];
-        if (schedEntry && typeof schedEntry === 'object' && Array.isArray(schedEntry.players)) {
-          return schedEntry.players.map(n => (n && n !== 'TBD') ? player(n) : tbd);
-        }
-
         if (roundId === 'qf') {
           //top 8 seeding (so like 1v8 2v7 etc)
-          const pairings = [[0,7],[3,4],[2,5],[1,6]];
+          const pairings = [[0,7],[3,4],[1,6],[2,5]];
           const [i, j] = pairings[matchNum - 1];
           return [
             { name: TOP8_SEEDS[i] || '—', seed: i + 1 },
@@ -4941,6 +5022,7 @@
 
       function formatSchedule(isoStr) {
         const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return null;
         const date = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         return `${date} · ${time}`;
@@ -4967,7 +5049,8 @@
             const players = getTop8Players(roundConfig.id, m);
             const result = TOP8_RESULTS[`${roundConfig.id}_${m}`];
             const isDone = !!result;
-            const scheduleRaw = !isDone ? (TOP8_SCHEDULE[`${roundConfig.id}_${m}`] || null) : null;
+            const scheduleEntry = !isDone ? (TOP8_SCHEDULE[`${roundConfig.id}_${m}`] || null) : null;
+            const scheduleRaw = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.time || scheduleEntry.start || null) : null;
             const isAutoLive = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
             const isLive = isAutoLive;
             const scheduleAt = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
@@ -5047,7 +5130,8 @@
             const tpPlayers = getTop8Players('tp', 1);
             const tpResult = TOP8_RESULTS['tp_1'];
             const tpIsDone = !!tpResult;
-            const tpScheduleRaw = !tpIsDone ? (TOP8_SCHEDULE['tp_1'] || null) : null;
+            const tpScheduleEntry = !tpIsDone ? (TOP8_SCHEDULE['tp_1'] || null) : null;
+            const tpScheduleRaw = tpScheduleEntry ? (typeof tpScheduleEntry === 'string' ? tpScheduleEntry : tpScheduleEntry.time || tpScheduleEntry.start || null) : null;
             const tpIsLive = !tpIsDone && tpScheduleRaw && new Date() >= new Date(tpScheduleRaw);
             const tpScheduleAt = tpScheduleRaw && !tpIsLive ? formatSchedule(tpScheduleRaw) : null;
             let tpCard;
@@ -6360,11 +6444,17 @@
 
         const weekMap = new Map();
         for (const ev of (state.events || [])) {
-          const m = ev.name?.trim().toUpperCase().match(/^WEEK (\d+) RUNG (\d+)$/);
+          const name = ev.name?.trim().toUpperCase();
+          const m = name?.match(/^WEEK (\d+) RUNG (\d+)$/);
           if (m) {
             const w = parseInt(m[1]), r = parseInt(m[2]);
             if (!weekMap.has(w)) weekMap.set(w, []);
             weekMap.get(w).push({ rung: r, ev });
+          } else {
+            if (name === 'WILDCARD MATCH') {
+              if (!weekMap.has(8)) weekMap.set(8, []);
+              weekMap.get(8).push({ rung: 1, ev });
+            }
           }
         }
         const ladderWeeks = [...weekMap.keys()].sort((a, b) => a - b);
@@ -6389,6 +6479,7 @@
                   const has = weeksWithData.has(w);
                   return `<button data-week="${w}" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">${w}</button>`;
                 }).join('')}
+                ${(() => { const has = weeksWithData.has(8); return `<button data-week="8" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">WC</button>`; })()}
               </div>
             </div>
             <div id="stats-race-graphs" style="display:flex;flex-wrap:wrap;justify-content:center;gap:1.25rem"></div>
@@ -6541,8 +6632,9 @@
                   : `<span style="color:${r.color};font-weight:600;font-size:.78rem;letter-spacing:.03em">${r.name}</span>`;
                 return `<span data-runner="${r.name}" style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem;cursor:pointer;transition:opacity .15s">${lineEl}${nameEl}</span>`;
               }).join('');
+              const rungLabel = weekNum === 8 ? 'WILDCARD' : `RUNG ${rung}`;
               return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto">
-                <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">RUNG ${rung}</div>
+                <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${rungLabel}</div>
                 <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center">${legend}</div>
                 <div>${svg}</div>
               </div>`;
