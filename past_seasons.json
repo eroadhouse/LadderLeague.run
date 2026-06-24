@@ -22,7 +22,7 @@
         ]
       },
       "1_3": {
-        "vod": "",
+        "vod": "https://youtu.be/VfVT6tOUZJ8",
         "places": [
           { "name": "FrostByte",    "time": "2:26:22" },
           { "name": "ejpman",       "time": "2:29:33" },
@@ -118,7 +118,7 @@
         ]
       },
       "2_7": {
-        "vod": "",
+        "vod": "https://www.youtube.com/watch?v=xNfReZN46EU",
         "places": [
           { "name": "thenzota",     "time": "2:40:11" },
           { "name": "Nolan",        "time": "2:44:33" },
@@ -150,7 +150,7 @@
         ]
       },
       "3_4": {
-        "vod": "",
+        "vod": "https://www.youtube.com/watch?v=zcakefNDN_c",
         "places": [
           { "name": "DaHamster",    "time": "2:30:13" },
           { "name": "flup",         "time": "2:36:05" },
