@@ -2797,7 +2797,7 @@
         if ((m = n.match(/^QUARTERFINAL (\d+)$/)))      return `qf_${m[1]}`;
         if ((m = n.match(/^SEMIFINAL (\d+)$/)))         return `sf_${m[1]}`;
         if (n === 'GRAND FINALS')                       return 'gf_1';
-        if (n === 'THIRD PLACE MATCH')                  return 'tp_1';
+        if (n === '3RD PLACE MATCH')                  return 'tp_1';
         if (n === 'WILDCARD MATCH')                     return '8_1';
         return null;
       }
