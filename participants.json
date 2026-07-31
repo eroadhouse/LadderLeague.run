@@ -1,6 +1,6 @@
 {
   "season1": [
-    { "name": "ZacMuffin",    "seed": 1,  "country": "US", "placement": 4,  "seededPB": "2:21:44", "accolades": { "WR": 26, "tourney-wins": "OG S3" }, "username": "Zacc" },
+    { "name": "Zac",    "seed": 1,  "country": "US", "placement": 4,  "seededPB": "2:21:44", "accolades": { "WR": 26, "tourney-wins": "OG S3" }, "username": "Zacc" },
     { "name": "Ginger",       "seed": 2,  "country": "US", "placement": 7,  "seededPB": "2:22:28", "accolades": { "tourney-runnerups": "OG S2" }, "username": "GingerLegend" },
     { "name": "itsjared97",   "seed": 3,  "country": "US", "placement": 2,  "seededPB": "2:22:56", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
     { "name": "ERoadhouse",   "seed": 4,  "country": "US", "placement": 1,  "seededPB": "2:23:19", "accolades": { "tourney-wins": "LLS1", "WR": 12 } },
@@ -34,7 +34,7 @@
     { "name": "Scynor",       "seed": 4,  "country": "US", "placement": 5,  "seededPB": "2:22:33", "accolades": { "tourney-wins": ["OG S1", "OG S2"], "WR": 11 } },
     { "name": "Herasmie",     "seed": 5,  "country": "FI", "placement": 4,  "seededPB": "2:23:23" },
     { "name": "AnorakDT",     "seed": 6,  "country": "US", "placement": 7,  "seededPB": "2:24:22" },
-    { "name": "Dragon67",     "seed": 7,  "country": "FI", "placement": 3,  "seededPB": "2:24:27" },
+    { "name": "Dragon76",     "seed": 7,  "country": "FI", "placement": 3,  "seededPB": "2:24:27",                                  "accolades": { "tourney-runnerups": "LLS1", "WR": 2 } , "username": "Dragon67"  },
     { "name": "FlamingLazer", "seed": 8,  "country": "CA", "placement": 6,  "seededPB": "2:24:29" },
     { "name": "Dimei",        "seed": 9,  "country": "US", "placement": 11, "seededPB": "2:26:58" },
     { "name": "flup",         "seed": 10, "country": "CA", "placement": 16, "seededPB": "2:27:20" },
@@ -57,7 +57,7 @@
   ],
   "season3": [
     { "name": "Zac",    "seed": 1,  "country": "US", "username": "Zacc",              "accolades": { "WR": 26, "tourney-wins": "OG S3" } },
-    { "name": "Dragon76",     "seed": 2,  "country": "FI",                                  "accolades": { "WR": 1 } , "username": "Dragon67" },
+    { "name": "Dragon76",     "seed": 2,  "country": "FI",                                  "accolades": { "tourney-runnerups": "LLS3","WR": 2 } , "username": "Dragon67" },
     { "name": "Anorak",     "seed": 5,  "country": "US" , "username": "AnorakDT"},
     { "name": "Jared",   "seed": 3,  "country": "US",                                  "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 }, "username": "itsjared97" },
     { "name": "ERoadhouse",   "seed": 4,  "country": "US",                                  "accolades": { "tourney-wins": "LLS1", "WR": 12 } },

@@ -8,7 +8,7 @@
       "1_1": {
         "vod": "https://youtu.be/GSS6Y4bSwH0?si=iissdHdOeSxgVb3I",
         "places": [
-          { "name": "ZacMuffin",    "time": "2:23:26" },
+          { "name": "Zac",    "time": "2:23:26" },
           { "name": "Ginger",       "time": "2:27:54" },
           { "name": "itsjared97",   "time": "2:30:08" }
         ]
@@ -78,7 +78,7 @@
         ]
       },
       "2_2": {
-        "vod": "https://youtu.be/Bl3xX4DGRH0?si=3GyRfk2ur8dPizvr",
+        "vod": "",
         "places": [
           { "name": "itsjared97",   "time": "2:24:42" },
           { "name": "FrostByte",    "time": "2:28:51" },
@@ -102,7 +102,7 @@
         ]
       },
       "2_5": {
-        "vod": "",
+        "vod": "https://youtu.be/Bl3xX4DGRH0",
         "places": [
           { "name": "flup",         "time": "2:35:41" },
           { "name": "Charzight",    "time": "2:36:28" },
@@ -298,7 +298,7 @@
       "qf_1": {
         "vod": "https://youtu.be/pJ62Gf7STZc?si=MaRDxa5Sh7paUWP1",
         "places": [
-          { "name": "ZacMuffin",      "time": "2:21:50" },
+          { "name": "Zac",      "time": "2:21:50" },
           { "name": "Dahamster",      "time": "2:24:31" }
         ]
       },
@@ -326,7 +326,7 @@
       "sf_1": {
         "vod": "https://youtu.be/EvhpdJ9ENd8?si=TzArHpzvPnt57S0C",
         "places": [
-          { "name": "ZacMuffin",      "time": "2:25:26" },
+          { "name": "Zac",      "time": "2:25:26" },
           { "name": "ERoadhouse",      "time": "2:22:40" }
         ]
       },
@@ -349,7 +349,7 @@
   "season2": {
     "weekMatchCounts": [7, 6, 5, 4, 3, 2, 1, 1],
     "wildcardWeek": 8,
-    "wildcardAutoQualifier": { "name" : "Dragon67", "time": "2:23:34"},
+    "wildcardAutoQualifier": { "name" : "Dragon76", "time": "2:23:34"},
     "noThirdPlace": true,
     "weekDates": ["May 19-25", "May 26-June 1", "June 2-8", "June 9-15", "June 16-22", "June 23-29", "June 23-29"],
     "results": {
@@ -372,7 +372,7 @@
       "1_3": {
         "vod": "https://www.youtube.com/live/2Q7rnf30mFA?si=k6jzN_-XnklTveYw",
         "places": [
-          { "name": "Dragon67",   "time": "2:23:34" , "status" : "leapfrogging"},
+          { "name": "Dragon76",   "time": "2:23:34" , "status" : "leapfrogging"},
           { "name": "FlamingLazer",   "time": "2:24:53" },
           { "name": "Dimei",       "time": "2:29:11" }
         ]
@@ -413,7 +413,7 @@
         "vod": "https://www.youtube.com/live/kZdDAQ4_30k?si=fkV425RXeXulmAqr",
         "places": [
           { "name": "itsjared97",    "time": "2:23:50" },
-          { "name": "Dragon67",      "time": "2:25:54" },
+          { "name": "Dragon76",      "time": "2:25:54" },
           { "name": "Scynor",        "time": "2:27:18" }
         ]
       },
@@ -462,7 +462,7 @@
         "places": [
           { "name": "Herasmie",      "time": "2:22:32" },
           { "name": "WiiSuper",      "time": "2:23:43" },
-          { "name": "Dragon67",      "time": "2:27:02" }
+          { "name": "Dragon76",      "time": "2:27:02" }
         ]
       },
       "3_2": {
@@ -508,7 +508,7 @@
       "4_2": {
         "vod": "https://www.youtube.com/live/W7wU-uoDxNI?si=Id11snBSnZ9_qZuD",
         "places": [
-          { "name": "Dragon67",      "time": "2:24:54" },
+          { "name": "Dragon76",      "time": "2:24:54" },
           { "name": "FlamingLazer",  "time": "2:25:29" },
           { "name": "GildetPhantom", "time": "2:29:44" }
         ]
@@ -533,7 +533,7 @@
         "vod": "https://www.youtube.com/live/sKhmXpoynYs?si=39DBffHN02LuP52L",
         "places": [
           { "name": "WiiSuper",      "time": "2:20:58" },
-          { "name": "Dragon67",      "time": "2:24:05" },
+          { "name": "Dragon76",      "time": "2:24:05" },
           { "name": "FlamingLazer",  "time": "2:25:07" }
         ]
       },
@@ -557,7 +557,7 @@
         "vod": "https://www.youtube.com/live/J7JHFe0aJXE?si=Q6YBsppG9nj9_4d1",
         "places": [
           { "name": "AnorakDT",      "time": "2:26:35" },
-          { "name": "Dragon67",      "time": "2:26:38" },
+          { "name": "Dragon76",      "time": "2:26:38" },
           { "name": "Tfresh",        "time": "2:28:28" }
         ]
       },
@@ -573,7 +573,7 @@
         "vod": "https://www.youtube.com/live/i85NLwyjhLY?si=HdhejfDflYukvZIN",
         "places": [
           { "name": "FlamingLazer",      "time": "2:23:14" },
-          { "name": "Dragon67",      "time": "2:25:29" },
+          { "name": "Dragon76",      "time": "2:25:29" },
           { "name": "Tfresh",  "time": "DNF" }
         ]
       }
@@ -583,7 +583,7 @@
         "vod": "https://www.youtube.com/live/HmOoWLqKruw?si=3JsvS23DrxOTh6o8",
         "places": [
           { "name": "FrostByte",      "time": "2:26:10" },
-          { "name": "Dragon67",      "time": "2:24:38" }
+          { "name": "Dragon76",      "time": "2:24:38" }
         ]
       },
       "qf_2": {
@@ -610,7 +610,7 @@
       "sf_1": {
         "vod": "https://youtu.be/maheqViQX44?si=LigNWnPXgRuN8uqK",
         "places": [
-          { "name": "Dragon67",      "time": "2:23:50" },
+          { "name": "Dragon76",      "time": "2:23:50" },
           { "name": "WiiSuper",      "time": "2:21:48" }
         ]
       },

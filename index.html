@@ -29,6 +29,7 @@
     html { scroll-behavior: smooth; }
 
     body {
+      position: relative;
       background: var(--bg);
       color: var(--text);
       font-family: 'Montserrat', sans-serif;
@@ -41,10 +42,11 @@
     /* Background Glow */
     body::before {
       content: '';
-      position: fixed;
+      position: absolute;
       inset: 0;
       background:
         radial-gradient(ellipse 70% 55% at 50% 50%, #0a1a3a 0%, #060d1f 45%, #020408 100%);
+      background-attachment: fixed;
       filter: blur(15px);
       pointer-events: none;
       z-index: 0;
@@ -228,6 +230,13 @@
       justify-content: space-between;
       padding: 0 2rem;
       z-index: 100;
+      transition: background .3s ease, border-color .3s ease;
+    }
+    body:has(#home.active) nav {
+      background: rgba(8,11,16,.32);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(18px) saturate(1.3);
+      -webkit-backdrop-filter: blur(18px) saturate(1.3);
     }
 
     .nav-logo {
@@ -413,6 +422,70 @@
       margin: 0 auto;
       position: relative;
     }
+    #home .hero::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      bottom: -260px;
+      height: 260px;
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(7,8,15,0) 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    #home .hero-bg {
+      position: absolute;
+      top: calc(-1 * var(--nav-h)); bottom: 0;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      z-index: -1;
+      overflow: hidden;
+    }
+    #home .hero-bg-img {
+      position: absolute;
+      top: 0; bottom: 0;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    #home .hero-bg-podium {
+      left: 0;
+      width: 48%;
+      background-image: url('team-photo-podium2.webp');
+      background-size: cover;
+      background-position: center 6%;
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 70%, transparent 90%);
+              mask-image: linear-gradient(90deg, #000 0%, #000 70%, transparent 90%);
+    }
+    #home .hero-bg-everyone {
+      left: 0; right: 0;
+      background-image: url('team-photo.webp');
+      background-position: center 28%;
+    }
+    #home .hero-bg-top8 {
+      left: 0; right: 0;
+      background-image: url('team-photo-top8.webp');
+      background-position: center 18%;
+    }
+    #home .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,8,15,.68) 0%, rgba(7,8,15,.88) 60%, var(--bg) 100%);
+    }
+    #home .hero-bg-center-blur {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(950px, 82%);
+      height: 380px;
+      z-index: -1;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      -webkit-mask-image: radial-gradient(ellipse 55% 55% at center, #000 45%, transparent 100%);
+              mask-image: radial-gradient(ellipse 55% 55% at center, #000 45%, transparent 100%);
+    }
 
     #home .hero-eyebrow {
       font-family: 'Montserrat', sans-serif;
@@ -426,7 +499,7 @@
 
     #home .hero-title {
       font-family: 'Rubik', sans-serif;
-      font-size: clamp(3.4rem, 11.9vw, 9.35rem);
+      font-size: clamp(2.8rem, 9.8vw, 7.5rem);
       line-height: .9;
       letter-spacing: 4px;
       color: #fff;
@@ -449,9 +522,9 @@
       align-items: center;
       gap: .6rem;
       margin-top: 2rem;
-      padding: .75rem 2.5rem;
+      padding: .6rem 2rem;
       font-family: 'Rubik', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1rem;
       letter-spacing: 3px;
       color: var(--bg);
       background: var(--accent);
@@ -468,6 +541,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 15vh;
     }
     #home .hero-twitch-wrap {
       display: none;
@@ -2016,7 +2090,7 @@
     }
 
     /* Upcoming matches sction */
-    .upcoming-section { padding: 3rem 2rem 6rem; }
+    .upcoming-section { padding: 3rem 2rem 6rem; position: relative; }
     .upcoming-title { font-family: 'Rubik', sans-serif; color: #fff; font-size: 2rem; margin-bottom: .5rem; }
     .upcoming-sub { font-family: 'Montserrat', sans-serif; color: var(--dim); font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
     .upcoming-nav-wrap {
@@ -2089,6 +2163,8 @@
     .uc-result-gold { color: #d4b84a; font-weight: 700; }
     .uc-result-won  { color: #6ec88a; }
     .uc-result-lost { color: #d65757; }
+    .uc-result-gf-champion { color: #d4b84a; font-weight: 700; }
+    .uc-result-gf-runnerup { color: #b7bdc5; }
     .uc-result-1st  { color: #6ec88a; }
     .uc-result-2nd  { color: var(--accent); }
     .uc-result-3rd  { color: var(--dim); }
@@ -2306,6 +2382,310 @@
     }
     .about-contact-email:hover { color: #fff; }
 
+    .content-section { margin-top: 3rem; text-align: left; }
+    .content-section:first-child { margin-top: 0; }
+    .content-section-title {
+      font-family: 'Rubik', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      padding-bottom: .9rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: dense;
+      gap: 1.5rem;
+      text-align: left;
+    }
+    @media (max-width: 900px) {
+      .content-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+    .content-card {
+      background: rgba(15,17,28,.75);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .15s ease;
+    }
+    .content-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .content-card.active-source { border-color: var(--accent); }
+    .content-card-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #0c0e18 center/cover no-repeat;
+      overflow: hidden;
+    }
+    .content-card-thumb .content-play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(7,8,15,.25);
+      transition: background .2s ease;
+    }
+    .content-card:hover .content-card-thumb .content-play-icon { background: rgba(7,8,15,.05); }
+    .content-play-icon svg {
+      width: 3rem;
+      height: 3rem;
+      fill: #fff;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.5));
+      opacity: .9;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .content-card:hover .content-play-icon svg { transform: scale(1.1); opacity: 1; }
+    .content-card-duration {
+      position: absolute;
+      right: .5rem;
+      bottom: .5rem;
+      background: rgba(0,0,0,.75);
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .15rem .4rem;
+      border-radius: 3px;
+      letter-spacing: .3px;
+    }
+    .content-card-title {
+      padding: .9rem 1rem 0;
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--accent2);
+      line-height: 1.4;
+    }
+    .content-card-title:last-child { padding-bottom: 1rem; }
+    .content-card-featuring {
+      padding: .3rem 1rem 1rem;
+      font-size: .76rem;
+      color: var(--dim);
+    }
+    .content-expand-panel {
+      display: none;
+      grid-column: 1 / -1;
+      position: relative;
+      background: #000;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      overflow: visible;
+    }
+    .content-expand-panel.open { display: block; animation: fadeIn .25s ease; }
+    .content-expand-caret {
+      position: absolute;
+      top: -8px;
+      width: 15px;
+      height: 15px;
+      background: #000;
+      border-left: 1px solid var(--accent);
+      border-top: 1px solid var(--accent);
+      transform: translateX(-50%) rotate(45deg);
+      transition: left .2s ease;
+    }
+    .content-expand-player {
+      aspect-ratio: 16/9;
+      width: 100%;
+      background: #000;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .content-expand-player iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .content-expand-close {
+      position: absolute;
+      top: .6rem;
+      right: .6rem;
+      z-index: 3;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(15,17,28,.85);
+      color: #fff;
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .content-expand-close:hover { border-color: var(--accent); transform: scale(1.08); }
+
+    .vod-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4,5,10,.88);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 3.5rem 2rem 2rem;
+      overflow: auto;
+    }
+    .vod-modal-overlay.open { display: flex; animation: fadeIn .2s ease; }
+    .vod-modal {
+      position: relative;
+      width: min(75vw, 133.3vh, 1600px);
+    }
+    .vod-modal.with-chat { width: min(90vw, calc(133.3vh + 336px), 1900px); }
+    .vod-modal-body {
+      display: flex;
+      gap: 1rem;
+      align-items: stretch;
+      max-height: 75vh;
+    }
+    .vod-modal-player {
+      flex: 1 1 0;
+      min-width: 0;
+      align-self: flex-start;
+      aspect-ratio: 16/9;
+      background: #000;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .vod-modal-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .vod-modal-chat {
+      display: none;
+      flex: 0 0 320px;
+      min-height: 0;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .vod-modal.with-chat .vod-modal-chat { display: flex; }
+    .vod-chat-header {
+      flex-shrink: 0;
+      padding: .6rem .9rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      border-bottom: 1px solid var(--border);
+    }
+    .vod-chat-messages {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding: .5rem .8rem;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+    .vod-chat-messages::-webkit-scrollbar { width: 8px; }
+    .vod-chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .vod-chat-messages::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 0; }
+    .vod-chat-messages::-webkit-scrollbar-thumb:hover { background: var(--accent2); }
+    .vod-chat-loading { color: var(--dim); font-family: 'Montserrat', sans-serif; font-size: .82rem; padding: .5rem 0; }
+    .vod-chat-message {
+      font-family: 'Montserrat', sans-serif;
+      font-size: .82rem;
+      line-height: 1.4;
+      word-break: break-word;
+      color: var(--text);
+    }
+    .vod-chat-namegroup {
+      display: inline-flex;
+      align-items: center;
+      height: 1.4em;
+      vertical-align: middle;
+      position: relative;
+      top: -1.55px;
+      white-space: nowrap;
+      margin-right: .35rem;
+    }
+    .vod-chat-author { font-weight: 700; }
+    .vod-chat-badge { height: 100%; width: auto; margin-right: .3rem; border-radius: 2px; }
+    .vod-chat-emote { height: 1.6em; vertical-align: middle; margin: 0 .1rem; }
+    .vod-emote-wrap { position: relative; display: inline-block; }
+    .vod-emote-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: .4rem;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .5rem .7rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+      z-index: 20;
+      pointer-events: none;
+    }
+    .vod-emote-wrap:hover .vod-emote-tooltip { display: flex; }
+    .vod-emote-tooltip-img { height: 4rem; width: auto; }
+    .vod-emote-tooltip-name { font-family: 'Montserrat', sans-serif; font-size: .75rem; font-weight: 700; color: var(--text); }
+    @media (max-aspect-ratio: 4/3) {
+      .vod-modal.with-chat { width: min(92vw, 640px); }
+      .vod-modal-body { flex-direction: column; max-height: none; }
+      .vod-modal-player { align-self: stretch; width: 100%; flex: 0 0 auto; }
+      .vod-modal-chat { flex: 0 0 240px; }
+    }
+    .vod-error {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .vod-error p { color: var(--text); font-size: 1rem; max-width: 30rem; }
+    .vod-error a {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: #fff;
+      background: var(--accent);
+      padding: .6rem 1.4rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity .15s ease;
+    }
+    .vod-error a:hover { opacity: .85; }
+    .vod-modal-close {
+      position: absolute;
+      top: -3.2rem;
+      right: 0;
+      z-index: 3;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(15,17,28,.85);
+      color: #fff;
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .vod-modal-close:hover { border-color: var(--accent); transform: scale(1.08); }
+
   </style>
 </head>
 <body>
@@ -2322,8 +2702,8 @@
       <li><a href="#" class="active" data-page="home">Home</a></li>
       <li><a href="#" data-page="standings">Standings</a></li>
       <li><a href="#" data-page="participants">Participants</a></li>
-      <li><a data-href="https://predictions.ladderleague.run" target="_blank" class="nav-link-disabled" id="predictions-nav-link">Predictions</a></li>
       <li><a href="#" data-page="format">Format</a></li>
+      <li><a href="#" data-page="content">Content</a></li>
       <li><a href="#" data-page="stats">Stats</a></li>
       <li><a href="#" data-page="about">About</a></li>
     </ul>
@@ -2335,38 +2715,24 @@
   <!-- Home page -->
   <div class="page active" id="home">
     <div class="hero">
+      <div class="hero-bg" aria-hidden="true">
+        <!-- temporarily removed: <div class="hero-bg-img hero-bg-everyone"></div> -->
+        <!-- temporarily removed: <div class="hero-bg-img hero-bg-podium"></div> -->
+        <div class="hero-bg-img hero-bg-top8"></div>
+        <div class="hero-bg-overlay"></div>
+      </div>
+      <div class="hero-bg-center-blur" aria-hidden="true"></div>
       <div class="hero-left">
-        <p class="hero-eyebrow reveal" id="hero-status-eyebrow" style="transition-delay:.1s">Season 03 · Coming Soon</p>
         <h1 class="hero-title reveal" style="transition-delay:.25s">
           LADDER<br>
           <span class="accent">LEA</span><span class="accent2">GUE</span>
         </h1>
-        <div class="reveal" style="display:flex;gap:.75rem;flex-wrap:wrap;transition-delay:.4s">
+        <p class="hero-desc reveal" style="transition-delay:.32s">LEGO Star Wars' Premiere Speedrunning Tournament</p>
+        <div class="reveal" style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;transition-delay:.4s">
           <a href="https://www.youtube.com/playlist?list=PLaoVS_Comfpu5OwwgzdzS3Tw8DwChPaXw" target="_blank" rel="noopener" class="hero-cta">View All VODS<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
           </a>
-          <a href="https://youtube.com/playlist?list=PLaoVS_ComfpsMOj-6iHDkV6TvMFUhDfhR&si=k5NHCkW75n3huRzv" target="_blank" rel="noopener" class="hero-cta">View Content<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          <a href="#" data-page="content" class="hero-cta">View Content<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="3" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </a>
-        </div>
-        <div id="countdown-container">
-          <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Season Starts In</p>
-          <div class="stat-row reveal" style="margin-top:0; transition-delay:.7s">
-            <div class="stat-item">
-              <div class="stat-value" id="cd-days">0</div>
-              <div class="stat-label">Days</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="cd-hours">00</div>
-              <div class="stat-label">Hours</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="cd-minutes">00</div>
-              <div class="stat-label">Minutes</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="cd-seconds">00</div>
-              <div class="stat-label">Seconds</div>
-            </div>
-          </div>
         </div>
         <div id="top8-countdown-container" style="display:none">
           <p class="hero-eyebrow reveal" style="transition-delay:.6s; margin-top:3rem; margin-bottom:.5rem">Top 8 Starts In</p>
@@ -2405,17 +2771,7 @@
     <!-- Upcoming matches section -->
     <div class="upcoming-section reveal" id="upcoming-section">
       <div class="section">
-        <div class="upcoming-title">Upcoming Matches</div>
-        <div class="upcoming-nav-wrap">
-          <button class="upcoming-arrow" id="upcoming-prev" disabled aria-label="Previous matches">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-          </button>
-          <div class="upcoming-grid" id="upcoming-list"></div>
-          <button class="upcoming-arrow" id="upcoming-next" aria-label="Next matches">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-          </button>
-        </div>
-        <div style="position:relative;margin-top:3rem;margin-bottom:.5rem">
+        <div style="position:relative;margin-bottom:.5rem">
           <div class="upcoming-section-label" style="margin:0">Match Results</div>
           <label style="position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.6rem;cursor:pointer">
             <span style="font-family:'Montserrat',sans-serif;color:var(--dim);font-size:.72rem;font-weight:700;letter-spacing:.12em">HIDE RESULTS</span>
@@ -2430,6 +2786,19 @@
           <button class="upcoming-arrow" id="results-next" aria-label="Next results">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
           </button>
+        </div>
+        <!-- hidden until s4 (remove style to bring back) -->
+        <div id="upcoming-matches-block" style="display:none">
+          <div class="upcoming-title" style="margin-top:3rem">Upcoming Matches</div>
+          <div class="upcoming-nav-wrap">
+            <button class="upcoming-arrow" id="upcoming-prev" disabled aria-label="Previous matches">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="upcoming-grid" id="upcoming-list"></div>
+            <button class="upcoming-arrow" id="upcoming-next" aria-label="Next matches">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -2657,6 +3026,17 @@
     </div>
   </div>
 
+  <!-- Content page -->
+  <div class="page" id="content">
+    <div class="section" style="max-width:1300px">
+      <div class="page-title reveal">CON<span>TENT</span></div>
+      <div class="page-subtitle reveal" style="transition-delay:.15s">SEASON 3 CONTENT</div>
+      <div class="divider"></div>
+
+      <div id="content-sections" style="margin-top:3rem"></div>
+    </div>
+  </div>
+
   <!-- Stats page -->
   <div class="page" id="stats">
     <div class="section">
@@ -2671,8 +3051,9 @@
 
   <!-- Status footer -->
   <div class="status-bar">
-    <span class="status-item"><span class="status-dot" id="footer-status-dot"></span><span id="footer-status-text">Coming Soon</span></span>
+    <span class="status-item"><span class="status-dot" id="footer-status-dot"></span><span id="footer-status-text">Concluded</span></span>
     <span class="status-item">Season 03</span>
+    <span class="status-item">Developed by Zac</span>
     <div class="status-bar-right">
       <a class="social-link" href="https://twitch.tv/legospeedruns" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
@@ -2707,8 +3088,8 @@
       }
     })();
 
-    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/statistics' };
-    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/statistics': 'stats' };
+    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/statistics', content: '/content' };
+    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/statistics': 'stats', '/content': 'content' };
 
     function showPage(target, addHistory) {
       const page = document.getElementById(target);
@@ -2752,8 +3133,10 @@
       return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    //Automarathon websocket
+    const AUTOMARATHON_ENABLED = true;
+    const SEASON3_LIVE_TRACKING_ENABLED = false;
     (function initAutomarathon() {
+      if (!AUTOMARATHON_ENABLED) return;
       let _resolveResults, _resolveSchedule;
       const _resultsReady  = new Promise(r => (_resolveResults  = r));
       const _scheduleReady = new Promise(r => (_resolveSchedule = r));
@@ -2765,6 +3148,9 @@
 
       //Fetch static config fields
       const _staticSchedule = _nativeFetch('schedule.json', { cache: 'no-store' })
+        .then(r => r.json()).catch(() => ({}));
+
+      const _staticResults = _nativeFetch('results.json', { cache: 'no-store' })
         .then(r => r.json()).catch(() => ({}));
 
       //Name map (so stuff is not case sensitive)
@@ -2811,8 +3197,7 @@
       function transform(state, nameMap) {
         const normName = n => (n && nameMap.get(n.toLowerCase())) || n;
         const results = {};
-        const ladder = {}, top8 = {}, lcq = {};
-        let liveMatch = false, lcqLiveMatch = null;
+        const ladder = {}, top8 = {};
 
         for (const event of (state.events || [])) {
           const key = parseKey(event.name);
@@ -2820,18 +3205,14 @@
 
           const isTop8 = /^(qf|sf|gf|tp)_/.test(key);
           const isLcq  = key.startsWith('lcq_');
-          const section = isTop8 ? top8 : isLcq ? lcq : ladder;
+          if (isLcq) continue;
+          const section = isTop8 ? top8 : ladder;
 
           const players = Object.keys(event.runner_state || {})
             .map(id => normName(state.people?.[id]?.name)).filter(Boolean);
 
           if (event.event_start_time)
             section[key] = { time: event.event_start_time, players };
-
-          if (event.event_start_time && new Date() > new Date(event.event_start_time) && !event.complete) {
-            if (isLcq) lcqLiveMatch = key;
-            else liveMatch = key;
-          }
 
           const places = [];
           for (const [id, rs] of Object.entries(event.runner_state || {})) {
@@ -2843,7 +3224,7 @@
           if (places.length) results[key] = { places, vod: event.console || null };
         }
 
-        return { results, schedule: { ladder, top8, lcq, liveMatch, lcqLiveMatch } };
+        return { results, schedule: { ladder, top8 } };
       }
 
       async function applyState(raw) {
@@ -2852,9 +3233,10 @@
         console.log('[automarathon] state received, events:', (state?.events || []).length);
         const nameMap = await _nameMap;
         const { results, schedule: evSched } = transform(state, nameMap);
-        const staticSched = await _staticSchedule;
+        const staticSched   = await _staticSchedule;
+        const staticResults = await _staticResults;
 
-        _cachedResults  = results;
+        _cachedResults  = { ...staticResults, ...results };
         _cachedSchedule = { ...staticSched, ...evSched };
 
         if (!_firstMessage) {
@@ -2867,14 +3249,20 @@
         document.dispatchEvent(new CustomEvent('amUpdate'));
       }
 
-      function connect() {
-        const ws = new WebSocket('wss://automarathon.opengg.dev/ws');
-        ws.onmessage = e => applyState(e.data).catch(err => console.error('[automarathon]', err));
-        ws.onclose   = () => setTimeout(connect, 5000);
-        ws.onerror   = () => ws.close();
-      }
-
-      connect();
+      _nativeFetch('lls3_results.json', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(state => applyState(state))
+        .catch(err => {
+          console.error('[automarathon] failed to load lls3_results.json', err);
+          if (!_firstMessage) {
+            _firstMessage = true;
+            clearTimeout(_fallbackTimer);
+            _cachedResults = {};
+            _cachedSchedule = {};
+            _resolveResults(_cachedResults);
+            _resolveSchedule(_cachedSchedule);
+          }
+        });
     })();
     // ────────────────────────────────────────────────────────────────────────────
 
@@ -3208,7 +3596,12 @@
       }
 
       window._nameColorMap = {};
-      participants.forEach(p => {
+      const allSeasonsParticipants = [
+        ...(allParticipants.season1 || []),
+        ...(allParticipants.season2 || []),
+        ...(allParticipants.season3 || [])
+      ];
+      allSeasonsParticipants.forEach(p => {
         const entry = srcPBMap[(p.username || p.name).toLowerCase()];
         if (!entry) return;
         window._nameColorMap[p.name.toLowerCase()] = entry.colorFrom || entry.colorSolid
@@ -3451,6 +3844,7 @@
         s.alpha += (s.targetAlpha - s.alpha) * s.fadeSpeed;
       }
 
+      let rafId = null;
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (const s of stars) {
@@ -3460,12 +3854,300 @@
           ctx.fillStyle = `rgba(200, 215, 240, ${s.alpha})`;
           ctx.fill();
         }
-        requestAnimationFrame(draw);
+        rafId = requestAnimationFrame(draw);
       }
+
+      window.__pauseStarfield = () => { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } };
+      window.__resumeStarfield = () => { if (rafId === null) draw(); };
 
       window.addEventListener('resize', () => { resize(); });
       init();
       draw();
+    })();
+
+    let _ytApiPromise = null;
+    function loadYouTubeIframeAPI() {
+      if (_ytApiPromise) return _ytApiPromise;
+      _ytApiPromise = new Promise(resolve => {
+        if (window.YT && window.YT.Player) { resolve(window.YT); return; }
+        const prevReady = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => { if (prevReady) prevReady(); resolve(window.YT); };
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      });
+      return _ytApiPromise;
+    }
+    
+    function disableCaptions(e) {
+      try { e.target.unloadModule('captions'); } catch (err) { /* ignore */ }
+    }
+
+    function youtubeErrorHtml(watchUrl) {
+      return `
+        <div class="vod-error">
+          <p>This video can't be played here - it's likely restricted in your region.</p>
+          <a href="${watchUrl}" target="_blank" rel="noopener">Watch on YouTube<span aria-hidden="true"> &rarr;</span></a>
+        </div>
+      `;
+    }
+
+    (function() {
+      const QF_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-10-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ QUARTERFINAL 1 ｜ DRAGON VS JARED - Chat.json';
+      const SF_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-11-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ SEMIFINAL 1 ｜ DRAGON VS ZAC - Chat.json';
+      const GF_DAY_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-12-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ THIRD PLACE MATCH ｜ ZAC VS WIISUPER - Chat.json';
+      const QF1_START   = 18 * 60 + 33;               // 0:18:33
+      const QF1_CUT_OUT = 2 * 3600 + 12 * 60 + 48;    // 2:12:48
+      const QF1_CUT_IN  = 2 * 3600 + 53 * 60 + 17;    // 2:53:17
+      const CHAT_REPLAYS = {
+        qf_1: { file: QF_TOP8_FILE, segments: [
+          { streamStart: QF1_START, streamEnd: QF1_CUT_OUT, videoStart: 0 },
+          { streamStart: QF1_CUT_IN, videoStart: QF1_CUT_OUT - QF1_START },
+        ] },
+        qf_2: { file: QF_TOP8_FILE, segments: [{ streamStart: 3 * 3600 + 58 * 60 + 25, videoStart: 0 }] },
+        qf_3: { file: QF_TOP8_FILE, segments: [{ streamStart: 7 * 3600 +  5 * 60 + 50, videoStart: 0 }] },
+        qf_4: { file: QF_TOP8_FILE, segments: [{ streamStart: 10 * 3600 + 12 * 60 + 56, videoStart: 0 }] },
+        sf_1: { file: SF_TOP8_FILE, segments: [{ streamStart: 0 * 3600 + 14 * 60 + 37, videoStart: 0 }] },
+        sf_2: { file: SF_TOP8_FILE, segments: [{ streamStart: 3 * 3600 + 33 * 60 + 34, videoStart: 0 }] },
+        tp_1: { file: GF_DAY_TOP8_FILE, segments: [{ streamStart: 0 * 3600 + 19 * 60 + 58, videoStart: 0 }] },
+        gf_1: { file: GF_DAY_TOP8_FILE, segments: [{ streamStart: 3 * 3600 + 29 * 60 + 36, videoStart: 0 }] },
+      };
+
+      function mapStreamTimeToVideoTime(segments, streamOffset) {
+        for (let i = 0; i < segments.length; i++) {
+          const seg = segments[i];
+          const end = seg.streamEnd != null ? seg.streamEnd : (segments[i + 1] ? segments[i + 1].streamStart : Infinity);
+          if (streamOffset >= seg.streamStart && streamOffset < end) return seg.videoStart + (streamOffset - seg.streamStart);
+        }
+        return null;
+      }
+
+      let overlay = null, modalEl = null, player = null, chatPanel = null, chatMessagesEl = null, openToken = 0;
+      let chatSyncTimer = null;
+      let chatState = { comments: [], renderedCount: 0, badgeMap: {}, emoteMap: {}, sevenTvMap: {} };
+
+      function embeddedImageMime(base64) {
+        if (base64.startsWith('iVBORw0KGgo')) return 'image/png';
+        if (base64.startsWith('R0lGOD'))      return 'image/gif';
+        if (base64.startsWith('UklGR'))       return 'image/webp';
+        return 'image/png';
+      }
+
+      function buildEmbeddedMaps(embeddedData) {
+        const badgeMap = {}, emoteMap = {}, sevenTvMap = {};
+        for (const b of (embeddedData && embeddedData.twitchBadges) || []) {
+          for (const [version, info] of Object.entries(b.versions || {})) {
+            if (info.bytes) badgeMap[`${b.name}/${version}`] = { url: `data:${embeddedImageMime(info.bytes)};base64,${info.bytes}`, title: info.title || b.name };
+          }
+        }
+        for (const e of (embeddedData && embeddedData.firstParty) || []) {
+          if (e.id && e.data) emoteMap[e.id] = `data:${embeddedImageMime(e.data)};base64,${e.data}`;
+        }
+        for (const e of (embeddedData && embeddedData.thirdParty) || []) {
+          if (e.name && e.data) sevenTvMap[e.name] = `data:${embeddedImageMime(e.data)};base64,${e.data}`;
+        }
+        return { badgeMap, emoteMap, sevenTvMap };
+      }
+
+      function extractYouTubeId(url) {
+        const m = url.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+        return m ? m[1] : null;
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      }
+
+      function buildOverlay() {
+        overlay = document.createElement('div');
+        overlay.className = 'vod-modal-overlay';
+        overlay.innerHTML = `
+          <div class="vod-modal">
+            <button class="vod-modal-close" aria-label="Close video">&times;</button>
+            <div class="vod-modal-body">
+              <div class="vod-modal-player"></div>
+              <div class="vod-modal-chat">
+                <div class="vod-chat-header">Chat Replay</div>
+                <div class="vod-chat-messages"></div>
+              </div>
+            </div>
+          </div>
+        `;
+        modalEl = overlay.querySelector('.vod-modal');
+        player = overlay.querySelector('.vod-modal-player');
+        chatPanel = overlay.querySelector('.vod-modal-chat');
+        chatMessagesEl = overlay.querySelector('.vod-chat-messages');
+        overlay.querySelector('.vod-modal-close').addEventListener('click', closeVodModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeVodModal(); });
+        document.body.appendChild(overlay);
+      }
+
+      const MAX_RENDERED_MESSAGES = 150;
+
+      function stopChatSync() {
+        if (chatSyncTimer) { clearInterval(chatSyncTimer); chatSyncTimer = null; }
+        chatState = { comments: [], renderedCount: 0, badgeMap: {}, emoteMap: {}, sevenTvMap: {} };
+      }
+
+      function emoteHtml(url, name) {
+        return `<span class="vod-emote-wrap"><img class="vod-chat-emote" src="${url}" alt="${escapeHtml(name)}"><span class="vod-emote-tooltip"><img class="vod-emote-tooltip-img" src="${url}" alt=""><span class="vod-emote-tooltip-name">${escapeHtml(name)}</span></span></span>`;
+      }
+
+      function renderTextFragment(text, sevenTvMap) {
+        return text.split(/(\s+)/).map(token => {
+          if (!token || /^\s+$/.test(token)) return escapeHtml(token);
+          const url = sevenTvMap[token];
+          return url ? emoteHtml(url, token) : escapeHtml(token);
+        }).join('');
+      }
+
+      function chatMessageHtml(c) {
+        const badgesHtml = c.badges.map(b => {
+          const badge = chatState.badgeMap[`${b._id}/${b.version}`];
+          if (!badge) return '';
+          return `<img class="vod-chat-badge" src="${badge.url}" alt="${escapeHtml(badge.title)}" title="${escapeHtml(badge.title)}">`;
+        }).join('');
+        const textHtml = c.fragments.map(f => {
+          const id = f.emoticon && f.emoticon.emoticon_id;
+          if (id) {
+            const url = chatState.emoteMap[id] || `https://static-cdn.jtvnw.net/emoticons/v2/${encodeURIComponent(id)}/default/dark/1.0`;
+            return emoteHtml(url, f.text);
+          }
+          return renderTextFragment(f.text, chatState.sevenTvMap);
+        }).join('');
+        return `<div class="vod-chat-message"><span class="vod-chat-namegroup">${badgesHtml}<span class="vod-chat-author" style="color:${escapeHtml(c.color)}">${escapeHtml(c.name)}:</span></span>${textHtml}</div>`;
+      }
+
+      function pinChatToBottomIfNear() {
+        if (chatMessagesEl.scrollTop + chatMessagesEl.clientHeight >= chatMessagesEl.scrollHeight - 40) {
+          chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+        }
+      }
+
+      function bindImageLoadRescroll() {
+        chatMessagesEl.querySelectorAll('img:not([data-scroll-bound])').forEach(img => {
+          img.dataset.scrollBound = '1';
+          if (!img.complete) img.addEventListener('load', pinChatToBottomIfNear, { once: true });
+        });
+      }
+
+      function renderChatUpTo(currentTime) {
+        const { comments } = chatState;
+        let lo = 0, hi = comments.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (comments[mid].t <= currentTime) lo = mid + 1; else hi = mid;
+        }
+        const targetCount = lo;
+        if (targetCount === chatState.renderedCount) return;
+
+        const nearBottom = chatMessagesEl.scrollTop + chatMessagesEl.clientHeight >= chatMessagesEl.scrollHeight - 40;
+        if (targetCount < chatState.renderedCount) {
+          const start = Math.max(0, targetCount - MAX_RENDERED_MESSAGES);
+          chatMessagesEl.innerHTML = comments.slice(start, targetCount).map(chatMessageHtml).join('');
+        } else {
+          const start = Math.max(chatState.renderedCount, targetCount - MAX_RENDERED_MESSAGES);
+          chatMessagesEl.insertAdjacentHTML('beforeend', comments.slice(start, targetCount).map(chatMessageHtml).join(''));
+          while (chatMessagesEl.children.length > MAX_RENDERED_MESSAGES) {
+            chatMessagesEl.removeChild(chatMessagesEl.firstElementChild);
+          }
+        }
+        chatState.renderedCount = targetCount;
+        bindImageLoadRescroll();
+        if (nearBottom) chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+      }
+
+      async function loadChatReplay(config, ytPlayer, myToken) {
+        chatMessagesEl.innerHTML = '<div class="vod-chat-loading">Loading chat…</div>';
+        let data;
+        try {
+          data = await fetch(encodeURI(config.file)).then(r => r.json());
+        } catch (err) {
+          if (myToken === openToken) chatMessagesEl.innerHTML = '<div class="vod-chat-loading">Chat replay unavailable.</div>';
+          return;
+        }
+        if (myToken !== openToken) return;
+
+        const comments = (data.comments || [])
+          .map(c => {
+            const t = mapStreamTimeToVideoTime(config.segments, c.content_offset_seconds);
+            if (t === null) return null;
+            return {
+              t,
+              name: (c.commenter && c.commenter.display_name) || 'anonymous',
+              color: (c.message && c.message.user_color) || '#9aaabb',
+              fragments: (c.message && c.message.fragments && c.message.fragments.length) ? c.message.fragments : [{ text: (c.message && c.message.body) || '', emoticon: null }],
+              badges: (c.message && c.message.user_badges) || [],
+            };
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.t - b.t);
+
+        const { badgeMap, emoteMap, sevenTvMap } = buildEmbeddedMaps(data.embeddedData);
+
+        chatMessagesEl.innerHTML = '';
+        chatState = { comments, renderedCount: 0, badgeMap, emoteMap, sevenTvMap };
+        renderChatUpTo(0);
+        chatSyncTimer = setInterval(() => {
+          if (myToken !== openToken) { stopChatSync(); return; }
+          renderChatUpTo(ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0);
+        }, 500);
+      }
+
+      function closeVodModal() {
+        if (!overlay) return;
+        openToken++;
+        overlay.classList.remove('open');
+        modalEl.classList.remove('with-chat');
+        player.innerHTML = '';
+        stopChatSync();
+        chatMessagesEl.innerHTML = '';
+        if (window.__resumeStarfield) window.__resumeStarfield();
+      }
+
+      function openVodModal(videoId, watchUrl, matchKey) {
+        if (!overlay) buildOverlay();
+        const myToken = ++openToken;
+        player.innerHTML = '';
+        stopChatSync();
+        chatMessagesEl.innerHTML = '';
+        const chatConfig = CHAT_REPLAYS[matchKey] || null;
+        modalEl.classList.toggle('with-chat', !!chatConfig);
+        const target = document.createElement('div');
+        player.appendChild(target);
+        overlay.classList.add('open');
+        if (window.__pauseStarfield) window.__pauseStarfield();
+        loadYouTubeIframeAPI().then(YT => {
+          if (myToken !== openToken) return; //modal closed/reopened before the API finished loading
+          new YT.Player(target, {
+            videoId,
+            playerVars: { autoplay: 1, rel: 0, cc_load_policy: 0, origin: window.location.origin },
+            events: {
+              onReady: (e) => {
+                disableCaptions(e);
+                if (chatConfig) loadChatReplay(chatConfig, e.target, myToken);
+              },
+              onError: (e) => {
+                console.error('[vod modal] YouTube player error, code:', e.data, 'videoId:', videoId);
+                if (myToken === openToken) player.innerHTML = youtubeErrorHtml(watchUrl);
+              },
+            },
+          });
+        });
+      }
+
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) closeVodModal(); });
+
+      document.addEventListener('click', e => {
+        const card = e.target.closest('a.top8-match.done');
+        if (!card || !card.href) return;
+        const videoId = extractYouTubeId(card.href);
+        if (!videoId) return;
+        e.preventDefault();
+        const idMatch = card.id && card.id.match(/-([a-z]+)-(\d+)$/);
+        const matchKey = idMatch ? `${idMatch[1]}_${idMatch[2]}` : null;
+        openVodModal(videoId, card.href, matchKey);
+      });
     })();
 
     //scroll reveal animations
@@ -3519,6 +4201,7 @@
     }
 
     //countdown
+    const SEASON_HOME_COUNTDOWN_ENABLED = false;
     let season3CountdownActive = false;
 
     schedulePromise.then(sd => {
@@ -3536,7 +4219,7 @@
       }
 
       //countdown on home page (goes to season start instead)
-      const homeTarget = sd.seasonStart ? new Date(sd.seasonStart) : null;
+      const homeTarget = (SEASON_HOME_COUNTDOWN_ENABLED && sd.seasonStart) ? new Date(sd.seasonStart) : null;
       if (homeTarget) {
         const elDays    = document.getElementById('cd-days');
         const elHours   = document.getElementById('cd-hours');
@@ -3719,7 +4402,7 @@
         const now = new Date();
 
         const TOP8_KEYS = ['qf_1', 'qf_2', 'qf_3', 'qf_4', 'sf_1', 'sf_2', 'tp_1', 'gf_1'];
-        const TOP8_NAMES = { qf_1:'Quarterfinal 1', qf_2:'Quarterfinal 2', qf_3:'Quarterfinal 3', qf_4:'Quarterfinal 4', sf_1:'Semifinal 1', sf_2:'Semifinal 2', tp_1:'Third Place', gf_1:'Grand Final' };
+        const TOP8_NAMES = { qf_1:'Quarterfinal 1', qf_2:'Quarterfinal 2', qf_3:'Quarterfinal 3', qf_4:'Quarterfinal 4', sf_1:'Semifinal 1', sf_2:'Semifinal 2', tp_1:'Third Place', gf_1:'Grand Finals' };
         const WEEK_ENDS         = ['2026-05-17','2026-05-24','2026-05-31','2026-06-07','2026-06-14','2026-06-21','2026-06-21','2026-06-22'];
         const WEEK_MATCH_COUNTS = [7, 6, 5, 4, 3, 2, 1, 1];
 
@@ -3836,7 +4519,12 @@
           const w = places[0];
           placesHtml = `<div class="uc-result-row uc-result-gold">★ ${w.name}<span class="uc-result-time">${w.time}</span></div>`;
         } else if (places.length === 2) {
-          placesHtml = places.map((p, i) => `<div class="uc-result-row ${i === 0 ? 'uc-result-won' : 'uc-result-lost'}">${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
+          const isGF = e.key === 'gf_1';
+          placesHtml = places.map((p, i) => {
+            const cls  = isGF ? (i === 0 ? 'uc-result-gf-champion' : 'uc-result-gf-runnerup') : (i === 0 ? 'uc-result-won' : 'uc-result-lost');
+            const name = (isGF && i === 0) ? `★ ${p.name} ★` : p.name;
+            return `<div class="uc-result-row ${cls}">${name}<span class="uc-result-time">${p.time}</span></div>`;
+          }).join('');
         } else {
           const cls = ['uc-result-1st', 'uc-result-2nd', 'uc-result-3rd'];
           placesHtml = places.map((p, i) => `<div class="uc-result-row ${cls[i] || 'uc-result-3rd'}">${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
@@ -3889,7 +4577,7 @@
           qf_1: 'Quarterfinal 1', qf_2: 'Quarterfinal 2',
           qf_3: 'Quarterfinal 3', qf_4: 'Quarterfinal 4',
           sf_1: 'Semifinal 1',    sf_2: 'Semifinal 2',
-          tp_1: 'Third Place',    gf_1: 'Grand Final',
+          tp_1: 'Third Place',    gf_1: 'Grand Finals',
         };
 
         function matchSection(key) {
@@ -4465,8 +5153,8 @@
           const scheduleEntry = !isDone ? (SCHEDULE[`${w}_${r}`] || null) : null;
           const scheduleRaw   = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.time || scheduleEntry.start) : null;
           const timerStartRaw = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
-          const isAutoLive    = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
-          const isManualLive = !isDone && LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
+          const isAutoLive    = SEASON3_LIVE_TRACKING_ENABLED && !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
+          const isManualLive = SEASON3_LIVE_TRACKING_ENABLED && !isDone && LIVE_MATCH && w === LIVE_MATCH.week && r === LIVE_MATCH.rung;
           const isLive      = isAutoLive || isManualLive;
           const scheduleAt  = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
           let card;
@@ -4968,7 +5656,7 @@
       const ROUND_LABEL_PREFIX = {
         qf: 'Quarterfinal',
         sf: 'Semifinal',
-        gf: 'Grand Final',
+        gf: 'Grand Finals',
       };
 
       function seedOf(name) {
@@ -5048,7 +5736,7 @@
             const isDone = !!result;
             const scheduleEntry = !isDone ? (TOP8_SCHEDULE[`${roundConfig.id}_${m}`] || null) : null;
             const scheduleRaw = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.time || scheduleEntry.start || null) : null;
-            const isAutoLive = !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
+            const isAutoLive = SEASON3_LIVE_TRACKING_ENABLED && !isDone && scheduleRaw && new Date() >= new Date(scheduleRaw);
             const isLive = isAutoLive;
             const scheduleAt = scheduleRaw && !isLive ? formatSchedule(scheduleRaw) : null;
 
@@ -5129,7 +5817,7 @@
             const tpIsDone = !!tpResult;
             const tpScheduleEntry = !tpIsDone ? (TOP8_SCHEDULE['tp_1'] || null) : null;
             const tpScheduleRaw = tpScheduleEntry ? (typeof tpScheduleEntry === 'string' ? tpScheduleEntry : tpScheduleEntry.time || tpScheduleEntry.start || null) : null;
-            const tpIsLive = !tpIsDone && tpScheduleRaw && new Date() >= new Date(tpScheduleRaw);
+            const tpIsLive = SEASON3_LIVE_TRACKING_ENABLED && !tpIsDone && tpScheduleRaw && new Date() >= new Date(tpScheduleRaw);
             const tpScheduleAt = tpScheduleRaw && !tpIsLive ? formatSchedule(tpScheduleRaw) : null;
             let tpCard;
             if (tpIsLive) {
@@ -5189,7 +5877,7 @@
             roundEl.style.position = 'relative';
             const tpWrapper = document.createElement('div');
             tpWrapper.id = 'tp-match-wrapper';
-            tpWrapper.style.cssText = 'position:absolute;left:0;width:100%;display:flex;justify-content:center;transform:scale(0.85);transform-origin:center;';
+            tpWrapper.style.cssText = 'position:absolute;left:0;width:100%;display:flex;justify-content:center;transform:scale(0.92);transform-origin:center;';
             tpWrapper.appendChild(tpCard);
             roundEl.appendChild(tpWrapper);
           }
@@ -5479,8 +6167,10 @@
           const scheduleRaw     = scheduleEntry ? (typeof scheduleEntry === 'string' ? scheduleEntry : scheduleEntry.start) : null;
           const timerStartRaw   = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.timerStart || null) : null;
           const schedulePlayers = scheduleEntry && typeof scheduleEntry === 'object' ? (scheduleEntry.players || null) : null;
-          const isLive   = (!isDone && scheduleRaw && new Date() >= new Date(scheduleRaw))
-                        || (!isDone && LCQ_LIVE_MATCH === m);
+          const isLive   = SEASON3_LIVE_TRACKING_ENABLED && (
+                            (!isDone && scheduleRaw && new Date() >= new Date(scheduleRaw))
+                            || (!isDone && LCQ_LIVE_MATCH === m)
+                          );
           const scheduleAt = scheduleRaw && !isLive ? fmtSchedule(scheduleRaw) : null;
 
           const weekEl = document.createElement('div');
@@ -6309,7 +6999,10 @@
         return st.splits ?? st.score?.splits ?? null;
       }
 
-      function renderStats() {
+      //stats page always shows the current season now (dropdown removed)
+      let statsSectionMode = null;
+
+      async function renderStats() {
         const el = document.getElementById('stats-content');
         if (!el) return;
 
@@ -6319,10 +7012,29 @@
           return;
         }
 
+        const isLadderEventName = ev => /^WEEK \d+ RUNG \d+$/i.test(ev.name?.trim() || '') || ev.name?.trim().toUpperCase() === 'WILDCARD MATCH';
+        const top8Stage = name => {
+          const n = (name || '').trim().toUpperCase();
+          if (/^QUARTERFINAL/.test(n)) return 'QF';
+          if (/^SEMIFINAL/.test(n))    return 'SF';
+          if (n === 'GRAND FINALS' || n === '3RD PLACE MATCH') return 'GF';
+          return null;
+        };
+
+        const ladderEvents = (state.events || []).filter(isLadderEventName);
+        const top8Events = (state.events || []).filter(ev => top8Stage(ev.name)).map(ev => ({ ...ev, stage: top8Stage(ev.name) }));
+        const hasLadderSection = ladderEvents.length > 0;
+        const hasTop8Section   = top8Events.length > 0;
+        if (statsSectionMode === null) statsSectionMode = hasLadderSection ? 'ladder' : 'top8';
+        if (statsSectionMode === 'ladder' && !hasLadderSection) statsSectionMode = 'top8';
+        if (statsSectionMode === 'top8' && !hasTop8Section) statsSectionMode = 'ladder';
+        const matchEvents = statsSectionMode === 'ladder' ? ladderEvents : top8Events;
+        const sectionWord = statsSectionMode === 'ladder' ? 'Ladder' : 'Playoff';
+
         const fastest = [];
         const fastestEp = {};
 
-        for (const ev of (state.events || []).filter(ev => /^WEEK \d+ RUNG \d+$/i.test(ev.name?.trim()))) {
+        for (const ev of matchEvents) {
           for (const [id, rs] of Object.entries(ev.runner_state || {})) {
             const splits = getSplits(rs);
             if (!Array.isArray(splits)) continue;
@@ -6379,14 +7091,14 @@
 
         const thStyle = `text-align:center;padding:.4rem 1rem .4rem 0;color:var(--dim);font-size:.83rem;font-weight:600;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap`;
         const td = `padding:.2rem 1rem .2rem 0;font-size:.94rem;text-align:center`;
-        const thMatch = `text-align:center;padding:.4rem 0 .4rem 2.5rem;color:var(--dim);font-size:.83rem;font-weight:600;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap`;
-        const tdMatch = `padding:.2rem 0 .2rem 2.5rem;font-size:.94rem;text-align:center;white-space:nowrap`;
+        const thMatch = `text-align:center;padding:.4rem 0 .4rem 2.5rem;color:var(--dim);font-size:.83rem;font-weight:600;letter-spacing:.1em;border-bottom:1px solid var(--border);white-space:nowrap;min-width:13rem`;
+        const tdMatch = `padding:.2rem 0 .2rem 2.5rem;font-size:.94rem;text-align:center;white-space:nowrap;min-width:13rem`;
 
         const runnerTd = (name) => `<td style="${td};font-weight:700;${getRunnerStyle(name) || 'color:var(--accent2);'}">${name}</td>`;
 
         //Splits table
         const sob = fastest.reduce((sum, e) => sum + (e ? e.ms : 0), 0);
-        let html = `<div style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;gap:2rem;align-items:center"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST LADDER SPLITS</div><table style="border-collapse:collapse">
+        let html = `<div style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;gap:2rem;align-items:center"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} SPLITS</div><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">SPLIT</th>
             <th style="${thStyle}">RUNNER</th>
@@ -6405,7 +7117,7 @@
         });
 
         html += `</tbody><tfoot><tr>
-          <td style="${td};color:var(--accent);font-weight:700;font-size:1.1rem;padding-top:.6rem">Ladder SOB</td>
+          <td style="${td};color:var(--accent);font-weight:700;font-size:1.1rem;padding-top:.6rem">${sectionWord} SOB</td>
           <td style="${td};padding-top:.6rem"></td>
           <td style="${td};color:var(--text);font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;padding-top:.6rem">${fmtMs(sob)}</td>
           <td style="${tdMatch};padding-top:.6rem"></td>
@@ -6413,7 +7125,7 @@
 
         //Episodes table
         const epSob = EP_ORDER.reduce((sum, n) => sum + (fastestEp[n] ? fastestEp[n].ms : 0), 0);
-        html += `<div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST LADDER EPISODES</div><table style="border-collapse:collapse">
+        html += `<div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} EPISODES</div><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">EPISODE</th>
             <th style="${thStyle}">RUNNER</th>
@@ -6439,25 +7151,46 @@
           <td style="${tdMatch};padding-top:.6rem"></td>
         </tr></tfoot></table></div></div>`;
 
-        const weekMap = new Map();
-        for (const ev of (state.events || [])) {
-          const name = ev.name?.trim().toUpperCase();
-          const m = name?.match(/^WEEK (\d+) RUNG (\d+)$/);
-          if (m) {
-            const w = parseInt(m[1]), r = parseInt(m[2]);
-            if (!weekMap.has(w)) weekMap.set(w, []);
-            weekMap.get(w).push({ rung: r, ev });
-          } else {
-            if (name === 'WILDCARD MATCH') {
-              if (!weekMap.has(8)) weekMap.set(8, []);
-              weekMap.get(8).push({ rung: 1, ev });
+        const groupingKind = statsSectionMode;
+        const groupMap = new Map();
+        let groupOrder, groupTabLabel, overviewTitle, tabsCaption;
+
+        if (groupingKind === 'ladder') {
+          const wildcardKeys = new Set();
+          for (const ev of matchEvents) {
+            const name = ev.name?.trim().toUpperCase();
+            const m = name?.match(/^WEEK (\d+) RUNG (\d+)$/);
+            if (m) {
+              const w = parseInt(m[1]), r = parseInt(m[2]);
+              if (!groupMap.has(w)) groupMap.set(w, []);
+              groupMap.get(w).push({ label: `RUNG ${r}`, order: r, ev });
+            } else if (name === 'WILDCARD MATCH') {
+              if (!groupMap.has(8)) groupMap.set(8, []);
+              wildcardKeys.add(8);
+              groupMap.get(8).push({ label: 'WILDCARD', order: 1, ev });
             }
           }
+          groupOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+          groupTabLabel = k => wildcardKeys.has(k) ? 'WC' : String(k);
+          overviewTitle = 'LADDER RACE OVERVIEWS';
+          tabsCaption = 'WEEK';
+        } else {
+          const STAGE_LABEL = { QF: 'QF', SF: 'SF', GF: 'GF' };
+          for (const ev of matchEvents) {
+            const stage = ev.stage || 'GF';
+            if (!groupMap.has(stage)) groupMap.set(stage, []);
+            groupMap.get(stage).push({ label: (ev.name || stage).toUpperCase(), order: groupMap.get(stage).length, ev });
+          }
+          groupOrder = ['QF', 'SF', 'GF'].filter(s => groupMap.has(s));
+          groupTabLabel = k => STAGE_LABEL[k] || k;
+          overviewTitle = 'PLAYOFF RACE OVERVIEWS';
+          tabsCaption = 'ROUND';
         }
-        const ladderWeeks = [...weekMap.keys()].sort((a, b) => a - b);
 
-        const weeksWithData = new Set(ladderWeeks.filter(w =>
-          weekMap.get(w).some(({ ev }) => {
+        const hasGroups = groupMap.size > 0;
+
+        const groupsWithData = new Set(groupOrder.filter(k =>
+          (groupMap.get(k) || []).some(({ ev }) => {
             const runnersWithSplits = Object.values(ev.runner_state || {}).filter(rs => {
               const sp = getSplits(rs);
               return Array.isArray(sp) && sp.some(s => { const ms = spToMs(s); return ms != null && ms > 0; });
@@ -6466,17 +7199,22 @@
           })
         ));
 
-        if (ladderWeeks.length > 0) {
+        const showSectionModeToggle = hasLadderSection && hasTop8Section;
+
+        if (hasGroups) {
           html += `<div style="flex:1 1 400px;min-width:0">
-            <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">RACE OVERVIEWS</div>
+            <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">${overviewTitle}</div>
+            ${showSectionModeToggle ? `<div id="stats-section-mode" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-bottom:1rem">
+              <button data-mode="ladder" style="background:transparent;border:1px solid var(--border);color:${statsSectionMode === 'ladder' ? 'var(--accent)' : 'var(--dim)'};border-color:${statsSectionMode === 'ladder' ? 'var(--accent)' : 'var(--border)'};font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.3rem .8rem;cursor:pointer">LADDER</button>
+              <button data-mode="top8" style="background:transparent;border:1px solid var(--border);color:${statsSectionMode === 'top8' ? 'var(--accent)' : 'var(--dim)'};border-color:${statsSectionMode === 'top8' ? 'var(--accent)' : 'var(--border)'};font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.3rem .8rem;cursor:pointer">PLAYOFFS</button>
+            </div>` : ''}
             <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.5rem">
-              <span style="color:var(--dim);font-size:.8rem;font-weight:600;letter-spacing:.1em">WEEK</span>
+              <span style="color:var(--dim);font-size:.8rem;font-weight:600;letter-spacing:.1em">${tabsCaption}</span>
               <div id="stats-week-tabs" style="display:flex;gap:.4rem">
-                ${[1,2,3,4,5,6,7].map(w => {
-                  const has = weeksWithData.has(w);
-                  return `<button data-week="${w}" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">${w}</button>`;
+                ${groupOrder.map(k => {
+                  const has = groupsWithData.has(k);
+                  return `<button data-group="${k}" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">${groupTabLabel(k)}</button>`;
                 }).join('')}
-                ${(() => { const has = weeksWithData.has(8); return `<button data-week="8" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">WC</button>`; })()}
               </div>
             </div>
             <div id="stats-race-graphs" style="display:flex;flex-wrap:wrap;justify-content:center;gap:1.25rem"></div>
@@ -6486,7 +7224,17 @@
         html += `</div>`;
         el.innerHTML = html;
 
-        if (ladderWeeks.length > 0) {
+        if (showSectionModeToggle) {
+          document.querySelectorAll('#stats-section-mode button').forEach(btn =>
+            btn.addEventListener('click', () => {
+              if (btn.dataset.mode === statsSectionMode) return;
+              statsSectionMode = btn.dataset.mode;
+              renderStats();
+            })
+          );
+        }
+
+        if (hasGroups) {
           const GW = 400, GH = 150, ML = 8, MR = 8, MT = 8, MB = 24;
           const fmtSplit = ms => {
             const t = Math.round(ms / 1000);
@@ -6612,12 +7360,103 @@
             };
           }
 
-          function renderWeek(weekNum) {
+          function buildLeadGraph(ev) {
+            const entries = Object.entries(ev.runner_state || {});
+            if (entries.length !== 2) return null;
+
+            const runners = entries.map(([id, rs]) => {
+              const name = state.people?.[id]?.name || id;
+              const splits = getSplits(rs);
+              const finalResult = rs.result?.SplitTimes?.final_result
+                ?? rs.result?.SingleScore?.score?.final_result;
+              const finalMs = (finalResult && finalResult !== 'DNF')
+                ? (() => { const [h, m, s] = finalResult.split(':').map(Number); return (h * 3600 + m * 60 + s) * 1000; })()
+                : null;
+              const cumulativeSplits = Array.from({ length: 36 }, (_, i) => {
+                const ms = Array.isArray(splits) ? spToMs(splits[i]) : null;
+                if (ms != null && ms > 0) return ms;
+                if (i === 35 && finalMs != null) return finalMs;
+                return null;
+              });
+              return { name, cumulativeSplits };
+            });
+            if (runners.some(r => !r.cumulativeSplits.some(t => t != null))) return null;
+
+            for (const runner of runners) {
+              runner.color = getColor(runner.name);
+              runner.colorTo = getColorTo(runner.name);
+              runner._gradId = runner.colorTo ? _gradCounter++ : null;
+            }
+            const [r1, r2] = runners;
+
+            const lead = Array.from({ length: 36 }, (_, i) => {
+              const a = r1.cumulativeSplits[i], b = r2.cumulativeSplits[i];
+              return (a == null || b == null) ? null : a - b;
+            });
+
+            const maxLead = Math.max(0, ...lead.filter(v => v != null).map(Math.abs));
+            const yMax = maxLead > 0 ? maxLead : 1;
+            const yMin = -yMax;
+
+            const barSlot = GW / 36;
+            const barW = barSlot * 0.62;
+            const xOf = i => barSlot * i + barSlot / 2;
+            const yOf = v => ((v - yMin) / (yMax - yMin)) * GH;
+            const yCenter = yOf(0);
+
+            let inner = '';
+
+            //episode lines
+            EP_ENDS.slice(0, -1).forEach(endIdx => {
+              const x = (barSlot * (endIdx + 1)).toFixed(1);
+              inner += `<line x1="${x}" y1="0" x2="${x}" y2="${GH}" stroke="var(--border)" stroke-width="1" opacity="0.7"/>`;
+            });
+
+            //episode labels along bottom
+            const epMids = [2.5, 8.5, 14.5, 20.5, 26.5, 32.5];
+            EP_NUMS.forEach((epNum, i) => {
+              const x = xOf(epMids[i]).toFixed(1);
+              inner += `<text x="${x}" y="${GH + 17}" text-anchor="middle" fill="var(--dim)" font-size="9" font-family="Montserrat,sans-serif" font-weight="600" letter-spacing="0.05em">EP${epNum}</text>`;
+            });
+
+            //tied line
+            inner += `<line x1="0" y1="${yCenter.toFixed(1)}" x2="${GW}" y2="${yCenter.toFixed(1)}" stroke="var(--dim)" stroke-width="1" opacity="0.4" stroke-dasharray="4,4"/>`;
+            inner += `<line x1="0" y1="${GH}" x2="${GW}" y2="${GH}" stroke="var(--border)" stroke-width="1" opacity="0.5"/>`;
+
+            let defs = '';
+            [r1, r2].forEach(r => {
+              if (r.colorTo)
+                defs += `<linearGradient id="sg${r._gradId}" x1="0" y1="0" x2="0" y2="${GH}" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="${r.color}"/><stop offset="100%" stop-color="${r.colorTo}"/></linearGradient>`;
+            });
+
+            lead.forEach((v, i) => {
+              if (!v) return;
+              const ahead = v < 0 ? r1 : r2;
+              const yTop = v < 0 ? yOf(v) : yCenter;
+              const yBottom = v < 0 ? yCenter : yOf(v);
+              const barH = Math.max(1, yBottom - yTop);
+              const x = (xOf(i) - barW / 2).toFixed(1);
+              const fill = ahead.colorTo ? `url(#sg${ahead._gradId})` : ahead.color;
+              const splitName = SPLIT_NAMES[i] ?? `Split ${i + 1}`;
+              inner += `<rect x="${x}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="1.5" fill="${fill}" data-runner="${ahead.name}" data-tip="lead" data-split="${splitName}" data-n1="${r1.name}" data-t1="${fmtSplit(r1.cumulativeSplits[i])}" data-c1="${r1.color}" data-n2="${r2.name}" data-t2="${fmtSplit(r2.cumulativeSplits[i])}" data-c2="${r2.color}" data-ahead="${v < 0 ? 1 : 2}" style="cursor:crosshair;transition:opacity .15s"/>`;
+            });
+
+            if (defs) inner = `<defs>${defs}</defs>` + inner;
+
+            const svgW = GW + ML + MR, svgH = GH + MT + MB;
+            return {
+              svg: `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="display:block"><g transform="translate(${ML},${MT})">${inner}</g></svg>`,
+              runners
+            };
+          }
+
+          function renderGroup(key) {
             const racesEl = document.getElementById('stats-race-graphs');
             if (!racesEl) return;
-            const rungs = (weekMap.get(weekNum) || []).slice().sort((a, b) => a.rung - b.rung);
-            racesEl.innerHTML = rungs.map(({ rung, ev }) => {
-              const result = buildRaceGraph(ev);
+            const items = (groupMap.get(key) || []).slice().sort((a, b) => a.order - b.order);
+            racesEl.innerHTML = items.map(({ label, ev }) => {
+              const isHeadToHead = Object.keys(ev.runner_state || {}).length === 2;
+              const result = isHeadToHead ? buildLeadGraph(ev) : buildRaceGraph(ev);
               if (!result) return '';
               const { svg, runners } = result;
               const legend = runners.map(r => {
@@ -6629,9 +7468,8 @@
                   : `<span style="color:${r.color};font-weight:600;font-size:.78rem;letter-spacing:.03em">${r.name}</span>`;
                 return `<span data-runner="${r.name}" style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem;cursor:pointer;transition:opacity .15s">${lineEl}${nameEl}</span>`;
               }).join('');
-              const rungLabel = weekNum === 8 ? 'WILDCARD' : `RUNG ${rung}`;
               return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto">
-                <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${rungLabel}</div>
+                <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${label}</div>
                 <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center">${legend}</div>
                 <div>${svg}</div>
               </div>`;
@@ -6655,18 +7493,19 @@
             });
           }
 
-          function selectWeek(weekNum) {
+          function selectGroup(key) {
             document.querySelectorAll('#stats-week-tabs button:not([disabled])').forEach(btn => {
-              const active = parseInt(btn.dataset.week) === weekNum;
+              const active = btn.dataset.group === String(key);
               btn.style.color = active ? 'var(--accent)' : 'var(--dim)';
               btn.style.borderColor = active ? 'var(--accent)' : 'var(--border)';
             });
-            renderWeek(weekNum);
+            renderGroup(key);
           }
           document.querySelectorAll('#stats-week-tabs button:not([disabled])').forEach(btn =>
-            btn.addEventListener('click', () => selectWeek(parseInt(btn.dataset.week)))
+            btn.addEventListener('click', () => selectGroup(groupingKind === 'ladder' ? parseInt(btn.dataset.group) : btn.dataset.group))
           );
-          selectWeek([...weeksWithData].sort((a, b) => a - b)[0]);
+          const firstGroupWithData = groupOrder.find(k => groupsWithData.has(k));
+          if (firstGroupWithData !== undefined) selectGroup(firstGroupWithData);
 
           let tip = document.getElementById('stats-tooltip');
           if (!tip) {
@@ -6677,9 +7516,17 @@
           }
           const racesDiv = document.getElementById('stats-race-graphs');
           racesDiv.addEventListener('mousemove', e => {
-            const c = e.target.closest('circle[data-tip]');
+            const c = e.target.closest('[data-tip]');
             const avgLine = e.target.closest('line[data-avg]');
-            if (c) {
+            if (c && c.dataset.tip === 'lead') {
+              const row = (name, time, color, isAhead) => `<div style="display:flex;align-items:center;gap:.6rem"><span style="color:${color};font-weight:700">${name}</span><span style="color:var(--text);font-variant-numeric:tabular-nums;margin-left:auto;font-weight:${isAhead ? '700' : '400'}">${time}</span></div>`;
+              tip.innerHTML = `<div style="color:var(--dim);font-size:.72rem;letter-spacing:.05em;margin-bottom:.3rem">${c.dataset.split}</div>`
+                + row(c.dataset.n1, c.dataset.t1, c.dataset.c1, c.dataset.ahead === '1')
+                + row(c.dataset.n2, c.dataset.t2, c.dataset.c2, c.dataset.ahead === '2');
+              tip.style.display = 'block';
+              tip.style.left = (e.clientX + 14) + 'px';
+              tip.style.top = (e.clientY - 32) + 'px';
+            } else if (c) {
               const [name, time, split] = c.dataset.tip.split('|');
               tip.innerHTML = `<span style="color:${c.dataset.color};font-weight:700;margin-right:.5rem">${name}</span><span style="color:var(--dim);margin-right:.5rem;font-size:.75rem">${split}</span><span style="color:var(--text);font-variant-numeric:tabular-nums">${time}</span>`;
               tip.style.display = 'block';
@@ -6694,13 +7541,21 @@
               tip.style.display = 'none';
             }
           });
-          function applyHighlight(container, name) {
-            racesDiv.querySelectorAll('path[data-runner]').forEach(el => { el.style.opacity = ''; });
+          function applyHighlight(container, name, exactEl) {
+            racesDiv.querySelectorAll('path[data-runner], rect[data-runner]').forEach(el => { el.style.opacity = ''; });
             racesDiv.querySelectorAll('span[data-runner]').forEach(el => { el.style.opacity = ''; });
             if (!container || !name) return;
-            container.querySelectorAll('path[data-runner]').forEach(el => {
-              el.style.opacity = el.dataset.runner !== name ? '0.15' : '';
-            });
+            if (exactEl) {
+              //bar graphs
+              container.querySelectorAll('rect[data-runner]').forEach(el => {
+                el.style.opacity = el === exactEl ? '' : '0.15';
+              });
+            } else {
+              //line graphs
+              container.querySelectorAll('path[data-runner]').forEach(el => {
+                el.style.opacity = el.dataset.runner !== name ? '0.15' : '';
+              });
+            }
             container.querySelectorAll('span[data-runner]').forEach(el => {
               el.style.opacity = el.dataset.runner !== name ? '0.25' : '';
             });
@@ -6708,7 +7563,8 @@
           racesDiv.addEventListener('mouseover', e => {
             const el = e.target.closest('[data-runner]');
             const container = e.target.closest('.graph-anim');
-            applyHighlight(container, el ? el.dataset.runner : null);
+            const isBar = el && el.tagName.toLowerCase() === 'rect';
+            applyHighlight(container, el ? el.dataset.runner : null, isBar ? el : null);
           });
           racesDiv.addEventListener('mouseleave', () => {
             tip.style.display = 'none';
@@ -6718,9 +7574,118 @@
       }
 
       window._statsRender = renderStats;
-      document.addEventListener('amUpdate', renderStats);
+      document.addEventListener('amUpdate', () => renderStats());
       document.addEventListener('nameColorMapReady', renderStats);
       renderStats();
+    })();
+
+    (function initContent() {
+      const sectionsEl = document.getElementById('content-sections');
+      if (!sectionsEl) return;
+
+      const PLAY_ICON = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>';
+
+      const panel = document.createElement('div');
+      panel.className = 'content-expand-panel';
+      panel.id = 'content-expand-panel';
+      panel.innerHTML = `
+        <div class="content-expand-caret"></div>
+        <button class="content-expand-close" aria-label="Close video">&times;</button>
+        <div class="content-expand-player"></div>
+      `;
+      const caret = panel.querySelector('.content-expand-caret');
+      const player = panel.querySelector('.content-expand-player');
+      const closeBtn = panel.querySelector('.content-expand-close');
+      let activeCard = null, openToken = 0;
+
+      function positionCaret() {
+        if (!activeCard) return;
+        const cardRect = activeCard.getBoundingClientRect();
+        const gridRect = activeCard.parentNode.getBoundingClientRect();
+        caret.style.left = (cardRect.left + cardRect.width / 2 - gridRect.left) + 'px';
+      }
+      function closePanel() {
+        openToken++;
+        panel.classList.remove('open');
+        player.innerHTML = '';
+        if (activeCard) activeCard.classList.remove('active-source');
+        activeCard = null;
+        if (window.__resumeStarfield) window.__resumeStarfield();
+      }
+      function openPanel(card) {
+        if (activeCard) activeCard.classList.remove('active-source');
+        activeCard = card;
+        card.classList.add('active-source');
+        const myToken = ++openToken;
+        const videoId = card.dataset.id;
+        player.innerHTML = '';
+        const target = document.createElement('div');
+        player.appendChild(target);
+        card.parentNode.insertBefore(panel, card.nextSibling);
+        panel.classList.add('open');
+        positionCaret();
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (window.__pauseStarfield) window.__pauseStarfield();
+        loadYouTubeIframeAPI().then(YT => {
+          if (myToken !== openToken) return;
+          new YT.Player(target, {
+            videoId,
+            playerVars: { autoplay: 1, rel: 0, cc_load_policy: 0, origin: window.location.origin },
+            events: {
+              onReady: disableCaptions,
+              onError: (e) => {
+                console.error('[vod panel] YouTube player error, code:', e.data, 'videoId:', videoId);
+                if (myToken === openToken) player.innerHTML = youtubeErrorHtml(`https://youtu.be/${videoId}`);
+              },
+            },
+          });
+        });
+      }
+
+      closeBtn.addEventListener('click', closePanel);
+      window.addEventListener('resize', () => { if (activeCard) positionCaret(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && activeCard) closePanel(); });
+      document.querySelectorAll('[data-page]').forEach(link => {
+        link.addEventListener('click', () => { if (link.dataset.page !== 'content' && activeCard) closePanel(); });
+      });
+
+      function cardsHtml(videos) {
+        return videos.map(v => `
+          <div class="content-card reveal" data-id="${v.id}">
+            <div class="content-card-thumb" style="background-image:url('https://i.ytimg.com/vi/${v.id}/hqdefault.jpg')">
+              <div class="content-play-icon">${PLAY_ICON}</div>
+              <div class="content-card-duration">${v.duration}</div>
+            </div>
+            <div class="content-card-title">${v.title}</div>
+            ${v.featuring ? `<div class="content-card-featuring">${v.featuring}</div>` : ''}
+          </div>
+        `).join('');
+      }
+
+      fetch('content.json')
+        .then(r => r.json())
+        .then(data => {
+          const sections = data.sections || [];
+          const unsectioned = data.unsectioned || [];
+          let html = sections.map(sec => `
+            <div class="content-section">
+              <div class="content-section-title">${sec.name}</div>
+              <div class="content-grid">${cardsHtml(sec.videos)}</div>
+            </div>
+          `).join('');
+          if (unsectioned.length) {
+            html += `<div class="content-section"><div class="content-grid">${cardsHtml(unsectioned)}</div></div>`;
+          }
+          sectionsEl.innerHTML = html;
+          sectionsEl.appendChild(panel);
+          sectionsEl.querySelectorAll('.content-card').forEach(card => {
+            card.addEventListener('click', () => {
+              card === activeCard ? closePanel() : openPanel(card);
+            });
+          });
+          if (typeof observeAll === 'function') observeAll();
+        })
+        .catch(err => console.error('Failed to load content.json', err));
     })();
 
   </script>
