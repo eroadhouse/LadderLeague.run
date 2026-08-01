@@ -1,4 +1,5 @@
     const SEASON3_LIVE_TRACKING_ENABLED = false;
+    const THEORY_TOGGLE_ENABLED = false; //temporarily disabled - the bracket is filled out, nothing left to theorycraft
 
     let LCQ_RESULTS = {};
 
@@ -13,7 +14,7 @@
       if (!theoryToggleBtn) return;
       const isLadder   = !!document.querySelector('#standings-s3-tabs .standings-tab[data-tab="ladder"].active');
       const isS3       = document.getElementById('standings-s3')?.style.display !== 'none';
-      const show       = isLadder && isS3;
+      const show       = THEORY_TOGGLE_ENABLED && isLadder && isS3;
       const onlyWildcard = !!window._ladderOnlyWildcardLeft;
       theoryToggleBtn.style.display = show ? 'flex' : 'none';
       theoryToggleBtn.disabled = onlyWildcard;
@@ -1480,6 +1481,7 @@
             card = document.createElement('div');
           }
           card.className = 'bracket-match' + (isLive ? ' live' : '') + (isDone ? ' done' : '');
+          card.dataset.match = key;
 
           const rungRow = document.createElement('div');
           rungRow.className = 'bracket-match-rung';

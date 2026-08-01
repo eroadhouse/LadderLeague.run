@@ -138,7 +138,7 @@
 
         //Splits table
         const sob = fastest.reduce((sum, e) => sum + (e ? e.ms : 0), 0);
-        let html = `<div style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;gap:2rem;align-items:center"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} SPLITS</div><table style="border-collapse:collapse">
+        let html = `<div class="stats-layout" style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div class="stats-tables-col" style="display:flex;flex-direction:column;gap:2rem"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} SPLITS</div><div class="stats-table-scroll"><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">SPLIT</th>
             <th style="${thStyle}">RUNNER</th>
@@ -161,11 +161,11 @@
           <td style="${td};padding-top:.6rem"></td>
           <td style="${td};color:var(--text);font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;padding-top:.6rem">${fmtMs(sob)}</td>
           <td style="${tdMatch};padding-top:.6rem"></td>
-        </tr></tfoot></table></div>`;
+        </tr></tfoot></table></div></div>`;
 
         //Episodes table
         const epSob = EP_ORDER.reduce((sum, n) => sum + (fastestEp[n] ? fastestEp[n].ms : 0), 0);
-        html += `<div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} EPISODES</div><table style="border-collapse:collapse">
+        html += `<div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} EPISODES</div><div class="stats-table-scroll"><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">EPISODE</th>
             <th style="${thStyle}">RUNNER</th>
@@ -189,7 +189,7 @@
           <td style="${td};padding-top:.6rem"></td>
           <td style="${td};color:var(--text);font-weight:700;font-size:1.1rem;font-variant-numeric:tabular-nums;padding-top:.6rem">${fmtMs(epSob)}</td>
           <td style="${tdMatch};padding-top:.6rem"></td>
-        </tr></tfoot></table></div></div>`;
+        </tr></tfoot></table></div></div></div>`;
 
         const groupingKind = statsSectionMode;
         const groupMap = new Map();
@@ -242,15 +242,15 @@
         const showSectionModeToggle = hasLadderSection && hasTop8Section;
 
         if (hasGroups) {
-          html += `<div style="flex:1 1 400px;min-width:0">
+          html += `<div class="stats-overview-col">
             <div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1.25rem">${overviewTitle}</div>
             ${showSectionModeToggle ? `<div id="stats-section-mode" style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-bottom:1rem">
               <button data-mode="ladder" style="background:transparent;border:1px solid var(--border);color:${statsSectionMode === 'ladder' ? 'var(--accent)' : 'var(--dim)'};border-color:${statsSectionMode === 'ladder' ? 'var(--accent)' : 'var(--border)'};font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.3rem .8rem;cursor:pointer">LADDER</button>
               <button data-mode="top8" style="background:transparent;border:1px solid var(--border);color:${statsSectionMode === 'top8' ? 'var(--accent)' : 'var(--dim)'};border-color:${statsSectionMode === 'top8' ? 'var(--accent)' : 'var(--border)'};font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.3rem .8rem;cursor:pointer">PLAYOFFS</button>
             </div>` : ''}
-            <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.5rem">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.5rem">
               <span style="color:var(--dim);font-size:.8rem;font-weight:600;letter-spacing:.1em">${tabsCaption}</span>
-              <div id="stats-week-tabs" style="display:flex;gap:.4rem">
+              <div id="stats-week-tabs" style="display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem">
                 ${groupOrder.map(k => {
                   const has = groupsWithData.has(k);
                   return `<button data-group="${k}" ${has ? '' : 'disabled'} style="background:transparent;border:1px solid var(--border);color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;padding:.35rem .7rem;min-width:2.2rem;transition:color .15s,border-color .15s;${has ? 'cursor:pointer' : 'cursor:default;opacity:.3'}">${groupTabLabel(k)}</button>`;
@@ -395,7 +395,7 @@
 
             const svgW = GW + ML + MR, svgH = GH + MT + MB;
             return {
-              svg: `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="display:block"><g transform="translate(${ML},${MT})">${inner}</g></svg>`,
+              svg: `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="display:block;max-width:100%;height:auto"><g transform="translate(${ML},${MT})">${inner}</g></svg>`,
               runners
             };
           }
@@ -485,7 +485,7 @@
 
             const svgW = GW + ML + MR, svgH = GH + MT + MB;
             return {
-              svg: `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="display:block"><g transform="translate(${ML},${MT})">${inner}</g></svg>`,
+              svg: `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="display:block;max-width:100%;height:auto"><g transform="translate(${ML},${MT})">${inner}</g></svg>`,
               runners
             };
           }
@@ -508,7 +508,7 @@
                   : `<span style="color:${r.color};font-weight:600;font-size:.78rem;letter-spacing:.03em">${r.name}</span>`;
                 return `<span data-runner="${r.name}" style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem;cursor:pointer;transition:opacity .15s">${lineEl}${nameEl}</span>`;
               }).join('');
-              return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto">
+              return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto;max-width:100%;box-sizing:border-box">
                 <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${label}</div>
                 <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center">${legend}</div>
                 <div>${svg}</div>

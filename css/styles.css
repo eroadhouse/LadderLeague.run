@@ -334,6 +334,14 @@
     #stats .section { max-width: none; padding-left: 8%; padding-right: 8%; }
     .graph-anim { opacity:0; transform:translateY(24px); transition: opacity .6s ease, transform .6s ease; }
     .graph-anim.visible { opacity:1; transform:translateY(0); }
+    .stats-tables-col { flex: 0 0 auto; max-width: 100%; align-items: center; }
+    .stats-overview-col { flex: 1 1 400px; min-width: 0; max-width: 100%; }
+    .stats-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    @media (max-width: 760px) {
+      #stats .section { padding-left: 4%; padding-right: 4%; }
+      .stats-tables-col { flex: 1 1 100%; width: 100%; min-width: 0; align-items: stretch; }
+      .stats-overview-col { flex: 1 1 100%; width: 100%; }
+    }
 
     #standings { --dim: #6e7e92; }
 
@@ -2165,6 +2173,14 @@
     .uc-places.spoiler .uc-spoiler { display:flex; flex-direction:column; gap:.25rem; }
     .uc-spoiler-row { display:flex; justify-content:space-between; align-items:center; padding:1px 0; }
     .uc-spoiler-bar { background:var(--border); border-radius:2px; height:8px; display:inline-block; }
+    .results-header { position:relative; margin-bottom:.5rem; }
+    .results-header-title { margin:0; }
+    .results-header-toggle { position:absolute; right:0; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:.6rem; cursor:pointer; }
+    .results-header-toggle-label { font-family:'Montserrat',sans-serif; color:var(--dim); font-size:.72rem; font-weight:700; letter-spacing:.12em; white-space:nowrap; }
+    @media (max-width: 480px) {
+      .results-header { display:flex; flex-direction:column; align-items:flex-start; gap:.5rem; }
+      .results-header-toggle { position:static; transform:none; align-self:flex-start; }
+    }
     .spoiler-switch { position:relative; display:inline-block; width:34px; height:18px; flex-shrink:0; }
     .spoiler-switch input { opacity:0; width:0; height:0; position:absolute; }
     .spoiler-slider { position:absolute; cursor:pointer; inset:0; background:var(--border); border-radius:18px; transition:background .2s; }

@@ -376,6 +376,8 @@
       const W6R2_FILE = 'chats/Season 3 2026/WEEK 6/[6-14-26] LEGOSpeedruns - TCS ANY_ LADDER LEAGUE S3 ｜ WEEK 6 RUNG 2 ｜ JARED VS DIMEI VS COLTEN - Chat.json';
       const W7R1_FILE = 'chats/Season 3 2026/WEEK 7/[6-23-26] LEGOSpeedruns - TCS ANY_ LADDER LEAGUE S3 ｜ WEEK 7 ｜ JARED VS BRICKO VS FLAMINGLAZER - Chat.json';
       const WILDCARD_FILE = 'chats/Season 3 2026/WILDCARD/[6-27-26] LEGOSpeedruns - TCS ANY_ LADDER LEAGUE S3 ｜ WILDCARD MATCH ｜ JARED VS LAZER - Chat.json';
+      const LCQ1_FILE = 'chats/Season 3 2026/LCQ/[5-9-26] LEGOSpeedruns - TCS ANY_ LADDER LEAGUE S3 ｜ LCQ DAY 1 - Chat.json';
+      const LCQ2_FILE = 'chats/Season 3 2026/LCQ/[5-10-26] LEGOSpeedruns - TCS ANY_ LADDER LEAGUE S3 ｜ LCQ DAY 2 - Chat.json';
 
       const QF1_START   = 18 * 60 + 33;               // 0:18:33
       const QF1_CUT_OUT = 2 * 3600 + 12 * 60 + 48;    // 2:12:48
@@ -421,6 +423,10 @@
         '6_2': { file: W6R2_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
         '7_1': { file: W7R1_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
         '8_1': { file: WILDCARD_FILE, segments: [{ streamStart: 8, videoStart: 0 }] },                 // 0:08
+
+        //LCQ days - no offset for now
+        lcq_1: { file: LCQ1_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        lcq_2: { file: LCQ2_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
       };
 
       function mapStreamTimeToVideoTime(segments, streamOffset) {
@@ -654,7 +660,7 @@
         const videoId = extractYouTubeId(card.href);
         if (!videoId) return;
         e.preventDefault();
-        const idMatch = card.id && card.id.match(/-([a-z]+)-(\d+)$/);
+        const idMatch = card.id && card.id.match(/^top8-card-([a-z]+)-(\d+)$/);
         const matchKey = idMatch ? `${idMatch[1]}_${idMatch[2]}` : null;
         openVodModal(videoId, card.href, matchKey);
       });
