@@ -2,7 +2,7 @@
   "season1": [
     { "name": "Zac",    "seed": 1,  "country": "US", "placement": 4,  "seededPB": "2:21:44", "accolades": { "WR": 26, "tourney-wins": "OG S3" }, "username": "Zacc" },
     { "name": "Ginger",       "seed": 2,  "country": "US", "placement": 7,  "seededPB": "2:22:28", "accolades": { "tourney-runnerups": "OG S2" }, "username": "GingerLegend" },
-    { "name": "itsjared97",   "seed": 3,  "country": "US", "placement": 2,  "seededPB": "2:22:56", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
+    { "name": "Jared",   "seed": 3,  "country": "US", "placement": 2,  "seededPB": "2:22:56", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 }, "username": "itsjared97" },
     { "name": "ERoadhouse",   "seed": 4,  "country": "US", "placement": 1,  "seededPB": "2:23:19", "accolades": { "tourney-wins": "LLS1", "WR": 12 } },
     { "name": "WiiSuper",     "seed": 5,  "country": "US", "placement": 3,  "seededPB": "2:23:22", "accolades": { "tourney-runnerups": ["OG S1", "OG S3", "LLS2"], "WR": 26 } },
     { "name": "Scynor",       "seed": 6,  "country": "US", "placement": 8,  "seededPB": "2:24:00", "accolades": { "tourney-wins": ["OG S1", "OG S2"], "WR": 11 } },
@@ -17,7 +17,7 @@
     { "name": "Revvylo",      "seed": 15, "country": "GB-ENG", "placement": 12, "seededPB": "2:35:09" },
     { "name": "flup",         "seed": 16, "country": "CA", "placement": 15, "seededPB": "2:35:56" },
     { "name": "Charzight",    "seed": 17, "country": "US", "placement": 16, "seededPB": "2:36:05" },
-    { "name": "AnorakDT",     "seed": 18, "country": "US", "placement": 22, "seededPB": "2:37:17" },
+    { "name": "Anorak",     "seed": 18, "country": "US", "placement": 22, "seededPB": "2:37:17", "username": "AnorakDT" },
     { "name": "thenzota",     "seed": 19, "country": "NZ", "placement": 19, "seededPB": "2:38:07" },
     { "name": "TwiceLyte",    "seed": 20, "country": "US", "placement": 17, "seededPB": "2:38:09", "username": "TwiceLyte_" },
     { "name": "GildetPhantom","seed": 21, "country": "DE", "placement": 18, "seededPB": "2:38:56" },
@@ -28,12 +28,12 @@
     { "name": "Rapho",        "seed": 26, "country": "FR", "placement": 23, "seededPB": "2:55:51" }
   ],
   "season2": [
-    { "name": "itsjared97",   "seed": 1,  "country": "US", "placement": 1,  "seededPB": "2:18:35", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 } },
+    { "name": "Jared",   "seed": 1,  "country": "US", "placement": 1,  "seededPB": "2:18:35", "accolades": { "tourney-runnerups": "LLS1", "tourney-wins": "LLS2", "WR": 2 }, "username": "itsjared97" },
     { "name": "FrostByte",    "seed": 2,  "country": "US", "placement": 8,  "seededPB": "2:19:23", "accolades": { "WR": 1 }, "username": "Frost_Byte" },
     { "name": "WiiSuper",     "seed": 3,  "country": "US", "placement": 2,  "seededPB": "2:20:34", "accolades": { "tourney-runnerups": ["OG S1", "OG S3", "LLS2"], "WR": 26 } },
     { "name": "Scynor",       "seed": 4,  "country": "US", "placement": 5,  "seededPB": "2:22:33", "accolades": { "tourney-wins": ["OG S1", "OG S2"], "WR": 11 } },
     { "name": "Herasmie",     "seed": 5,  "country": "FI", "placement": 4,  "seededPB": "2:23:23" },
-    { "name": "AnorakDT",     "seed": 6,  "country": "US", "placement": 7,  "seededPB": "2:24:22" },
+    { "name": "Anorak",     "seed": 6,  "country": "US", "placement": 7,  "seededPB": "2:24:22", "username": "AnorakDT" },
     { "name": "Dragon76",     "seed": 7,  "country": "FI", "placement": 3,  "seededPB": "2:24:27",                                  "accolades": { "tourney-runnerups": "LLS1", "WR": 2 } , "username": "Dragon67"  },
     { "name": "FlamingLazer", "seed": 8,  "country": "CA", "placement": 6,  "seededPB": "2:24:29" },
     { "name": "Dimei",        "seed": 9,  "country": "US", "placement": 11, "seededPB": "2:26:58" },

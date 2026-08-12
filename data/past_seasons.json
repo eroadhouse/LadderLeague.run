@@ -1,632 +1,1545 @@
 {
   "season1": {
-    "weekMatchCounts": [8, 7, 6, 5, 4, 3, 2, 1],
+    "weekMatchCounts": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
     "wildcardWeek": null,
     "noThirdPlace": true,
-    "weekDates": ["May 13-19","May 20-26","May 27-June 1","June 10-16","June 17-23","June 24-30","July 1-7","July 8-14"],
+    "weekDates": [
+      "May 13-19",
+      "May 20-26",
+      "May 27-June 1",
+      "June 10-16",
+      "June 17-23",
+      "June 24-30",
+      "July 1-7",
+      "July 8-14"
+    ],
+    "playins": [
+      {
+        "label": "Match 1",
+        "vod": "https://youtu.be/NMHrCpX9Pc0",
+        "places": [
+          {
+            "name": "Phantom",
+            "time": "2:39:05",
+            "outcome": "advance",
+            "note": "Advances to Final"
+          },
+          {
+            "name": "Nolan",
+            "time": "2:47:33",
+            "outcome": "advance",
+            "note": "Advances to Rung 8"
+          },
+          {
+            "name": "Apple",
+            "time": "2:53:01",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          }
+        ],
+        "date": "2024-05-09T18:04:33Z"
+      },
+      {
+        "label": "Match 2",
+        "vod": "https://youtu.be/j-R1cJlrKHw",
+        "places": [
+          {
+            "name": "Anonymous",
+            "time": "2:46:59",
+            "outcome": "advance",
+            "note": "Advances to Final"
+          },
+          {
+            "name": "Rapho",
+            "time": "2:52:06",
+            "outcome": "advance",
+            "note": "Advances to Rung 8"
+          },
+          {
+            "name": "Yahootles",
+            "time": "2:53:59",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          }
+        ],
+        "date": "2024-05-10T01:28:06Z"
+      },
+      {
+        "label": "Final",
+        "vod": "https://youtu.be/ruNmJYzOtWw",
+        "places": [
+          {
+            "name": "Phantom",
+            "time": "2:41:42",
+            "outcome": "advance",
+            "note": "Advances to Rung 7"
+          },
+          {
+            "name": "Anonymous",
+            "time": "2:50:02",
+            "outcome": "advance",
+            "note": "Advances to Rung 8"
+          }
+        ],
+        "date": "2024-05-11T20:30:56Z"
+      }
+    ],
     "results": {
       "1_1": {
         "vod": "https://youtu.be/GSS6Y4bSwH0?si=iissdHdOeSxgVb3I",
         "places": [
-          { "name": "Zac",    "time": "2:23:26" },
-          { "name": "Ginger",       "time": "2:27:54" },
-          { "name": "itsjared97",   "time": "2:30:08" }
-        ]
+          {
+            "name": "Zac",
+            "time": "2:23:26"
+          },
+          {
+            "name": "Ginger",
+            "time": "2:27:54"
+          },
+          {
+            "name": "Jared",
+            "time": "2:30:08"
+          }
+        ],
+        "date": "2024-05-14T02:37:58Z"
       },
       "1_2": {
         "vod": "https://youtu.be/HdlDze5aiOo?si=NjgRWWXdPFmpnKfe",
         "places": [
-          { "name": "WiiSuper",     "time": "2:25:28" },
-          { "name": "Scynor",       "time": "2:25:53" },
-          { "name": "ERoadhouse",   "time": "2:27:11" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:25:28"
+          },
+          {
+            "name": "Scynor",
+            "time": "2:25:53"
+          },
+          {
+            "name": "ERoadhouse",
+            "time": "2:27:11"
+          }
+        ],
+        "date": "2024-05-20T01:01:18Z"
       },
       "1_3": {
         "vod": "https://youtu.be/VfVT6tOUZJ8",
         "places": [
-          { "name": "FrostByte",    "time": "2:26:22" },
-          { "name": "ejpman",       "time": "2:29:33" },
-          { "name": "Jablaky",      "time": "2:29:54" }
-        ]
+          {
+            "name": "FrostByte",
+            "time": "2:26:22"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:29:33"
+          },
+          {
+            "name": "Jablaky",
+            "time": "2:29:54"
+          }
+        ],
+        "date": "2024-05-14T01:49:17Z"
       },
       "1_4": {
         "vod": "https://youtu.be/ce3ujjhry38?si=Dc-gu74DwSMqZPpO",
         "places": [
-          { "name": "DaHamster",    "time": "2:35:50" },
-          { "name": "FlamingLazer", "time": "2:37:48" },
-          { "name": "Core",         "time": "2:50:33" }
-        ]
+          {
+            "name": "DaHamster",
+            "time": "2:35:50"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:37:48"
+          },
+          {
+            "name": "Core",
+            "time": "2:50:33"
+          }
+        ],
+        "date": "2024-05-18T02:20:30Z"
       },
       "1_5": {
         "vod": "https://youtu.be/TzmJeJ_QlZs?si=atzxRrXRT_q3nFUZ",
         "places": [
-          { "name": "Herasmie",     "time": "2:32:53" },
-          { "name": "Revvylo",      "time": "2:36:05" },
-          { "name": "Garrison",     "time": "2:38:41" }
-        ]
+          {
+            "name": "Herasmie",
+            "time": "2:32:53"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:36:05"
+          },
+          {
+            "name": "Garrison",
+            "time": "2:38:41"
+          }
+        ],
+        "date": "2024-05-17T20:11:17Z"
       },
       "1_6": {
         "vod": "https://youtu.be/l3V82sdLkMw?si=Umn0hz3s6v96wQdT",
         "places": [
-          { "name": "flup",         "time": "2:38:33" },
-          { "name": "Charzight",    "time": "2:39:22" },
-          { "name": "AnorakDT",     "time": "2:42:02" }
-        ]
+          {
+            "name": "flup",
+            "time": "2:38:33"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:39:22"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:42:02"
+          }
+        ],
+        "date": "2024-05-14T21:06:45Z"
       },
       "1_7": {
         "vod": "https://youtu.be/hruEy10lSS4?si=11rm0p9MPwNlUOMK",
         "places": [
-          { "name": "TwiceLyte",    "time": "2:35:58" },
-          { "name": "GildetPhantom","time": "2:39:05" },
-          { "name": "thenzota",     "time": "2:51:14" }
-        ]
+          {
+            "name": "TwiceLyte",
+            "time": "2:35:58"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:39:05"
+          },
+          {
+            "name": "thenzota",
+            "time": "2:51:14"
+          }
+        ],
+        "date": "2024-05-19T00:01:59Z"
       },
       "1_8": {
         "vod": "https://youtu.be/2SkY6-fyOvs?si=HOwQ_NE4zV44dkBF",
         "places": [
-          { "name": "Nolan",        "time": "2:43:37" },
-          { "name": "Rapho",        "time": "2:53:33" },
-          { "name": "Anonymous",    "time": "DNF" }
-        ]
+          {
+            "name": "Nolan",
+            "time": "2:43:37"
+          },
+          {
+            "name": "Rapho",
+            "time": "2:53:33"
+          },
+          {
+            "name": "Anonymous",
+            "time": "DNF"
+          }
+        ],
+        "date": "2024-05-17T20:10:25Z"
       },
       "2_1": {
         "vod": "https://youtu.be/XJ8BONjjvwQ?si=PKSJ5iAVyjz3IvUZ",
         "places": [
-          { "name": "Ginger",       "time": "2:24:53" },
-          { "name": "Scynor",       "time": "2:26:01" },
-          { "name": "WiiSuper",     "time": "2:28:21" }
-        ]
+          {
+            "name": "Ginger",
+            "time": "2:24:53"
+          },
+          {
+            "name": "Scynor",
+            "time": "2:26:01"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:28:21"
+          }
+        ],
+        "date": "2024-05-22T01:58:03Z"
       },
       "2_2": {
         "vod": "",
         "places": [
-          { "name": "itsjared97",   "time": "2:24:42" },
-          { "name": "FrostByte",    "time": "2:28:51" },
-          { "name": "ejpman",       "time": "2:29:19" }
-        ]
+          {
+            "name": "Jared",
+            "time": "2:24:42"
+          },
+          {
+            "name": "FrostByte",
+            "time": "2:28:51"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:29:19"
+          }
+        ],
+        "date": "2024-05-20"
       },
       "2_3": {
         "vod": "https://youtu.be/9h1nZJhasJ0?si=F4gnRu17E7b2Q1Gq",
         "places": [
-          { "name": "ERoadhouse",   "time": "2:23:21" },
-          { "name": "FlamingLazer", "time": "2:30:49" },
-          { "name": "DaHamster",    "time": "2:31:00" }
-        ]
+          {
+            "name": "ERoadhouse",
+            "time": "2:23:21"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:30:49"
+          },
+          {
+            "name": "DaHamster",
+            "time": "2:31:00"
+          }
+        ],
+        "date": "2024-05-28T04:35:24Z"
       },
       "2_4": {
         "vod": "https://youtu.be/g05IADwlLk0?si=R2z7y1TssUovqr4M",
         "places": [
-          { "name": "Jablaky",      "time": "2:29:02" },
-          { "name": "Herasmie",     "time": "2:33:35" },
-          { "name": "Revvylo",      "time": "2:38:04" }
-        ]
+          {
+            "name": "Jablaky",
+            "time": "2:29:02"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:33:35"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:38:04"
+          }
+        ],
+        "date": "2024-05-24T21:20:23Z"
       },
       "2_5": {
         "vod": "https://youtu.be/Bl3xX4DGRH0",
         "places": [
-          { "name": "flup",         "time": "2:35:41" },
-          { "name": "Charzight",    "time": "2:36:28" },
-          { "name": "Core",         "time": "2:50:59" }
-        ]
+          {
+            "name": "flup",
+            "time": "2:35:41"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:36:28"
+          },
+          {
+            "name": "Core",
+            "time": "2:50:59"
+          }
+        ],
+        "date": "2024-05-21T20:30:37Z"
       },
       "2_6": {
         "vod": "https://youtu.be/Y-lVmRtQDpU?si=APW3clwHQ9y60RlH",
         "places": [
-          { "name": "Garrison",     "time": "2:37:04" },
-          { "name": "TwiceLyte",    "time": "2:39:11" },
-          { "name": "GildetPhantom","time": "2:55:27" }
-        ]
+          {
+            "name": "Garrison",
+            "time": "2:37:04"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:39:11"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:55:27"
+          }
+        ],
+        "date": "2024-05-22T20:30:18Z"
       },
       "2_7": {
         "vod": "https://www.youtube.com/watch?v=xNfReZN46EU",
         "places": [
-          { "name": "thenzota",     "time": "2:40:11" },
-          { "name": "Nolan",        "time": "2:44:33" },
-          { "name": "AnorakDT",     "time": "2:44:46" }
-        ]
+          {
+            "name": "thenzota",
+            "time": "2:40:11"
+          },
+          {
+            "name": "Nolan",
+            "time": "2:44:33"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:44:46"
+          }
+        ],
+        "date": "2024-05-26T04:07:07Z"
       },
       "3_1": {
         "vod": "https://youtu.be/p9o3_ZbW27U?si=Hya4Cjr5R1R000vW",
         "places": [
-          { "name": "FrostByte",    "time": "2:24:34" },
-          { "name": "itsjared97",   "time": "2:26:47" },
-          { "name": "Scynor",       "time": "2:27:02" }
-        ]
+          {
+            "name": "FrostByte",
+            "time": "2:24:34"
+          },
+          {
+            "name": "Jared",
+            "time": "2:26:47"
+          },
+          {
+            "name": "Scynor",
+            "time": "2:27:02"
+          }
+        ],
+        "date": "2024-05-29"
       },
       "3_2": {
         "vod": "https://youtu.be/1iAFVnZWYo8?si=N0Y8_CLFazgQO8PG",
         "places": [
-          { "name": "ERoadhouse",   "time": "2:24:45" },
-          { "name": "WiiSuper",     "time": "2:25:29" },
-          { "name": "FlamingLazer", "time": "2:29:17" }
-        ]
+          {
+            "name": "ERoadhouse",
+            "time": "2:24:45"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:25:29"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:29:17"
+          }
+        ],
+        "date": "2024-05-27"
       },
       "3_3": {
         "vod": "https://youtu.be/0KsDUPKvOro?si=hJ_zrY7q7cO_Ex-r",
         "places": [
-          { "name": "ejpman",       "time": "2:26:56" },
-          { "name": "Herasmie",     "time": "2:31:42" },
-          { "name": "Jablaky",      "time": "2:33:35" }
-        ]
+          {
+            "name": "ejpman",
+            "time": "2:26:56"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:31:42"
+          },
+          {
+            "name": "Jablaky",
+            "time": "2:33:35"
+          }
+        ],
+        "date": "2024-05-29"
       },
       "3_4": {
         "vod": "https://www.youtube.com/watch?v=zcakefNDN_c",
         "places": [
-          { "name": "DaHamster",    "time": "2:30:13" },
-          { "name": "flup",         "time": "2:36:05" },
-          { "name": "Charzight",    "time": "2:39:32" }
-        ]
+          {
+            "name": "DaHamster",
+            "time": "2:30:13"
+          },
+          {
+            "name": "flup",
+            "time": "2:36:05"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:39:32"
+          }
+        ],
+        "date": "2024-05-29"
       },
       "3_5": {
         "vod": "https://youtu.be/EU20W3imdmM?si=3T63A8rSzzAC53p2",
         "places": [
-          { "name": "Revvylo",      "time": "2:34:03" },
-          { "name": "Garrison",     "time": "2:35:15" },
-          { "name": "TwiceLyte",    "time": "2:38:21" }
-        ]
+          {
+            "name": "Revvylo",
+            "time": "2:34:03"
+          },
+          {
+            "name": "Garrison",
+            "time": "2:35:17"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:38:21"
+          }
+        ],
+        "date": "2024-05-31"
       },
       "3_6": {
         "vod": "https://youtu.be/a2tPHEE8w_k?si=uI_L52R_VFy-VfUz",
         "places": [
-          { "name": "GildetPhantom","time": "2:34:52" },
-          { "name": "thenzota",     "time": "2:35:07" },
-          { "name": "Core",         "time": "2:42:04" }
-        ]
+          {
+            "name": "GildetPhantom",
+            "time": "2:34:52"
+          },
+          {
+            "name": "thenzota",
+            "time": "2:35:07"
+          },
+          {
+            "name": "Core",
+            "time": "2:42:04"
+          }
+        ],
+        "date": "2024-06-01"
       },
       "4_1": {
         "vod": "https://youtu.be/I-47Dxa-KIs?si=xTCt2icjEQnF-DTk",
         "places": [
-          { "name": "ERoadhouse",   "time": "2:22:53" },
-          { "name": "itsjared97",   "time": "2:24:17" },
-          { "name": "WiiSuper",     "time": "2:26:28" }
-        ]
+          {
+            "name": "ERoadhouse",
+            "time": "2:22:53"
+          },
+          {
+            "name": "Jared",
+            "time": "2:24:17"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:26:28"
+          }
+        ],
+        "date": "2024-06-14"
       },
       "4_2": {
         "vod": "https://youtu.be/h2bo8AvZEJw?si=uKufTC3IJtugX-UQ",
         "places": [
-          { "name": "Scynor",       "time": "2:24:04" },
-          { "name": "ejpman",       "time": "2:30:40" },
-          { "name": "Herasmie",     "time": "2:37:28" }
-        ]
+          {
+            "name": "Scynor",
+            "time": "2:24:04"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:30:40"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:37:28"
+          }
+        ],
+        "date": "2024-06-15"
       },
       "4_3": {
         "vod": "https://youtu.be/I4wg240qQq4?si=olK9_el3lT03X_rf",
         "places": [
-          { "name": "DaHamster",    "time": "2:29:41" },
-          { "name": "FlamingLazer", "time": "2:35:01" },
-          { "name": "flup",         "time": "2:38:25" }
-        ]
+          {
+            "name": "DaHamster",
+            "time": "2:29:41"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:35:01"
+          },
+          {
+            "name": "flup",
+            "time": "2:38:25"
+          }
+        ],
+        "date": "2024-06-12"
       },
       "4_4": {
         "vod": "https://youtu.be/k6jPEjPtWYU?si=ekTvjLYfs-H5PG5S",
         "places": [
-          { "name": "Revvylo",      "time": "2:36:52" },
-          { "name": "Garrison",     "time": "2:37:37" },
-          { "name": "Jablaky",      "time": "DNF" }
-        ]
+          {
+            "name": "Revvylo",
+            "time": "2:36:52"
+          },
+          {
+            "name": "Garrison",
+            "time": "2:37:37"
+          },
+          {
+            "name": "Jablaky",
+            "time": "DNF"
+          }
+        ],
+        "date": "2024-06-12"
       },
       "4_5": {
         "vod": "https://youtu.be/otStF4VHxuI?si=w7rkjdeq30KufwV9",
         "places": [
-          { "name": "Charzight",    "time": "2:32:34" },
-          { "name": "TwiceLyte",    "time": "2:33:08" },
-          { "name": "GildetPhantom","time": "2:39:37" }
-        ]
+          {
+            "name": "Charzight",
+            "time": "2:32:34"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:33:08"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:39:37"
+          }
+        ],
+        "date": "2024-06-10"
       },
       "5_1": {
         "vod": "https://youtu.be/mGZG4WoEg8U?si=MUrTRJKHmAJGyDUP",
         "places": [
-          { "name": "Scynor",   "time": "2:26:45" },
-          { "name": "ejpman",   "time": "2:28:14" },
-          { "name": "itsjared97",     "time": "DNF" }
-        ]
+          {
+            "name": "Scynor",
+            "time": "2:26:45"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:28:14"
+          },
+          {
+            "name": "Jared",
+            "time": "DNF"
+          }
+        ],
+        "date": "2024-06-20T04:58:58Z"
       },
       "5_2": {
         "vod": "https://youtu.be/uTkDz9VeU2w?si=qaKPKFLJc5pZaPuk",
         "places": [
-          { "name": "WiiSuper",    "time": "2:24:13" },
-          { "name": "FlamingLazer",     "time": "2:29:27" },
-          { "name": "Dahamster",      "time": "2:29:30" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:24:13"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:29:27"
+          },
+          {
+            "name": "Dahamster",
+            "time": "2:29:30"
+          }
+        ],
+        "date": "2024-06-19T19:56:22Z"
       },
       "5_3": {
         "vod": "https://youtu.be/mkGs5B3TP2w?si=u1fcsoFhlTrmIvyh",
         "places": [
-          { "name": "Herasmie",     "time": "2:32:06" },
-          { "name": "Revvylo",      "time": "2:36:06" },
-          { "name": "Garrison",     "time": "2:36:14" }
-        ]
+          {
+            "name": "Herasmie",
+            "time": "2:32:06"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:36:06"
+          },
+          {
+            "name": "Garrison",
+            "time": "2:36:14"
+          }
+        ],
+        "date": "2024-06-20T04:58:58Z"
       },
       "5_4": {
         "vod": "",
         "places": [
-          { "name": "Jablaky",         "time": "2:33:52" },
-          { "name": "flup",    "time": "2:37:36" },
-          { "name": "Charzight",         "time": "FORFEIT" }
-        ]
+          {
+            "name": "Jablaky",
+            "time": "2:33:52"
+          },
+          {
+            "name": "flup",
+            "time": "2:37:36"
+          },
+          {
+            "name": "Charzight",
+            "time": "FORFEIT"
+          }
+        ],
+        "date": "2024-06-22"
       },
       "6_1": {
         "vod": "https://youtu.be/n5GFdTmFmMA?si=ERkgPpDSgAKF3Rwj",
         "places": [
-          { "name": "WiiSuper",       "time": "2:24:48" },
-          { "name": "ejpman",     "time": "2:29:54" },
-          { "name": "FlamingLazer",     "time": "2:32:18" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:24:48"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:29:54"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:32:18"
+          }
+        ],
+        "date": "2024-06-27T19:18:50Z"
       },
       "6_2": {
         "vod": "https://youtu.be/HayAtb_zjGI?si=yHLoxRilgF3OqoPV",
         "places": [
-          { "name": "itsjared97",         "time": "2:25:18" },
-          { "name": "Herasmie",       "time": "2:32:03" },
-          { "name": "Revvylo",        "time": "2:38:37" }
-        ]
+          {
+            "name": "Jared",
+            "time": "2:25:18"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:32:03"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:38:37"
+          }
+        ],
+        "date": "2024-07-04T04:28:58Z"
       },
       "6_3": {
         "vod": "https://youtu.be/UAfUoEfaYzs?si=BLo2jwQEqmfn2xcB",
         "places": [
-          { "name": "Dahamster",         "time": "2:27:17" },
-          { "name": "Jablaky",     "time": "2:27:55" },
-          { "name": "Garrison",           "time": "2:38:50" }
-        ]
+          {
+            "name": "Dahamster",
+            "time": "2:27:17"
+          },
+          {
+            "name": "Jablaky",
+            "time": "2:27:55"
+          },
+          {
+            "name": "Garrison",
+            "time": "2:38:50"
+          }
+        ],
+        "date": "2024-06-30T04:45:48Z"
       },
       "7_1": {
         "vod": "https://youtu.be/QEmscG3Ho8k?si=kIB0UP7LJxnAe-rd",
         "places": [
-          { "name": "itsjared97",       "time": "2:24:58" },
-          { "name": "ejpman",     "time": "2:27:48" },
-          { "name": "Herasmie",         "time": "2:31:51" }
-        ]
+          {
+            "name": "Jared",
+            "time": "2:24:58"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:27:48"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:31:51"
+          }
+        ],
+        "date": "2024-07-07T23:03:55Z"
       },
       "7_2": {
         "vod": "https://youtu.be/f8iGhG6sbp0?si=xRDjfajOp0PaL9PK",
         "places": [
-          { "name": "Dahamster",       "time": "2:25:27" },
-          { "name": "FlamingLazer",       "time": "2:31:17" },
-          { "name": "Revvylo",        "time": "2:43:32" }
-        ]
+          {
+            "name": "Dahamster",
+            "time": "2:25:27"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:31:17"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:43:32"
+          }
+        ],
+        "date": "2024-07-04T04:20:22Z"
       },
       "8_1": {
         "vod": "https://youtu.be/Zn6LrZP2KBc?si=SJ7g4ihTXuGqfuOD",
         "places": [
-          { "name": "Dahamster",       "time": "2:27:10" },
-          { "name": "ejpman",     "time": "2:27:20" },
-          { "name": "Herasmie",    "time": "2:30:43" }
-        ]
+          {
+            "name": "Dahamster",
+            "time": "2:27:10"
+          },
+          {
+            "name": "ejpman",
+            "time": "2:27:20"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:30:43"
+          }
+        ],
+        "date": "2024-07-12T02:40:17Z"
       }
     },
     "top8": {
       "qf_1": {
         "vod": "https://youtu.be/pJ62Gf7STZc?si=MaRDxa5Sh7paUWP1",
         "places": [
-          { "name": "Zac",      "time": "2:21:50" },
-          { "name": "Dahamster",      "time": "2:24:31" }
-        ]
+          {
+            "name": "Zac",
+            "time": "2:21:50"
+          },
+          {
+            "name": "Dahamster",
+            "time": "2:24:31"
+          }
+        ],
+        "date": "2024-07-17T21:48:00Z"
       },
       "qf_2": {
         "vod": "https://youtu.be/nGoRF4crKQI?si=blQpEW_GFaheGWnf",
         "places": [
-          { "name": "ERoadhouse",      "time": "2:22:32" },
-          { "name": "Scynor",        "time": "2:27:04" }
-        ]
+          {
+            "name": "ERoadhouse",
+            "time": "2:22:32"
+          },
+          {
+            "name": "Scynor",
+            "time": "2:27:04"
+          }
+        ],
+        "date": "2024-07-22T22:01:42Z"
       },
       "qf_3": {
         "vod": "https://youtu.be/3kjVGq7sm3s?si=3vd58QLs_efEPZZC",
         "places": [
-          { "name": "FrostByte",      "time": "2:24:24" },
-          { "name": "WiiSuper",      "time": "2:23:21" }
-        ]
+          {
+            "name": "FrostByte",
+            "time": "2:24:24"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:23:21"
+          }
+        ],
+        "date": "2024-07-20T23:01:26Z"
       },
       "qf_4": {
         "vod": "https://youtu.be/aHYslmBlXto?si=EBTHA13p8XQJ8cRa",
         "places": [
-          { "name": "Ginger",         "time": "2:26:26" },
-          { "name": "itsjared97", "time": "2:26:04" }
-        ]
+          {
+            "name": "Ginger",
+            "time": "2:26:26"
+          },
+          {
+            "name": "Jared",
+            "time": "2:26:04"
+          }
+        ],
+        "date": "2024-07-16T22:12:45Z"
       },
       "sf_1": {
         "vod": "https://youtu.be/EvhpdJ9ENd8?si=TzArHpzvPnt57S0C",
         "places": [
-          { "name": "Zac",      "time": "2:25:26" },
-          { "name": "ERoadhouse",      "time": "2:22:40" }
-        ]
+          {
+            "name": "Zac",
+            "time": "2:25:26"
+          },
+          {
+            "name": "ERoadhouse",
+            "time": "2:22:40"
+          }
+        ],
+        "date": "2024-07-25T01:52:23Z"
       },
       "sf_2": {
         "vod": "https://youtu.be/lo5vjZIiwcs?si=pRoUOe9PgCcnripJ",
         "places": [
-          { "name": "WiiSuper",        "time": "2:24:54" },
-          { "name": "itsjared97",    "time": "2:22:32" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:24:54"
+          },
+          {
+            "name": "Jared",
+            "time": "2:22:32"
+          }
+        ],
+        "date": "2024-07-22T22:03:19Z"
       },
       "gf_1": {
         "vod": "https://youtu.be/w5NF3accJ78?si=s2NqFl9dUBPa8M7E",
         "places": [
-          { "name": "ERoadhouse",      "time": "2:22:30" },
-          { "name": "itsjared97",      "time": "2:23:13" }
-        ]
+          {
+            "name": "ERoadhouse",
+            "time": "2:22:30"
+          },
+          {
+            "name": "Jared",
+            "time": "2:23:13"
+          }
+        ],
+        "date": "2024-07-27T03:44:55Z"
       }
     }
   },
   "season2": {
-    "weekMatchCounts": [7, 6, 5, 4, 3, 2, 1, 1],
+    "weekMatchCounts": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      1
+    ],
     "wildcardWeek": 8,
-    "wildcardAutoQualifier": { "name" : "Dragon76", "time": "2:23:34"},
+    "wildcardAutoQualifier": {
+      "name": "Dragon76",
+      "time": "2:23:34"
+    },
     "noThirdPlace": true,
-    "weekDates": ["May 19-25", "May 26-June 1", "June 2-8", "June 9-15", "June 16-22", "June 23-29", "June 23-29"],
+    "weekDates": [
+      "May 19-25",
+      "May 26-June 1",
+      "June 2-8",
+      "June 9-15",
+      "June 16-22",
+      "June 23-29",
+      "June 23-29"
+    ],
+    "playins": [
+      {
+        "label": "Match 1",
+        "vod": "https://youtube.com/live/ylX5zCFUW7Q",
+        "places": [
+          {
+            "name": "Gamer_Olive",
+            "time": "2:44:02",
+            "outcome": "advance",
+            "note": "Advances to Match 2"
+          },
+          {
+            "name": "BennyMoon",
+            "time": "2:44:15",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          },
+          {
+            "name": "AppleMan",
+            "time": "2:46:43",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          },
+          {
+            "name": "ChromaQ",
+            "time": "2:48:56",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          }
+        ]
+      },
+      {
+        "label": "Match 2",
+        "vod": "https://youtube.com/live/Au--GTHhwX0",
+        "places": [
+          {
+            "name": "Gamer_Olive",
+            "time": "2:41:26",
+            "outcome": "advance",
+            "note": "Advances to Rung 7"
+          },
+          {
+            "name": "Yahootles",
+            "time": "2:45:25",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          },
+          {
+            "name": "Nolan",
+            "time": "2:54:10",
+            "outcome": "eliminated",
+            "note": "Eliminated"
+          }
+        ]
+      }
+    ],
     "results": {
       "1_1": {
         "vod": "https://www.youtube.com/live/mv3PPZ3i3VM?si=pweaDFr_NrWjn8v2",
         "places": [
-          { "name": "FrostByte", "time": "2:20:24" },
-          { "name": "itsjared97",  "time": "2:22:56" },
-          { "name": "WiiSuper",   "time": "2:24:54" }
-        ]
+          {
+            "name": "FrostByte",
+            "time": "2:20:24"
+          },
+          {
+            "name": "Jared",
+            "time": "2:22:56"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:24:54"
+          }
+        ],
+        "date": "2025-05-25"
       },
       "1_2": {
         "vod": "https://youtu.be/ejnCTYsnjLk?si=R8R6gEkV2z9ZHXKd",
         "places": [
-          { "name": "Scynor",     "time": "2:24:58" },
-          { "name": "Herasmie",   "time": "2:25:45" , "status" : "leapfrogged"},
-          { "name": "AnorakDT",   "time": "2:26:56" }
-        ]
+          {
+            "name": "Scynor",
+            "time": "2:24:58"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:25:45",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:26:56"
+          }
+        ],
+        "date": "2025-05-24"
       },
       "1_3": {
         "vod": "https://www.youtube.com/live/2Q7rnf30mFA?si=k6jzN_-XnklTveYw",
         "places": [
-          { "name": "Dragon76",   "time": "2:23:34" , "status" : "leapfrogging"},
-          { "name": "FlamingLazer",   "time": "2:24:53" },
-          { "name": "Dimei",       "time": "2:29:11" }
-        ]
+          {
+            "name": "Dragon76",
+            "time": "2:23:34",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:24:53"
+          },
+          {
+            "name": "Dimei",
+            "time": "2:29:11"
+          }
+        ],
+        "date": "2025-05-20"
       },
       "1_4": {
         "vod": "https://www.youtube.com/live/JrvSf4V2kxc?si=r8LhKn9v5s5DnrvD",
         "places": [
-          { "name": "Revvylo",        "time": "2:31:19" },
-          { "name": "flup",    "time": "2:31:35" , "status": "leapfrogged"},
-          { "name": "Coolisen",     "time": "2:31:37" }
-        ]
+          {
+            "name": "Revvylo",
+            "time": "2:31:19"
+          },
+          {
+            "name": "flup",
+            "time": "2:31:35",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "Coolisen",
+            "time": "2:31:37"
+          }
+        ],
+        "date": "2025-05-19"
       },
       "1_5": {
         "vod": "https://www.youtube.com/live/z4kEKOs-mvU?si=EGnbLh20Femnw5L6",
         "places": [
-          { "name": "GildetPhantom",  "time": "2:29:27" , "status": "leapfrogging" },
-          { "name": "Tfresh",         "time": "2:33:23" },
-          { "name": "TwiceLyte",      "time": "2:36:27" }
-        ]
+          {
+            "name": "GildetPhantom",
+            "time": "2:29:27",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "Tfresh",
+            "time": "2:33:23"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:36:27"
+          }
+        ],
+        "date": "2025-05-20"
       },
       "1_6": {
         "vod": "https://www.youtube.com/live/bGPB92XPK9Q?si=mo5IDJXCiVkKorWa",
         "places": [
-          { "name": "Charzight",      "time": "2:33:50" },
-          { "name": "kwazrr",         "time": "2:37:07" , "status": "leapfrogged" },
-          { "name": "thenzota",       "time": "2:41:19" }
-        ]
+          {
+            "name": "Charzight",
+            "time": "2:33:50"
+          },
+          {
+            "name": "kwazrr",
+            "time": "2:37:07",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "thenzota",
+            "time": "2:41:19"
+          }
+        ],
+        "date": "2025-05-24"
       },
       "1_7": {
         "vod": "https://www.youtube.com/live/24fVShzjycw?si=kpB5u-nHgBb-2h9f",
         "places": [
-          { "name": "Anonymous",      "time": "2:35:09" , "status": "leapfrogging"},
-          { "name": "Biksel",         "time": "2:36:45" },
-          { "name": "yahootles",      "time": "2:45:25" }
+          {
+            "name": "Anonymous",
+            "time": "2:35:09",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "Biksel",
+            "time": "2:35:37"
+          },
+          {
+            "name": "Gamer_Olive",
+            "time": "2:39:02"
+          }
         ]
       },
       "2_1": {
         "vod": "https://www.youtube.com/live/kZdDAQ4_30k?si=fkV425RXeXulmAqr",
         "places": [
-          { "name": "itsjared97",    "time": "2:23:50" },
-          { "name": "Dragon76",      "time": "2:25:54" },
-          { "name": "Scynor",        "time": "2:27:18" }
-        ]
+          {
+            "name": "Jared",
+            "time": "2:23:50"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:25:54"
+          },
+          {
+            "name": "Scynor",
+            "time": "2:27:18"
+          }
+        ],
+        "date": "2025-05-29"
       },
       "2_2": {
         "vod": "https://www.youtube.com/live/Aolr8ew_SQk?si=Lx7ts2ZS0IKdqGsw",
         "places": [
-          { "name": "WiiSuper",      "time": "2:22:05" },
-          { "name": "Herasmie",      "time": "2:22:14" },
-          { "name": "FlamingLazer",  "time": "2:26:54" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:22:05"
+          },
+          {
+            "name": "Herasmie",
+            "time": "2:22:14"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:26:54"
+          }
+        ],
+        "date": "2025-05-27"
       },
       "2_3": {
         "vod": "https://youtu.be/DvKL-aiBEmI?si=R79dA66rFjWr645F",
         "places": [
-          { "name": "AnorakDT",      "time": "2:29:07" },
-          { "name": "GildetPhantom", "time": "2:29:58", "status": "leapfrogged" },
-          { "name": "Revvylo",       "time": "2:33:29" }
+          {
+            "name": "Anorak",
+            "time": "2:29:07"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:29:58",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:33:29"
+          }
         ]
       },
       "2_4": {
         "vod": "https://www.youtube.com/live/fRTwgNQGa2M?si=j6ECyz_CDQxWdISw",
         "places": [
-          { "name": "Dimei",         "time": "2:26:47", "status": "leapfrogging" },
-          { "name": "Tfresh",        "time": "2:28:00" },
-          { "name": "flup",          "time": "2:28:58" }
-        ]
+          {
+            "name": "Dimei",
+            "time": "2:26:47",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "Tfresh",
+            "time": "2:28:00"
+          },
+          {
+            "name": "flup",
+            "time": "2:28:58"
+          }
+        ],
+        "date": "2025-05-31"
       },
       "2_5": {
         "vod": "https://www.youtube.com/live/M8oHkXsJj-w?si=FrwiLJboMu-6KSJZ",
         "places": [
-          { "name": "Coolisen",      "time": "2:31:51" },
-          { "name": "Charzight",     "time": "2:32:20", "status": "leapfrogged" },
-          { "name": "Anonymous",     "time": "2:38:04" }
+          {
+            "name": "Coolisen",
+            "time": "2:31:51"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:32:20",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "Anonymous",
+            "time": "2:38:04"
+          }
         ]
       },
       "2_6": {
         "vod": "https://www.youtube.com/live/tIQ0VmBZllk?si=hBC3pe1EmHyUICDP",
         "places": [
-          { "name": "TwiceLyte",     "time": "2:31:19", "status": "leapfrogging" },
-          { "name": "kwazrr",        "time": "2:31:40" },
-          { "name": "thenzota",      "time": "2:39:45" }
-        ]
+          {
+            "name": "TwiceLyte",
+            "time": "2:31:19",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "kwazrr",
+            "time": "2:31:40"
+          },
+          {
+            "name": "thenzota",
+            "time": "2:39:45"
+          }
+        ],
+        "date": "2025-06-01"
       },
       "3_1": {
         "vod": "https://www.youtube.com/live/TyD5NgWTDLQ?si=G6R21XCXeg-5RNuI",
         "places": [
-          { "name": "Herasmie",      "time": "2:22:32" },
-          { "name": "WiiSuper",      "time": "2:23:43" },
-          { "name": "Dragon76",      "time": "2:27:02" }
-        ]
+          {
+            "name": "Herasmie",
+            "time": "2:22:32"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:23:43"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:27:02"
+          }
+        ],
+        "date": "2025-06-04"
       },
       "3_2": {
         "vod": "https://www.youtube.com/live/dTfMoj7txgk?si=CoT6_kNOAduojzmS",
         "places": [
-          { "name": "Scynor",        "time": "2:23:02" },
-          { "name": "AnorakDT",      "time": "2:25:34" },
-          { "name": "Dimei",         "time": "2:32:30" }
+          {
+            "name": "Scynor",
+            "time": "2:23:02"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:25:34"
+          },
+          {
+            "name": "Dimei",
+            "time": "2:32:30"
+          }
         ]
       },
       "3_3": {
         "vod": "https://www.youtube.com/live/GPFV_kILPLM?si=pmBFsKv9ccPvXClp",
         "places": [
-          { "name": "GildetPhantom", "time": "2:27:31" },
-          { "name": "FlamingLazer",  "time": "2:27:35" },
-          { "name": "Tfresh",        "time": "2:41:00" }
-        ]
+          {
+            "name": "GildetPhantom",
+            "time": "2:27:31"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:27:35"
+          },
+          {
+            "name": "Tfresh",
+            "time": "2:41:00"
+          }
+        ],
+        "date": "2025-06-05"
       },
       "3_4": {
         "vod": "https://youtu.be/oKlAx0rKqXA?si=Rh2QszHVwG7MNLC8",
         "places": [
-          { "name": "Coolisen",      "time": "2:27:37" },
-          { "name": "Revvylo",       "time": "2:34:14", "status": "leapfrogged" },
-          { "name": "TwiceLyte",     "time": "2:34:24" }
-        ]
+          {
+            "name": "Coolisen",
+            "time": "2:27:37"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:34:14",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:34:24"
+          }
+        ],
+        "date": "2025-06-04"
       },
       "3_5": {
         "vod": "https://www.youtube.com/live/eKfOR5Il--I?si=UHLu22LLmh-R7cGG",
         "places": [
-          { "name": "Charzight",     "time": "2:30:31", "status": "leapfrogging" },
-          { "name": "flup",          "time": "2:30:47" },
-          { "name": "Anonymous",     "time": "2:35:46" }
-        ]
+          {
+            "name": "Charzight",
+            "time": "2:30:31",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "flup",
+            "time": "2:30:47"
+          },
+          {
+            "name": "Anonymous",
+            "time": "2:35:46"
+          }
+        ],
+        "date": "2025-06-02"
       },
       "4_1": {
         "vod": "https://www.youtube.com/live/zLJCctoeKx4?si=KRc3dLyAk7X9Sxsf",
         "places": [
-          { "name": "Scynor",        "time": "2:23:07" },
-          { "name": "WiiSuper",      "time": "2:24:33" },
-          { "name": "AnorakDT",      "time": "2:26:30" }
-        ]
+          {
+            "name": "Scynor",
+            "time": "2:23:07"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:24:33"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:26:30"
+          }
+        ],
+        "date": "2025-06-15"
       },
       "4_2": {
         "vod": "https://www.youtube.com/live/W7wU-uoDxNI?si=Id11snBSnZ9_qZuD",
         "places": [
-          { "name": "Dragon76",      "time": "2:24:54" },
-          { "name": "FlamingLazer",  "time": "2:25:29" },
-          { "name": "GildetPhantom", "time": "2:29:44" }
-        ]
+          {
+            "name": "Dragon76",
+            "time": "2:24:54"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:25:29"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:29:44"
+          }
+        ],
+        "date": "2025-06-11"
       },
       "4_3": {
         "vod": "https://www.youtube.com/live/JdmocxgiS24?si=wxX1IWLyxUwjHO8n",
         "places": [
-          { "name": "Dimei",         "time": "2:28:57" },
-          { "name": "Charzight",     "time": "2:32:33", "status": "leapfrogged" },
-          { "name": "Coolisen",      "time": "2:45:42" }
-        ]
+          {
+            "name": "Dimei",
+            "time": "2:28:57"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:32:33",
+            "status": "leapfrogged"
+          },
+          {
+            "name": "Coolisen",
+            "time": "2:45:42"
+          }
+        ],
+        "date": "2025-06-14"
       },
       "4_4": {
         "vod": "https://www.youtube.com/live/ULyHXNBPFNA?si=dQNVZPld2ENvmzLJ",
         "places": [
-          { "name": "Tfresh",        "time": "2:29:30", "status": "leapfrogging" },
-          { "name": "TwiceLyte",     "time": "2:29:50" },
-          { "name": "Revvylo",       "time": "2:38:01" }
-        ]
+          {
+            "name": "Tfresh",
+            "time": "2:29:30",
+            "status": "leapfrogging"
+          },
+          {
+            "name": "TwiceLyte",
+            "time": "2:29:50"
+          },
+          {
+            "name": "Revvylo",
+            "time": "2:38:01"
+          }
+        ],
+        "date": "2025-06-15"
       },
       "5_1": {
         "vod": "https://www.youtube.com/live/sKhmXpoynYs?si=39DBffHN02LuP52L",
         "places": [
-          { "name": "WiiSuper",      "time": "2:20:58" },
-          { "name": "Dragon76",      "time": "2:24:05" },
-          { "name": "FlamingLazer",  "time": "2:25:07" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:20:58"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:24:05"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:25:07"
+          }
+        ],
+        "date": "2025-06-22"
       },
       "5_2": {
         "vod": "https://youtu.be/jPHy5RrKccs?si=410wUBsjn13yoynZ",
         "places": [
-          { "name": "Tfresh",        "time": "2:25:27" },
-          { "name": "AnorakDT",      "time": "2:26:01" },
-          { "name": "Dimei",         "time": "2:29:11" }
-        ]
+          {
+            "name": "Tfresh",
+            "time": "2:25:27"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:26:01"
+          },
+          {
+            "name": "Dimei",
+            "time": "2:29:11"
+          }
+        ],
+        "date": "2025-06-21"
       },
       "5_3": {
         "vod": "https://www.youtube.com/live/inVwZS8uYes?si=2FlXHA8TLYfueW5z",
         "places": [
-          { "name": "GildetPhantom", "time": "2:29:25" },
-          { "name": "Charzight",     "time": "2:33:49" },
-          { "name": "Coolisen",      "time": "2:37:46" }
-        ]
+          {
+            "name": "GildetPhantom",
+            "time": "2:29:25"
+          },
+          {
+            "name": "Charzight",
+            "time": "2:33:49"
+          },
+          {
+            "name": "Coolisen",
+            "time": "2:37:43"
+          }
+        ],
+        "date": "2025-06-21"
       },
       "6_1": {
         "vod": "https://www.youtube.com/live/J7JHFe0aJXE?si=Q6YBsppG9nj9_4d1",
         "places": [
-          { "name": "AnorakDT",      "time": "2:26:35" },
-          { "name": "Dragon76",      "time": "2:26:38" },
-          { "name": "Tfresh",        "time": "2:28:28" }
-        ]
+          {
+            "name": "Anorak",
+            "time": "2:26:35"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:26:38"
+          },
+          {
+            "name": "Tfresh",
+            "time": "2:28:28"
+          }
+        ],
+        "date": "2025-06-26"
       },
       "6_2": {
         "vod": "https://www.youtube.com/live/mFBXFSJE1OM?si=30n-vVmxXr8XlHAO",
         "places": [
-          { "name": "FlamingLazer",  "time": "2:23:00" },
-          { "name": "GildetPhantom", "time": "2:27:31" },
-          { "name": "Dimei",         "time": "2:29:06" }
-        ]
+          {
+            "name": "FlamingLazer",
+            "time": "2:23:00"
+          },
+          {
+            "name": "GildetPhantom",
+            "time": "2:27:31"
+          },
+          {
+            "name": "Dimei",
+            "time": "2:29:06"
+          }
+        ],
+        "date": "2025-06-23"
       },
       "7_1": {
         "vod": "https://www.youtube.com/live/i85NLwyjhLY?si=HdhejfDflYukvZIN",
         "places": [
-          { "name": "FlamingLazer",      "time": "2:23:14" },
-          { "name": "Dragon76",      "time": "2:25:29" },
-          { "name": "Tfresh",  "time": "DNF" }
-        ]
+          {
+            "name": "FlamingLazer",
+            "time": "2:23:14"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:25:29"
+          },
+          {
+            "name": "Tfresh",
+            "time": "DNF"
+          }
+        ],
+        "date": "2025-06-28"
       }
     },
     "top8": {
       "qf_1": {
         "vod": "https://www.youtube.com/live/HmOoWLqKruw?si=3JsvS23DrxOTh6o8",
         "places": [
-          { "name": "FrostByte",      "time": "2:26:10" },
-          { "name": "Dragon76",      "time": "2:24:38" }
-        ]
+          {
+            "name": "FrostByte",
+            "time": "2:26:10"
+          },
+          {
+            "name": "Dragon76",
+            "time": "2:24:38"
+          }
+        ],
+        "date": "2025-07-02"
       },
       "qf_2": {
         "vod": "https://www.youtube.com/live/jDc1UXX_IkQ?si=wQg9TvBl-ov0bnCm",
         "places": [
-          { "name": "Scynor",      "time": "2:21:51" },
-          { "name": "WiiSuper",        "time": "2:20:57" }
-        ]
+          {
+            "name": "Scynor",
+            "time": "2:21:51"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:20:57"
+          }
+        ],
+        "date": "2025-06-30"
       },
       "qf_3": {
         "vod": "https://www.youtube.com/live/szSUeyUicK0?si=u-eb9ECT1tAkZMYj",
         "places": [
-          { "name": "Herasmie",      "time": "2:23:35" },
-          { "name": "AnorakDT",      "time": "2:25:07" }
-        ]
+          {
+            "name": "Herasmie",
+            "time": "2:23:35"
+          },
+          {
+            "name": "Anorak",
+            "time": "2:25:07"
+          }
+        ],
+        "date": "2025-07-03"
       },
       "qf_4": {
         "vod": "https://www.youtube.com/live/zleVJpMUHCw?si=j5xF8Yq8CXdC_gCr",
         "places": [
-          { "name": "itsjared97",         "time": "2:21:29" },
-          { "name": "FlamingLazer", "time": "2:22:28" }
-        ]
+          {
+            "name": "Jared",
+            "time": "2:21:29"
+          },
+          {
+            "name": "FlamingLazer",
+            "time": "2:22:28"
+          }
+        ],
+        "date": "2025-07-03"
       },
       "sf_1": {
         "vod": "https://youtu.be/maheqViQX44?si=LigNWnPXgRuN8uqK",
         "places": [
-          { "name": "Dragon76",      "time": "2:23:50" },
-          { "name": "WiiSuper",      "time": "2:21:48" }
-        ]
+          {
+            "name": "Dragon76",
+            "time": "2:23:50"
+          },
+          {
+            "name": "WiiSuper",
+            "time": "2:21:48"
+          }
+        ],
+        "date": "2025-07-05"
       },
       "sf_2": {
         "vod": "https://youtu.be/pEkx8gdGX4k?si=aW1m6gv1uJRmJwCd",
         "places": [
-          { "name": "Herasmie",        "time": "2:25:09" },
-          { "name": "itsjared97",    "time": "2:24:14" }
-        ]
+          {
+            "name": "Herasmie",
+            "time": "2:25:09"
+          },
+          {
+            "name": "Jared",
+            "time": "2:24:14"
+          }
+        ],
+        "date": "2025-07-07"
       },
       "gf_1": {
         "vod": "https://www.youtube.com/live/UOcVCdjzB00?si=nxHi3cySyxXqgxwl",
         "places": [
-          { "name": "WiiSuper",      "time": "2:22:37" },
-          { "name": "itsjared97",      "time": "2:22:22" }
-        ]
+          {
+            "name": "WiiSuper",
+            "time": "2:22:37"
+          },
+          {
+            "name": "Jared",
+            "time": "2:22:22"
+          }
+        ],
+        "date": "2025-07-10"
       }
     }
   }

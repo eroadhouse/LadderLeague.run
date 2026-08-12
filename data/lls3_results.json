@@ -4628,6 +4628,7 @@
           "result": {
             "SplitTimes": {
               "final_result": "2:20:29",
+              "final_result_precise": "2:20:29.1",
               "splits": [
                 133356.13390000002,
                 299749.6213,
@@ -4673,7 +4674,8 @@
           "runner": 8,
           "result": {
             "SplitTimes": {
-              "final_result": "2:20:30",
+              "final_result": "2:20:29",
+              "final_result_precise": "2:20:29.8",
               "splits": [
                 129842.15,
                 299794.23350000003,

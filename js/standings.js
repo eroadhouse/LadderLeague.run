@@ -400,6 +400,7 @@
 
       //timer on live boxes
       function tickElapsed() {
+        if (!document.getElementById('standings')?.classList.contains('active')) return;
         document.querySelectorAll('.live-elapsed[data-start]').forEach(el => {
           const elapsed = Math.max(0, Math.floor((Date.now() - new Date(el.dataset.start)) / 1000));
           const h = Math.floor(elapsed / 3600);
@@ -908,7 +909,7 @@
           .filter(p => p.seed <= 15)
           .sort((a, b) => a.seed - b.seed)
           .slice(0, 15);
-        init();
+        window._runWhenIdle ? window._runWhenIdle(init) : init();
       });
 
       function checkOnlyWildcardLeft() {
@@ -1773,15 +1774,83 @@
         }
         const data = pastSeasonCache[`season${season}`];
         if (!data) return;
-        buildPastBracket(data);
-        buildPastTop8(data);
+        buildPastPlayins(data, season);
+        buildPastBracket(data, season);
+        buildPastTop8(data, season);
       }
 
       function emptyMsg(text) {
         return `<div style="text-align:center;padding:4rem 2rem;color:var(--dim);font-family:'Montserrat',sans-serif;font-size:.8rem;letter-spacing:3px;text-transform:uppercase">${text}</div>`;
       }
 
-      function buildPastBracket(data) {
+      function buildPastPlayins(data, season) {
+        const container = document.getElementById('past-playins-scroll');
+        if (!container) return;
+        container.innerHTML = '';
+        const matches = data.playins || [];
+        if (!matches.length) { container.innerHTML = emptyMsg('No Play-Ins This Season'); return; }
+
+        const wrap = document.createElement('div');
+        wrap.className = 'lcq-container';
+
+        matches.forEach((match, i) => {
+          const matchEl = document.createElement('div');
+          matchEl.className = 'lcq-week';
+
+          const label = document.createElement('div');
+          label.className = 'lcq-week-label';
+          label.textContent = match.label;
+          matchEl.appendChild(label);
+
+          let card;
+          if (match.vod) {
+            card = document.createElement('a'); card.href = match.vod; card.target = '_blank'; card.rel = 'noopener';
+            card.dataset.match = `s${season}_playin_${i + 1}`;
+          }
+          else { card = document.createElement('div'); }
+          card.className = 'bracket-match done';
+
+          const rungRow = document.createElement('div');
+          rungRow.className = 'bracket-match-rung';
+          const rungLabel = document.createElement('span');
+          rungLabel.textContent = match.label;
+          rungRow.appendChild(rungLabel);
+          const ind = document.createElement('span');
+          ind.className = 'done-indicator';
+          ind.innerHTML = match.vod ? `VOD<span class="done-arrow">${VOD_SVG}</span>` : 'Done';
+          rungRow.appendChild(ind);
+          card.appendChild(rungRow);
+
+          match.places.forEach((p, i) => {
+            const eliminated = p.outcome === 'eliminated';
+            const moveArrow = eliminated
+              ? `<span class="bp-move eliminated" data-tip="${p.note || 'Eliminated'}">✖</span>`
+              : `<span class="bp-move qualified" data-tip="${p.note || 'Advances'}">★</span>`;
+            const pEl = document.createElement('div');
+            pEl.className = 'bracket-player' + (eliminated ? ' lost' : '');
+            pEl.innerHTML = `<span class="bp-num">${i + 1}</span><span class="bp-name">${p.name}</span><span class="bp-time">${p.time}</span>${moveArrow}`;
+            card.appendChild(pEl);
+          });
+
+          matchEl.appendChild(card);
+          wrap.appendChild(matchEl);
+        });
+
+        container.appendChild(wrap);
+
+        const ladderBtn = document.createElement('div');
+        ladderBtn.className = 'lcq-ladder-btn';
+        ladderBtn.textContent = 'See Ladder Standings →';
+        ladderBtn.addEventListener('click', () => {
+          document.querySelectorAll('#standings-past-tabs .standings-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#standings-past .standings-tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector('#standings-past-tabs .standings-tab[data-ptab="ladder"]').classList.add('active');
+          document.getElementById('standings-past-ladder').classList.add('active');
+        });
+        container.appendChild(ladderBtn);
+      }
+
+      function buildPastBracket(data, season) {
         const container = document.getElementById('past-bracket-scroll');
         if (!container) return;
         container.innerHTML = '';
@@ -1877,6 +1946,7 @@
             if (isDone && result.vod) {
               card = document.createElement('a');
               card.href = result.vod; card.target = '_blank'; card.rel = 'noopener';
+              card.dataset.match = `s${season}_${w}_${r}`;
             } else { card = document.createElement('div'); }
             card.className = 'bracket-match' + (isDone ? ' done' : '');
 
@@ -1982,7 +2052,7 @@
         }
       }
 
-      function buildPastTop8(data) {
+      function buildPastTop8(data, season) {
         const container = document.getElementById('past-top8-scroll');
         if (!container) return;
         container.innerHTML = '';
@@ -2035,8 +2105,8 @@
           roundEl.appendChild(roundLabelEl);
           const matchesWrap = document.createElement('div');
           matchesWrap.className = 'bracket-round-matches';
-          for (let m = 1; m <= round.matches; m++) matchesWrap.appendChild(buildPastTop8Match(round, m, getPlayers(round.id, m), top8, pastTop8Seeds));
-          if (round.id === 'gf' && !noThirdPlace) matchesWrap.appendChild(buildPastTop8Match({ id:'tp', name:'3rd Place Match', label:null }, 1, getPlayers('tp', 1), top8, pastTop8Seeds));
+          for (let m = 1; m <= round.matches; m++) matchesWrap.appendChild(buildPastTop8Match(round, m, getPlayers(round.id, m), top8, pastTop8Seeds, season));
+          if (round.id === 'gf' && !noThirdPlace) matchesWrap.appendChild(buildPastTop8Match({ id:'tp', name:'3rd Place Match', label:null }, 1, getPlayers('tp', 1), top8, pastTop8Seeds, season));
           roundEl.appendChild(matchesWrap);
           container.appendChild(roundEl);
         });
@@ -2154,7 +2224,7 @@
         container.insertBefore(svg, container.firstChild);
       }
 
-      function buildPastTop8Match(round, matchNum, players, top8, seedLookup) {
+      function buildPastTop8Match(round, matchNum, players, top8, seedLookup, season) {
         const key    = `${round.id}_${matchNum}`;
         const result = top8[key] || null;
         const isDone = !!result;
@@ -2165,6 +2235,7 @@
         else { card = document.createElement('div'); }
         card.className = 'top8-match' + (isDone ? ' done' : '');
         card.id = `past-top8-card-${round.id}-${matchNum}`;
+        if (isDone && result.vod) card.dataset.match = `s${season}_${key}`;
 
         const matchRow = document.createElement('div');
         matchRow.className = 'top8-match-rung';
@@ -2208,4 +2279,5 @@
       window.addEventListener('resize', () => { drawPastTop8Connectors(); });
 
     })();
+
 

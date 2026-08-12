@@ -1,6 +1,11 @@
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
+    window._runWhenIdle = fn => {
+      if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: 2000 });
+      else setTimeout(fn, 200);
+    };
+
     (function() {
       const params = new URLSearchParams(window.location.search);
       const route = params.get('route');
@@ -11,16 +16,21 @@
       }
     })();
 
-    const PAGE_TO_PATH = { home: '/', standings: '/standings', participants: '/participants', format: '/format', about: '/about', stats: '/statistics', content: '/content' };
-    const PATH_TO_PAGE = { '/': 'home', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/about': 'about', '/statistics': 'stats', '/content': 'content' };
+    const PAGE_TO_PATH = { home: '/', runners: '/runners', standings: '/standings', participants: '/participants', format: '/format', gallery: '/gallery', team: '/team', stats: '/statistics', content: '/content' };
+    const PATH_TO_PAGE = { '/': 'home', '/runners': 'runners', '/standings': 'standings', '/participants': 'participants', '/format': 'format', '/gallery': 'gallery', '/team': 'team', '/statistics': 'stats', '/content': 'content' };
 
     function showPage(target, addHistory) {
       const page = document.getElementById(target);
       if (!page) return;
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.querySelectorAll('.nav-dropdown-toggle').forEach(t => t.classList.remove('active'));
       page.classList.add('active');
-      document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => a.classList.add('active'));
+      document.querySelectorAll(`.nav-links a[data-page="${target}"]`).forEach(a => {
+        a.classList.add('active');
+        const toggle = a.closest('.nav-dropdown')?.querySelector('.nav-dropdown-toggle');
+        if (toggle) toggle.classList.add('active');
+      });
       if (addHistory) history.pushState({ page: target }, '', PAGE_TO_PATH[target] || '/');
       if (target === 'stats' && window._statsRender) window._statsRender();
     }
@@ -121,9 +131,11 @@
           for (const [id, rs] of Object.entries(event.runner_state || {})) {
             const name = normName(state.people?.[id]?.name);
             const time = rs.result?.SingleScore?.score?.final_result ?? rs.result?.SplitTimes?.final_result;
-            if (name && time) places.push({ name, time });
+            const sortSecs = rs.result?.SplitTimes?.final_result_precise ? toSecs(rs.result.SplitTimes.final_result_precise) : toSecs(time);
+            if (name && time) places.push({ name, time, sortSecs });
           }
-          places.sort((a, b) => toSecs(a.time) - toSecs(b.time));
+          places.sort((a, b) => a.sortSecs - b.sortSecs);
+          places.forEach(p => delete p.sortSecs);
           if (places.length) results[key] = { places, vod: event.console || null };
         }
 
@@ -218,6 +230,7 @@
         window.scrollTo(0, 0);
         hamburgerBtn.classList.remove('open');
         navLinks.classList.remove('open');
+        closeAllDropdowns();
       });
     });
 
@@ -235,87 +248,124 @@
       });
     });
 
+    const MENU_OPEN_ANIM_MS = 150;
+    function closeAllDropdowns() {
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+        d.classList.remove('open');
+        d.querySelector('.nav-dropdown-menu')?.classList.remove('menu-interactive');
+      });
+    }
+    document.querySelectorAll('.nav-dropdown').forEach(drop => {
+      const menu = drop.querySelector('.nav-dropdown-menu');
+      let hoverTimer = null;
+      drop.addEventListener('mouseenter', () => {
+        clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(() => menu.classList.add('menu-interactive'), MENU_OPEN_ANIM_MS);
+      });
+      drop.addEventListener('mouseleave', () => {
+        clearTimeout(hoverTimer);
+        menu.classList.remove('menu-interactive');
+      });
+      drop.querySelector('.nav-dropdown-toggle').addEventListener('click', e => {
+        e.stopPropagation();
+        const willOpen = !drop.classList.contains('open');
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => { if (d !== drop) { d.classList.remove('open'); d.querySelector('.nav-dropdown-menu')?.classList.remove('menu-interactive'); } });
+        drop.classList.toggle('open', willOpen);
+        menu.classList.toggle('menu-interactive', willOpen);
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAllDropdowns();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeAllDropdowns();
+    });
 
+    (function() {
+      const navEl = document.querySelector('nav');
+      const logoEl = document.querySelector('.nav-logo');
+      const measureList = navLinks.cloneNode(true);
+      measureList.removeAttribute('id');
+      measureList.classList.remove('nav-links');
+      measureList.classList.add('nav-measure-links');
+      document.body.appendChild(measureList);
 
-    // this was the starfield animating but we do not need this anymore
+      function updateNavCollapse() {
+        const navStyle = getComputedStyle(navEl);
+        const available = navEl.clientWidth - parseFloat(navStyle.paddingLeft) - parseFloat(navStyle.paddingRight);
+        const needed = logoEl.getBoundingClientRect().width + measureList.getBoundingClientRect().width + 24;
+        const fits = needed <= available;
+        document.body.classList.toggle('nav-collapsed', !fits);
+        if (fits) {
+          hamburgerBtn.classList.remove('open');
+          navLinks.classList.remove('open');
+        }
+      }
+
+      updateNavCollapse();
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateNavCollapse, 100);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateNavCollapse);
+    })();
+
+    (function() {
+      const statusBar = document.querySelector('.status-bar');
+      const statusBarRight = document.querySelector('.status-bar-right');
+      if (!statusBar || !statusBarRight) return;
+      const leftItems = [...statusBar.querySelectorAll('.status-item')];
+
+      const measureRight = statusBarRight.cloneNode(true);
+      measureRight.removeAttribute('class');
+      measureRight.classList.add('status-bar-measure');
+      document.body.appendChild(measureRight);
+
+      function updateStatusBarCollapse() {
+        const barStyle = getComputedStyle(statusBar);
+        const available = statusBar.clientWidth - parseFloat(barStyle.paddingLeft) - parseFloat(barStyle.paddingRight);
+        const gap = parseFloat(barStyle.columnGap || barStyle.gap) || 0;
+        const leftWidth = leftItems.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * leftItems.length;
+        const rightWidth = measureRight.getBoundingClientRect().width;
+        const fits = (leftWidth + rightWidth) <= available;
+        document.body.classList.toggle('status-bar-collapsed', !fits);
+      }
+
+      updateStatusBarCollapse();
+      let statusResizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(statusResizeTimer);
+        statusResizeTimer = setTimeout(updateStatusBarCollapse, 100);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateStatusBarCollapse);
+    })();
+
     (function() {
       const canvas = document.getElementById('starfield');
       const ctx = canvas.getContext('2d');
-      let stars = [];
       const COUNT = 60;
-
-      function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
 
       function rand(min, max) { return Math.random() * (max - min) + min; }
 
       function createStar() {
-        return {
-          x:        rand(0, canvas.width),
-          y:        rand(0, canvas.height),
-          r:        rand(0.4, 1.4),
-          alpha:    rand(0.2, 0.8),
-          targetAlpha: rand(0.2, 0.8),
-          fadeSpeed: rand(0.003, 0.012),
-          driftX:   rand(-0.06, 0.06),
-          driftY:   rand(-0.04, 0.04),
-          driftTimer: rand(0, 300),
-          driftInterval: rand(200, 600),
-          movingX:  0,
-          movingY:  0,
-        };
+        return { x: rand(0, canvas.width), y: rand(0, canvas.height), r: rand(0.4, 1.4), alpha: rand(0.2, 0.8) };
       }
 
-      function init() {
-        resize();
-        stars = Array.from({ length: COUNT }, createStar);
-      }
-
-      //lowkey yoinked this entire animated star thing
-      function update(s) {
-        s.driftTimer++;
-        if (s.driftTimer > s.driftInterval) {
-          s.movingX = rand(-0.08, 0.08);
-          s.movingY = rand(-0.06, 0.06);
-          s.driftTimer = 0;
-          s.driftInterval = rand(200, 600);
-        }
-        s.x += s.movingX;
-        s.y += s.movingY;
-        s.movingX *= 0.97;
-        s.movingY *= 0.97;
-
-        if (s.x < 0) s.x = canvas.width;
-        if (s.x > canvas.width) s.x = 0;
-        if (s.y < 0) s.y = canvas.height;
-        if (s.y > canvas.height) s.y = 0;
-
-        if (Math.abs(s.alpha - s.targetAlpha) < 0.01) {
-          s.targetAlpha = rand(0.1, 0.85);
-        }
-        s.alpha += (s.targetAlpha - s.alpha) * s.fadeSpeed;
-      }
-
-      let rafId = null;
       function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const stars = Array.from({ length: COUNT }, createStar);
         for (const s of stars) {
-          update(s);
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(200, 215, 240, ${s.alpha})`;
           ctx.fill();
         }
-        rafId = requestAnimationFrame(draw);
       }
 
-      window.__pauseStarfield = () => { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } };
-      window.__resumeStarfield = () => { if (rafId === null) draw(); };
-
-      window.addEventListener('resize', () => { resize(); });
-      init();
+      let resizeTimer;
+      window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(draw, 150); });
       draw();
     })();
 
@@ -347,6 +397,14 @@
     }
 
     (function() {
+      const S1_QF1_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  QUARTERFINAL  ZAC (1) vs DAHAMSTER (8) 2200329490.json';
+      const S1_QF2_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  QUARTERFINAL  EROADHOUSE (4) VS SCYNOR (5) 2204653311.json';
+      const S1_QF3_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  QUARTERFINAL  FROSTBYTE (3) VS WIISUPER (6) 2202991949.json';
+      const S1_QF4_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  QUARTER-FINAL  Ginger (2) vs Jared (7) 2199473478.json';
+      const S1_SF1_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  SEMIFINALS  ZAC (1) VS. EROADHOUSE (4) 2206611483.json';
+      const S1_SF2_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  SEMIFINALS  WIISUPER (6) VS ITSJARED97 (7) 2204654724.json';
+      const S1_GF1_FILE = 'chats/Season 1 2024/Top 8/ANY_ LADDER LEAGUE  GRAND FINALS  EROADHOUSE (4) VS. ITSJARED97 (7) 2208442047.json';
+
       const QF_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-10-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ QUARTERFINAL 1 ｜ DRAGON VS JARED - Chat.json';
       const SF_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-11-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ SEMIFINAL 1 ｜ DRAGON VS ZAC - Chat.json';
       const GF_DAY_TOP8_FILE = 'chats/Season 3 2026/TOP 8/[7-12-26] LEGOSpeedruns - LADDER LEAGUE PLAYOFFS ｜ THIRD PLACE MATCH ｜ ZAC VS WIISUPER - Chat.json';
@@ -383,6 +441,47 @@
       const QF1_CUT_OUT = 2 * 3600 + 12 * 60 + 48;    // 2:12:48
       const QF1_CUT_IN  = 2 * 3600 + 53 * 60 + 17;    // 2:53:17
       const CHAT_REPLAYS = {
+        s1_qf_1: { file: S1_QF1_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_qf_2: { file: S1_QF2_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_qf_3: { file: S1_QF3_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_qf_4: { file: S1_QF4_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_sf_1: { file: S1_SF1_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_sf_2: { file: S1_SF2_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_gf_1: { file: S1_GF1_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_playin_1: { file: 'chats/Season 1 2024/Play Ins/TCS Any_ LADDER LEAGUE  PLAYINS MATCH 1  PHANTOM (21) VS NOLAN (24) VS APPLE (25) 2141490209.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_playin_2: { file: 'chats/Season 1 2024/Play Ins/TCS Any_ LADDER LEAGUE  PLAYINS MATCH 2  ANONYMOUS (22) VS YAHOOTLES (23) VS RAPHO 2141829802.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_playin_3: { file: 'chats/Season 1 2024/Play Ins/TCS Any_ LADDER LEAGUE  PLAYINS FINAL  GILDETPHANTOM (21) VS ANONYMOUS (22) 2143340582.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_1_1: { file: 'chats/Season 1 2024/WEEK 1/TCS Any_ LADDER LEAGUE  WEEK 1 RUNG 1  ZAC (1) VS GINGER (2) VS JARED (3) 2145237748.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_2: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 2  EROADHOUSE (4) vs WIISUPER (5) vs SCYNOR (6) 2150263719.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_3: { file: 'chats/Season 1 2024/WEEK 1/[5-13-24] LEGOSpeedruns2 - ANY_ LADDER LEAGUE ｜ WEEK 1 RUNG 3 ｜ FROSTBYTE (7) JABLAKY (8) EJPMAN (9) - Chat.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_4: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 4  HAMSTER (10) vs LAZER (11) vs CORE (12) 2148542133.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_5: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 5  HERASMIE (13) vs GARRISON (14) vs REVVYLO (15) 2148254977.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_6: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 6  FLUP (16) VS CHARZIGHT (17) VS ANORAK (18) 2145812298.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_7: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 7  ZOTA (19) vs TWICELYTE (20) vs PHANTOM (21) 2149335031.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_1_8: { file: 'chats/Season 1 2024/WEEK 1/ANY_ LADDER LEAGUE  WEEK 1 RUNG 8  ANONYMOUS (22) vs NOLAN (24) vs RAPHO (26) 2148254285.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_2_1: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 1  GINGER (2) vs WIISUPER (5) vs SCYNOR (6) 2151960842.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_2_3: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 3  EROADHOUSE (4) VS LAZER (11) VS HAMSTER (10) 2157243974.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_2_4: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 4  JABLAKY (8) vs HERASMIE (13) vs REVVYLO (15) 2154315221.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_2_5: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 5  CORE (12) vs FLUP (16) vs CHARZIGHT (17) 2151706459.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_2_6: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 6  GARRISON (14) vs TWICELYTE (20) vs PHANTOM (21) 2152556518.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_2_7: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 7  ANORAK (18) vs THENZOTA (19) vs NOLAN (24) 2155516541.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_5_1: { file: 'chats/Season 1 2024/WEEK 5/ANY_ LADDER LEAGUE  WEEK 5 RUNG 1  JARED (3) vs. SCYNOR (6) vs. EJPMAN (9) 2176693712.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_5_2: { file: 'chats/Season 1 2024/WEEK 5/ANY_ LADDER LEAGUE  WEEK 5 RUNG 2  WIISUPER (5) vs. DAHAMSTER (10) vs. FLAMINGLAZER (11) 2176300892.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_5_3: { file: 'chats/Season 1 2024/WEEK 5/ANY_ LADDER LEAGUE  WEEK 5 RUNG 3  HERASMIE (13) vs. GARRISON (14) vs. REVVYLO (15) 2176693710.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_6_1: { file: 'chats/Season 1 2024/WEEK 6/ANY_ LADDER LEAGUE  WEEK 6 RUNG 1  WIISUPER (5) vs. EJP (9) vs. LAZER (11) 2183247154.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_6_2: { file: 'chats/Season 1 2024/WEEK 6/ANY_ LADDER LEAGUE  WEEK 6 RUNG 2  JARED (3) vs. HERASMIE (13) vs. REVVYLO (15) 2188775875.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_6_3: { file: 'chats/Season 1 2024/WEEK 6/ANY_ LADDER LEAGUE  WEEK 6 RUNG 3  JABLAKY (8) vs. HAMSTER (10) vs. GARRISON (14) 2185392354.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_7_1: { file: 'chats/Season 1 2024/WEEK 7/ANY_ LADDER LEAGUE  WEEK 7 RUNG 1  JARED (3) vs. EJP (9) vs. HERASMIE (13) 2191928871.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_7_2: { file: 'chats/Season 1 2024/WEEK 7/ANY_ LADDER LEAGUE  WEEK 7 RUNG 2  HAMSTER (10) vs. LAZER (11) vs. REVVYLO (15) 2188770899.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_8_1: { file: 'chats/Season 1 2024/WEEK 8/ANY_ LADDER LEAGUE  WEEK 8 RUNG 1  EJP (9) vs. HAMSTER (10) vs. HERASMIE (13) 2195431937.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
         qf_1: { file: QF_TOP8_FILE, segments: [
           { streamStart: QF1_START, streamEnd: QF1_CUT_OUT, videoStart: 0 },
           { streamStart: QF1_CUT_IN, videoStart: QF1_CUT_OUT - QF1_START },
@@ -496,6 +595,23 @@
         overlay.querySelector('.vod-modal-close').addEventListener('click', closeVodModal);
         overlay.addEventListener('click', e => { if (e.target === overlay) closeVodModal(); });
         document.body.appendChild(overlay);
+
+        chatMessagesEl.addEventListener('mouseover', e => {
+          const wrap = e.target.closest('.vod-emote-wrap');
+          const tip = wrap && wrap.querySelector('.vod-emote-tooltip');
+          if (!tip) return;
+          const margin = 6;
+          const boundsRect = chatMessagesEl.getBoundingClientRect();
+          const wrapRect = wrap.getBoundingClientRect();
+          const tipWidth = tip.offsetWidth;
+          if (!tipWidth) return;
+          const minLeft = boundsRect.left + margin;
+          const maxLeft = boundsRect.right - margin - tipWidth;
+          const centeredLeft = wrapRect.left + wrapRect.width / 2 - tipWidth / 2;
+          const clampedLeft = Math.max(minLeft, Math.min(centeredLeft, maxLeft));
+          tip.style.transform = 'none';
+          tip.style.left = `${clampedLeft - wrapRect.left}px`;
+        });
       }
 
       const MAX_RENDERED_MESSAGES = 150;
@@ -661,13 +777,22 @@
         if (!videoId) return;
         e.preventDefault();
         const idMatch = card.id && card.id.match(/^top8-card-([a-z]+)-(\d+)$/);
-        const matchKey = idMatch ? `${idMatch[1]}_${idMatch[2]}` : null;
+        const matchKey = card.dataset.match || (idMatch ? `${idMatch[1]}_${idMatch[2]}` : null);
         openVodModal(videoId, card.href, matchKey);
       });
 
       //ladder bracket cards already carry their week_rung key via dataset.match
       document.addEventListener('click', e => {
         const card = e.target.closest('a.bracket-match.done');
+        if (!card || !card.href) return;
+        const videoId = extractYouTubeId(card.href);
+        if (!videoId) return;
+        e.preventDefault();
+        openVodModal(videoId, card.href, card.dataset.match || null);
+      });
+
+      document.addEventListener('click', e => {
+        const card = e.target.closest('a.runner-match-row.has-vod');
         if (!card || !card.href) return;
         const videoId = extractYouTubeId(card.href);
         if (!videoId) return;
@@ -686,7 +811,7 @@
     }, { threshold: 0.1 });
 
     function observeAll() {
-      document.querySelectorAll('.participant-card, .reveal, .reveal-left, .reveal-scale').forEach(el => {
+      document.querySelectorAll('.participant-card, .runner-card, .reveal, .reveal-left, .reveal-scale').forEach(el => {
         observer.observe(el);
       });
     }
@@ -725,4 +850,5 @@
       window.scrollTo(0, 0);
       setTimeout(observeAll, 50);
     }
+
 

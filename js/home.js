@@ -2,6 +2,8 @@
     const SEASON_HOME_COUNTDOWN_ENABLED = false;
     let season3CountdownActive = false;
 
+    const LCQ_WINNERS = 3;
+
     schedulePromise.then(sd => {
       function updateUnit(el, value, singular, plural, pad, hideIfZero = true) {
         if (!el) return;
@@ -314,8 +316,8 @@
           : '';
         let placesHtml;
         if (e.section === 'lcq') {
-          const w = places[0];
-          placesHtml = `<div class="uc-result-row uc-result-gold">★ ${w.name}<span class="uc-result-time">${w.time}</span></div>`;
+          const qualifiers = places.slice(0, LCQ_WINNERS);
+          placesHtml = qualifiers.map(p => `<div class="uc-result-row uc-result-gold">★ ${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
         } else if (places.length === 2) {
           const isGF = e.key === 'gf_1';
           placesHtml = places.map((p, i) => {
@@ -327,7 +329,7 @@
           const cls = ['uc-result-1st', 'uc-result-2nd', 'uc-result-3rd'];
           placesHtml = places.map((p, i) => `<div class="uc-result-row ${cls[i] || 'uc-result-3rd'}">${p.name}<span class="uc-result-time">${p.time}</span></div>`).join('');
         }
-        const rowCount = e.section === 'lcq' ? 1 : places.length;
+        const rowCount = e.section === 'lcq' ? Math.min(places.length, LCQ_WINNERS) : places.length;
         const spoilerHtml = Array.from({length: rowCount}, () =>
           `<div class="uc-spoiler-row"><span class="uc-spoiler-bar" style="width:80px"></span><span class="uc-spoiler-bar" style="width:44px"></span></div>`
         ).join('');
@@ -509,6 +511,41 @@
       }, { threshold: 0.12 });
       upObs.observe(upcomingSection);
     })();
+    (function initHeroSlideshow() {
+      const homePage = document.getElementById('home');
+      const slides = document.querySelectorAll('#home .hero-bg-img');
+      if (!homePage || slides.length < 2) return;
+
+      let i = [...slides].findIndex(s => s.classList.contains('active'));
+      if (i < 0) i = 0;
+      let timer = null;
+
+      function advance() {
+        slides[i].classList.remove('active');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('active');
+      }
+      function start() {
+        if (!timer) timer = setInterval(advance, 8000);
+      }
+      function stop() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      if (homePage.classList.contains('active')) start();
+
+      new MutationObserver(() => {
+        if (homePage.classList.contains('active')) {
+          slides[i].classList.remove('active');
+          i = 0;
+          slides[i].classList.add('active');
+          start();
+        } else {
+          stop();
+        }
+      }).observe(homePage, { attributes: true, attributeFilter: ['class'] });
+    })();
     //home page twitch EMBED
     (async function initTwitchEmbed() {
       //only show if a match is live according to schedule
@@ -547,4 +584,5 @@
       setLive(await anyMatchLive());
       setInterval(async () => setLive(await anyMatchLive()), 60_000);
     })();
+
 

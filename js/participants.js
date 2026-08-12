@@ -1,6 +1,8 @@
     //participants data js
     const grid = document.getElementById('p-grid');
 
+    const DEFAULT_AVATAR_ICON = '<svg viewBox="0 0 24 24" width="60%" height="60%" fill="var(--dim)"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.9 1.7-9.9 5v2.3h19.8V19.5c0-3.3-6.6-5-9.9-5z"/></svg>';
+
     function pOrdinal(n) {
       const s = ['th','st','nd','rd'], v = n % 100;
       return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -24,6 +26,7 @@
       fetch('/data/past_seasons.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({})),
       fetch('https://www.speedrun.com/api/v1/leaderboards/46w33l1r/category/9d8p7ylk?embed=players&platform=PC&top=150&var-j84pew89=0q5v2grl').then(r => r.json()).catch(() => null),
     ]).then(([allParticipants, ladderResults, pastSeasons, lbData]) => {
+      const _runParticipantsRender = () => {
       const participants = allParticipants.season3 || [];
 
       //season tab switching (hardcoding previous seasons cuz its easier)
@@ -58,7 +61,7 @@
       });
 
       function renderSimple(list, seasonKey) {
-        const seasonStats = pastSeasonStats[seasonKey] || {};
+        const seasonWideStats = pastSeasonWideStats[seasonKey] || {};
         grid.innerHTML = '';
         const sorted = [...list].sort((a, b) => {
           if (a.placement == null && b.placement == null) return 0;
@@ -67,7 +70,6 @@
           return a.placement - b.placement;
         });
         sorted.forEach(p => {
-          const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
           const iso = (p.country === 'UK' ? 'GB' : p.country || 'US').toLowerCase();
           const srUser = p.username || p.name;
           const srcEntry = srcPBMap[srUser.toLowerCase()];
@@ -80,7 +82,7 @@
             : (srcEntry?.colorSolid ? `style="border: 3px solid ${srcEntry.colorSolid};"` : '');
           const avatarContent = srcEntry?.imageUri
             ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">`
-            : initials;
+            : DEFAULT_AVATAR_ICON;
 
           const placementColors = { 1: '#d4b84a', 2: '#9aa8b8', 3: '#b07040' };
           let statusHtml = '';
@@ -117,7 +119,7 @@
               <div class="p-stats">
                 <div class="p-stat-row">
                   ${p.seededPB != null ? `<div class="p-stat"><span class="p-stat-label">Seeded PB</span><span class="p-stat-value">${p.seededPB}</span></div>` : ''}
-                  ${(() => { const st = seasonStats[p.name]; if (!st) return ''; const pb = pFmtTime(st.best); const avg = pFmtTime(st.times.reduce((a,b)=>a+b,0)/st.times.length); return `<div class="p-stat"><span class="p-stat-label">Ladder PB</span><span class="p-stat-value">${pb}</span></div><div class="p-stat"><span class="p-stat-label">Ladder AVG</span><span class="p-stat-value">${avg}</span></div>`; })()}
+                  ${(() => { const st = seasonWideStats[p.name]; if (!st) return ''; const pb = pFmtTime(st.best); const avg = pFmtTime(st.times.reduce((a,b)=>a+b,0)/st.times.length); return `<div class="p-stat"><span class="p-stat-label">Season PB</span><span class="p-stat-value">${pb}</span></div><div class="p-stat"><span class="p-stat-label">Season AVG</span><span class="p-stat-value">${avg}</span></div>`; })()}
                 </div>
                 ${acBadges}
                 ${statusHtml}
@@ -179,26 +181,22 @@
         });
       });
 
-      //prev seasons ladder pb/avg (calculating not hardcoding this part)
-      const pastSeasonStats = {};
+      const pastSeasonWideStats = {};
       ['season1', 'season2'].forEach(sKey => {
         const sData = pastSeasons[sKey];
         if (!sData) return;
-        const { wildcardWeek = null, results = {} } = sData;
         const stats = {};
-        Object.entries(results).forEach(([key, result]) => {
-          const w = parseInt(key.split('_')[0]);
-          if (isNaN(w)) return;
-          if (wildcardWeek && w >= wildcardWeek) return;
-          (result.places || []).forEach(entry => {
-            if (!entry.name || !entry.time || entry.time === 'DNF') return;
-            const secs = pParseTime(entry.time);
-            if (secs == null || isNaN(secs)) return;
-            if (!stats[entry.name]) stats[entry.name] = { best: secs, times: [secs] };
-            else { if (secs < stats[entry.name].best) stats[entry.name].best = secs; stats[entry.name].times.push(secs); }
-          });
-        });
-        pastSeasonStats[sKey] = stats;
+        function addEntry(name, timeStr) {
+          if (!name || !timeStr || timeStr === 'DNF') return;
+          const secs = pParseTime(timeStr);
+          if (secs == null || isNaN(secs)) return;
+          if (!stats[name]) stats[name] = { best: secs, times: [secs] };
+          else { if (secs < stats[name].best) stats[name].best = secs; stats[name].times.push(secs); }
+        }
+        Object.values(sData.results || {}).forEach(result => (result.places || []).forEach(e => addEntry(e.name, e.time)));
+        Object.values(sData.top8 || {}).forEach(result => (result.places || []).forEach(e => addEntry(e.name, e.time)));
+        (sData.playins || []).forEach(match => (match.places || []).forEach(e => addEntry(e.name, e.time)));
+        pastSeasonWideStats[sKey] = stats;
       });
 
       //top 8 seeds
@@ -358,7 +356,7 @@
           const t         = entry.run?.times?.realtime_t;
           const submitted = entry.run?.submitted || null;
           if (!info || t == null) return;
-          const val = { t, place: entry.place, colorFrom: info.colorFrom, colorTo: info.colorTo, colorSolid: info.colorSolid, imageUri: info.imageUri, submitted };
+          const val = { t, place: entry.place, colorFrom: info.colorFrom, colorTo: info.colorTo, colorSolid: info.colorSolid, imageUri: info.imageUri, submitted, srcId: pid };
           if (info.slug && !srcPBMap[info.slug]) srcPBMap[info.slug] = val;
           if (info.intl && info.intl !== info.slug && !srcPBMap[info.intl]) srcPBMap[info.intl] = val;
         });
@@ -377,6 +375,12 @@
           ? { colorFrom: entry.colorFrom, colorTo: entry.colorTo, colorSolid: entry.colorSolid }
           : null;
       });
+      window._season3Placement = {};
+      participants.forEach(p => {
+        const place = top8Placement[p.name] ?? playerPlacement[p.name] ?? null;
+        if (place != null) window._season3Placement[p.name.toLowerCase()] = place;
+      });
+
       document.dispatchEvent(new CustomEvent('nameColorMapReady'));
 
       function renderSeason3() {
@@ -388,7 +392,6 @@
         return placeA - placeB;
       });
       sorted3.forEach(p => {
-        const initials = p.name.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase();
         const iso      = (p.country === 'UK' ? 'GB' : p.country).toLowerCase();
         const pb      = seasonPB[p.name]    != null ? pFmtTime(seasonPB[p.name]) : '—';
         const pbLabel = seasonPBKey[p.name] ? pMatchLabel(seasonPBKey[p.name]) : null;
@@ -437,14 +440,14 @@
 
         grid.innerHTML += `
           <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
-            <div class="p-avatar" ${avatarStyle}>${srcEntry?.imageUri ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">` : initials}</div>
+            <div class="p-avatar" ${avatarStyle}>${srcEntry?.imageUri ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">` : DEFAULT_AVATAR_ICON}</div>
             <div class="p-handle"><span class="fi fi-${iso}"></span><span ${nameStyle}>${p.name}</span></div>
             <div class="p-role">Seed ${p.seed}</div>
             <div class="p-stats">
               <div class="p-stat-row">
                 <div class="p-stat"><span class="p-stat-label">PB</span><span class="p-stat-value${srcPbDate ? ' p-stat-tip' : ''}"${srcPbDate ? ` data-tip="${srcPbDate}" data-tip-label="Achieved on"` : ''}>${srcPb}</span></div>
-                <div class="p-stat"><span class="p-stat-label">Rank</span><span class="p-stat-value" ${srcPlaceColor ? `style="color:${srcPlaceColor};"` : ''}>${srcPlace}</span></div>
-                ${seasonPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Season PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}"` : ''}>${pb}</span></div>` : ''}
+                <div class="p-stat p-stat-tip" data-tip="Any% Leaderboard Rank"><span class="p-stat-label">Rank</span><span class="p-stat-value" ${srcPlaceColor ? `style="color:${srcPlaceColor};"` : ''}>${srcPlace}</span></div>
+                ${seasonPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Season PB</span><span class="p-stat-value${pbLabel ? ' p-stat-tip' : ''}"${pbLabel ? ` data-tip="${pbLabel}" data-tip-label="Achieved in"` : ''}>${pb}</span></div>` : ''}
                 ${seasonPB[p.name] != null ? `<div class="p-stat"><span class="p-stat-label">Season AVG</span><span class="p-stat-value">${avg}</span></div>` : ''}
               </div>
               ${(() => {
@@ -474,7 +477,9 @@
         el.addEventListener('mouseenter', e => {
           pTip.style.minWidth = '0';
           pTip.style.padding = '.5rem .8rem';
-          pTip.innerHTML = `<div style="font-size:.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase">${el.dataset.tipLabel || 'Achieved in'}</div><div style="font-size:.9rem;color:var(--text);margin-top:.2rem">${el.dataset.tip}</div>`;
+          pTip.innerHTML = el.dataset.tipLabel
+            ? `<div style="font-size:.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase">${el.dataset.tipLabel}</div><div style="font-size:.9rem;color:var(--text);margin-top:.2rem">${el.dataset.tip}</div>`
+            : `<div style="font-size:.85rem;color:var(--text)">${el.dataset.tip}</div>`;
           pTip.style.display = 'block';
           pTip.style.left = '0px';
           pTip.style.top = '0px';
@@ -491,5 +496,8 @@
       }
 
       renderSeason3();
+      };
+      window._runWhenIdle ? window._runWhenIdle(_runParticipantsRender) : _runParticipantsRender();
     }).catch(() => {});
+
 

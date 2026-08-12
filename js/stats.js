@@ -39,14 +39,144 @@
         return st.splits ?? st.score?.splits ?? null;
       }
 
-      //stats page always shows the current season now (dropdown removed)
+      const PAST_TOP8_FILES = { 1: '/data/lls1top8.csv', 2: '/data/lls2top8.csv' };
+      const PAST_LADDER_FILES = {
+        1: [1, 2, 3, 4, 5, 6, 8].map(week => ({ week, url: `/data/lls1w${week}.csv` })),
+        2: [1, 2, 3, 4, 5, 6, 7].map(week => ({ week, url: `/data/lls2w${week}.csv` })),
+      };
+      const pastSeasonCache = {};
+
+      function parseCumTimeToMs(str) {
+        if (!str || !str.trim()) return null;
+        const parts = str.trim().split(':').map(Number);
+        if (parts.some(isNaN)) return null;
+        let h = 0, m, s;
+        if (parts.length === 3) [h, m, s] = parts;
+        else if (parts.length === 2) [m, s] = parts;
+        else return null;
+        return Math.round((h * 3600 + m * 60 + s) * 1000);
+      }
+
+      function canonicalName(n, nameMap) {
+        if (!nameMap) return n;
+        const lower = n.toLowerCase();
+        const exact = nameMap.get(lower);
+        if (exact) return exact;
+        const matches = [...nameMap.values()].filter(full => full.toLowerCase().includes(lower));
+        return matches.length === 1 ? matches[0] : n;
+      }
+
+      function parseTop8Csv(text, nameMap) {
+        const lines = text.split(/\r?\n/).filter(l => l.trim().length);
+        const header = lines[0].split(',');
+        const groupStarts = [];
+        for (let c = 1; c < header.length; c++) {
+          if (header[c] && header[c].trim()) groupStarts.push({ col: c, label: header[c].trim() });
+        }
+        const nameRow = lines[2].split(',');
+        const dataLines = lines.slice(3);
+
+        const events = [];
+        const people = {};
+        groupStarts.forEach(({ col, label }) => {
+          const name1 = canonicalName((nameRow[col] || '').trim(), nameMap);
+          const name2 = canonicalName((nameRow[col + 1] || '').trim(), nameMap);
+          if (!name1 || !name2) return;
+          people[name1] = { name: name1 };
+          people[name2] = { name: name2 };
+          const splits1 = [], splits2 = [];
+          dataLines.forEach(line => {
+            const cols = line.split(',');
+            splits1.push(parseCumTimeToMs(cols[col]));
+            splits2.push(parseCumTimeToMs(cols[col + 1]));
+          });
+          events.push({
+            name: label.toUpperCase(),
+            runner_state: {
+              [name1]: { result: { SplitTimes: { splits: splits1 } } },
+              [name2]: { result: { SplitTimes: { splits: splits2 } } },
+            },
+          });
+        });
+        return { events, people };
+      }
+
+      function parseLadderWeekCsv(text, weekNum, nameMap) {
+        const nameRow = text.split(/\r?\n/).filter(l => l.trim().length)[2].split(',');
+        const dataLines = text.split(/\r?\n/).filter(l => l.trim().length).slice(3);
+
+        const groupStarts = [];
+        for (let c = 1; c < nameRow.length;) {
+          if (nameRow[c] && nameRow[c].trim()) { groupStarts.push(c); c += 4; }
+          else c++;
+        }
+
+        const events = [];
+        const people = {};
+        groupStarts.forEach((col, idx) => {
+          const names = [0, 1, 2].map(off => canonicalName((nameRow[col + off] || '').trim(), nameMap));
+          if (names.some(n => !n)) return;
+          const splits = names.map(() => []);
+          dataLines.forEach(line => {
+            const cols = line.split(',');
+            names.forEach((_, off) => splits[off].push(parseCumTimeToMs(cols[col + off])));
+          });
+          const runner_state = {};
+          names.forEach((name, off) => {
+            people[name] = { name };
+            runner_state[name] = { result: { SplitTimes: { splits: splits[off] } } };
+          });
+          events.push({ name: `WEEK ${weekNum} RUNG ${idx + 1}`, runner_state });
+        });
+        return { events, people };
+      }
+
+      function getPastSeasonState(season) {
+        if (pastSeasonCache[season]) return pastSeasonCache[season];
+        const top8Url = PAST_TOP8_FILES[season];
+        const ladderFiles = PAST_LADDER_FILES[season] || [];
+        if (!top8Url && !ladderFiles.length) return Promise.resolve(null);
+
+        const promise = (async () => {
+          const participants = await participantsPromise;
+          const nameMap = new Map((participants[`season${season}`] || []).map(p => [p.name.toLowerCase(), p.name]));
+
+          const events = [];
+          const people = {};
+          const merge = parsed => {
+            events.push(...parsed.events);
+            Object.assign(people, parsed.people);
+          };
+
+          const fetches = [];
+          if (top8Url) fetches.push(fetch(top8Url, { cache: 'no-store' }).then(r => r.text()).then(text => merge(parseTop8Csv(text, nameMap))));
+          for (const { week, url } of ladderFiles) {
+            fetches.push(fetch(url, { cache: 'no-store' }).then(r => r.text()).then(text => merge(parseLadderWeekCsv(text, week, nameMap))));
+          }
+          await Promise.all(fetches);
+          return { events, people };
+        })().catch(e => {
+          console.error('Could not load past season splits', e);
+          pastSeasonCache[season] = null;
+          return null;
+        });
+
+        pastSeasonCache[season] = promise;
+        return promise;
+      }
+
+      window._runWhenIdle(() => {
+        Object.keys(PAST_TOP8_FILES).forEach(s => getPastSeasonState(parseInt(s)));
+      });
+
       let statsSectionMode = null;
+      let statsSeason = 3;
 
       async function renderStats() {
         const el = document.getElementById('stats-content');
         if (!el) return;
 
-        const state = window._amRawState;
+        const state = statsSeason === 3 ? window._amRawState : await getPastSeasonState(statsSeason);
         if (!state) {
           el.innerHTML = '<p style="color:var(--dim)">No data yet.</p>';
           return;
@@ -80,7 +210,7 @@
             if (!Array.isArray(splits)) continue;
             const runnerName = (state.people?.[id]?.name) || id;
 
-            const finalResult = rs.result?.SplitTimes?.final_result;
+            const finalResult = rs.result?.SplitTimes?.final_result_precise ?? rs.result?.SplitTimes?.final_result;
             const finalMs = (finalResult && finalResult !== 'DNF')
               ? (() => { const [fh, fm, fs] = finalResult.split(':').map(Number); return (fh * 3600 + fm * 60 + fs) * 1000; })()
               : null;
@@ -210,7 +340,8 @@
               groupMap.get(8).push({ label: 'WILDCARD', order: 1, ev });
             }
           }
-          groupOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+          const maxLadderWeek = statsSeason === 2 ? 7 : 8;
+          groupOrder = Array.from({ length: maxLadderWeek }, (_, i) => i + 1);
           groupTabLabel = k => wildcardKeys.has(k) ? 'WC' : String(k);
           overviewTitle = 'LADDER RACE OVERVIEWS';
           tabsCaption = 'WEEK';
@@ -295,12 +426,14 @@
           let _gradCounter = 0;
 
           function buildRaceGraph(ev) {
-            const runners = [];
+            const candidates = [];
+            let incompleteCount = 0;
             for (const [id, rs] of Object.entries(ev.runner_state || {})) {
               const name = state.people?.[id]?.name || id;
               const splits = getSplits(rs);
-              if (!Array.isArray(splits)) continue;
-              const finalResult = rs.result?.SplitTimes?.final_result
+              if (!Array.isArray(splits)) { incompleteCount++; continue; }
+              const finalResult = rs.result?.SplitTimes?.final_result_precise
+                ?? rs.result?.SplitTimes?.final_result
                 ?? rs.result?.SingleScore?.score?.final_result;
               const finalMs = (finalResult && finalResult !== 'DNF')
                 ? (() => { const [h, m, s] = finalResult.split(':').map(Number); return (h * 3600 + m * 60 + s) * 1000; })()
@@ -312,9 +445,11 @@
                 return null;
               });
               const missingSplits = cumulativeSplits.filter(t => t == null).length;
-              if (missingSplits > 10) continue;
-              runners.push({ name, cumulativeSplits });
+              if (missingSplits > 10) incompleteCount++;
+              candidates.push({ name, cumulativeSplits, missingSplits });
             }
+            if (incompleteCount > 1) return null;
+            const runners = candidates.filter(r => r.missingSplits <= 10);
             if (!runners.length) return null;
 
             for (const runner of runners) {
@@ -407,7 +542,8 @@
             const runners = entries.map(([id, rs]) => {
               const name = state.people?.[id]?.name || id;
               const splits = getSplits(rs);
-              const finalResult = rs.result?.SplitTimes?.final_result
+              const finalResult = rs.result?.SplitTimes?.final_result_precise
+                ?? rs.result?.SplitTimes?.final_result
                 ?? rs.result?.SingleScore?.score?.final_result;
               const finalMs = (finalResult && finalResult !== 'DNF')
                 ? (() => { const [h, m, s] = finalResult.split(':').map(Number); return (h * 3600 + m * 60 + s) * 1000; })()
@@ -418,9 +554,11 @@
                 if (i === 35 && finalMs != null) return finalMs;
                 return null;
               });
-              return { name, cumulativeSplits };
+              const missingSplits = cumulativeSplits.filter(t => t == null).length;
+              return { name, cumulativeSplits, missingSplits };
             });
-            if (runners.some(r => !r.cumulativeSplits.some(t => t != null))) return null;
+            if (runners.some(r => r.missingSplits === 36)) return null;
+            if (runners.filter(r => r.missingSplits > 10).length > 1) return null;
 
             for (const runner of runners) {
               runner.color = getColor(runner.name);
@@ -478,7 +616,10 @@
               const x = (xOf(i) - barW / 2).toFixed(1);
               const fill = ahead.colorTo ? `url(#sg${ahead._gradId})` : ahead.color;
               const splitName = SPLIT_NAMES[i] ?? `Split ${i + 1}`;
-              inner += `<rect x="${x}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="1.5" fill="${fill}" data-runner="${ahead.name}" data-tip="lead" data-split="${splitName}" data-n1="${r1.name}" data-t1="${fmtSplit(r1.cumulativeSplits[i])}" data-c1="${r1.color}" data-n2="${r2.name}" data-t2="${fmtSplit(r2.cumulativeSplits[i])}" data-c2="${r2.color}" data-ahead="${v < 0 ? 1 : 2}" style="cursor:crosshair;transition:opacity .15s"/>`;
+              const tipAttrs = `data-tip="lead" data-split="${splitName}" data-n1="${r1.name}" data-t1="${fmtSplit(r1.cumulativeSplits[i])}" data-c1="${r1.color}" data-n2="${r2.name}" data-t2="${fmtSplit(r2.cumulativeSplits[i])}" data-c2="${r2.color}" data-ahead="${v < 0 ? 1 : 2}"`;
+              const hitX = (xOf(i) - barSlot / 2).toFixed(1);
+              inner += `<rect x="${hitX}" y="0" width="${barSlot.toFixed(1)}" height="${GH}" fill="transparent" data-runner="${ahead.name}" ${tipAttrs} style="cursor:crosshair"/>`;
+              inner += `<rect x="${x}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="1.5" fill="${fill}" data-runner="${ahead.name}" ${tipAttrs} style="cursor:crosshair;transition:opacity .15s"/>`;
             });
 
             if (defs) inner = `<defs>${defs}</defs>` + inner;
@@ -509,7 +650,7 @@
                 return `<span data-runner="${r.name}" style="display:inline-flex;align-items:center;gap:.3rem;margin-right:.6rem;cursor:pointer;transition:opacity .15s">${lineEl}${nameEl}</span>`;
               }).join('');
               return `<div class="graph-anim" style="border:1px solid var(--border);padding:1rem 1.25rem;flex:0 0 auto;max-width:100%;box-sizing:border-box">
-                <div style="color:var(--dim);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${label}</div>
+                <div style="color:var(--text);font-size:.75rem;letter-spacing:.12em;font-weight:600;margin-bottom:.5rem">${label}</div>
                 <div style="margin-bottom:.6rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center">${legend}</div>
                 <div>${svg}</div>
               </div>`;
@@ -586,9 +727,8 @@
             racesDiv.querySelectorAll('span[data-runner]').forEach(el => { el.style.opacity = ''; });
             if (!container || !name) return;
             if (exactEl) {
-              //bar graphs
               container.querySelectorAll('rect[data-runner]').forEach(el => {
-                el.style.opacity = el === exactEl ? '' : '0.15';
+                el.style.opacity = el.dataset.split === exactEl.dataset.split ? '' : '0.15';
               });
             } else {
               //line graphs
@@ -613,9 +753,44 @@
         }
       }
 
+      const statsSeasonDropdown = document.getElementById('stats-season-dropdown');
+      if (statsSeasonDropdown) {
+        const seasonDropBtn = statsSeasonDropdown.querySelector('.season-dropdown-btn');
+        const seasonLabel   = document.getElementById('stats-season-label');
+        seasonDropBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          const isOpen = statsSeasonDropdown.classList.toggle('open');
+          seasonDropBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+        statsSeasonDropdown.querySelectorAll('.season-dropdown-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const season = parseInt(item.dataset.sseason);
+            statsSeasonDropdown.classList.remove('open');
+            seasonDropBtn.setAttribute('aria-expanded', 'false');
+            if (season === statsSeason) return;
+            statsSeason = season;
+            statsSectionMode = null;
+            seasonLabel.textContent = `Season ${season}`;
+            statsSeasonDropdown.querySelectorAll('.season-dropdown-item').forEach(el => el.classList.toggle('active', el === item));
+            const contentEl = document.getElementById('stats-content');
+            const loadingTimer = setTimeout(() => {
+              if (contentEl) contentEl.innerHTML = '<p style="color:var(--dim)">Loading...</p>';
+            }, 150);
+            renderStats().then(() => clearTimeout(loadingTimer));
+          });
+        });
+        document.addEventListener('click', () => {
+          if (statsSeasonDropdown.classList.contains('open')) {
+            statsSeasonDropdown.classList.remove('open');
+            seasonDropBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
       window._statsRender = renderStats;
       document.addEventListener('amUpdate', () => renderStats());
       document.addEventListener('nameColorMapReady', renderStats);
       renderStats();
     })();
+
 
