@@ -34,7 +34,7 @@
     { "name": "Scynor",       "seed": 4,  "country": "US", "placement": 5,  "seededPB": "2:22:33", "accolades": { "tourney-wins": ["OG S1", "OG S2"], "WR": 11 } },
     { "name": "Herasmie",     "seed": 5,  "country": "FI", "placement": 4,  "seededPB": "2:23:23" },
     { "name": "Anorak",     "seed": 6,  "country": "US", "placement": 7,  "seededPB": "2:24:22", "username": "AnorakDT" },
-    { "name": "Dragon76",     "seed": 7,  "country": "FI", "placement": 3,  "seededPB": "2:24:27",                                  "accolades": { "tourney-runnerups": "LLS1", "WR": 2 } , "username": "Dragon67"  },
+    { "name": "Dragon76",     "seed": 7,  "country": "FI", "placement": 3,  "seededPB": "2:24:27",                                  "accolades": { "WR": 2 } , "username": "Dragon67"  },
     { "name": "FlamingLazer", "seed": 8,  "country": "CA", "placement": 6,  "seededPB": "2:24:29" },
     { "name": "Dimei",        "seed": 9,  "country": "US", "placement": 11, "seededPB": "2:26:58" },
     { "name": "flup",         "seed": 10, "country": "CA", "placement": 16, "seededPB": "2:27:20" },

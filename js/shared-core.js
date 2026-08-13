@@ -33,6 +33,7 @@
       });
       if (addHistory) history.pushState({ page: target }, '', PAGE_TO_PATH[target] || '/');
       if (target === 'stats' && window._statsRender) window._statsRender();
+      if (target === 'runners' && window._resetRunnersView) window._resetRunnersView();
     }
 
     window.addEventListener('popstate', e => {
@@ -255,10 +256,16 @@
         d.querySelector('.nav-dropdown-menu')?.classList.remove('menu-interactive');
       });
     }
+    function closeOtherDropdowns(except) {
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+        if (d !== except) { d.classList.remove('open'); d.querySelector('.nav-dropdown-menu')?.classList.remove('menu-interactive'); }
+      });
+    }
     document.querySelectorAll('.nav-dropdown').forEach(drop => {
       const menu = drop.querySelector('.nav-dropdown-menu');
       let hoverTimer = null;
       drop.addEventListener('mouseenter', () => {
+        closeOtherDropdowns(drop);
         clearTimeout(hoverTimer);
         hoverTimer = setTimeout(() => menu.classList.add('menu-interactive'), MENU_OPEN_ANIM_MS);
       });
@@ -269,7 +276,7 @@
       drop.querySelector('.nav-dropdown-toggle').addEventListener('click', e => {
         e.stopPropagation();
         const willOpen = !drop.classList.contains('open');
-        document.querySelectorAll('.nav-dropdown.open').forEach(d => { if (d !== drop) { d.classList.remove('open'); d.querySelector('.nav-dropdown-menu')?.classList.remove('menu-interactive'); } });
+        closeOtherDropdowns(drop);
         drop.classList.toggle('open', willOpen);
         menu.classList.toggle('menu-interactive', willOpen);
       });
@@ -468,6 +475,18 @@
         s1_2_5: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 5  CORE (12) vs FLUP (16) vs CHARZIGHT (17) 2151706459.json', segments: [{ streamStart: 0, videoStart: 0 }] },
         s1_2_6: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 6  GARRISON (14) vs TWICELYTE (20) vs PHANTOM (21) 2152556518.json', segments: [{ streamStart: 0, videoStart: 0 }] },
         s1_2_7: { file: 'chats/Season 1 2024/WEEK 2/ANY_ LADDER LEAGUE  WEEK 2 RUNG 7  ANORAK (18) vs THENZOTA (19) vs NOLAN (24) 2155516541.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_3_1: { file: 'chats/Season 1 2024/WEEK 3/ANY_ LADDER LEAGUE  WEEK 3 RUNG 1  JARED (3) vs SCYNOR (6) vs FROST (7) 2158867194.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_3_3: { file: 'chats/Season 1 2024/WEEK 3/ANY_ LADDER LEAGUE  WEEK 3 RUNG 3  JABLAKY (8) vs EJPMAN (9) vs HERASMIE (13) 2158607180.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_3_4: { file: 'chats/Season 1 2024/WEEK 3/[5-29-24] LEGOSpeedruns2 - TCS Any_： LADDER LEAGUE ｜ WEEK 3 RUNG 4 ｜ DAHAMSTER (10) FLUP (16) CHARZIGHT (17) - Chat.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_3_5: { file: 'chats/Season 1 2024/WEEK 3/ANY_ LADDER LEAGUE  WEEK 3 RUNG 5  GARRISON (14) vs REVVYLO (15) vs TWICELYTE (20) 2160283894.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_3_6: { file: 'chats/Season 1 2024/WEEK 3/ANY_ LADDER LEAGUE  WEEK 3 RUNG 6  CORE (12) vs PHANTOM (21) vs ZOTA (18) Part 1 2161314457.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+
+        s1_4_1: { file: 'chats/Season 1 2024/WEEK 4/ANY_ LADDER LEAGUE  WEEK 4 RUNG 1  JARED (3) vs. EROADHOUSE (4) vs. WIISUPER (5) 2172443834.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_4_2: { file: 'chats/Season 1 2024/WEEK 4/ANY_ LADDER LEAGUE  WEEK 4 RUNG 2  SCYNOR (6) vs. EJPMAN (9) vs. HERASMIE (13) 2173367912.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_4_3: { file: 'chats/Season 1 2024/WEEK 4/ANY_ LADDER LEAGUE  WEEK 4 RUNG 3  HAMSTER (10) VS LAZER (11) VS FLUP (16) 2170548641.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_4_4: { file: 'chats/Season 1 2024/WEEK 4/ANY_ LADDER LEAGUE  WEEK 4 RUNG 4  JABLAKY (8) VS GARRISON (14) VS REVVYLO (15) 2170735334.json', segments: [{ streamStart: 0, videoStart: 0 }] },
+        s1_4_5: { file: 'chats/Season 1 2024/WEEK 4/ANY_ LADDER LEAGUE  WEEK 4 RUNG 5  CHARZIGHT (17) VS TWICELYTE (20) VS PHANTOM (21) 2168796720.json', segments: [{ streamStart: 0, videoStart: 0 }] },
 
         s1_5_1: { file: 'chats/Season 1 2024/WEEK 5/ANY_ LADDER LEAGUE  WEEK 5 RUNG 1  JARED (3) vs. SCYNOR (6) vs. EJPMAN (9) 2176693712.json', segments: [{ streamStart: 0, videoStart: 0 }] },
         s1_5_2: { file: 'chats/Season 1 2024/WEEK 5/ANY_ LADDER LEAGUE  WEEK 5 RUNG 2  WIISUPER (5) vs. DAHAMSTER (10) vs. FLAMINGLAZER (11) 2176300892.json', segments: [{ streamStart: 0, videoStart: 0 }] },
@@ -798,6 +817,13 @@
         if (!videoId) return;
         e.preventDefault();
         openVodModal(videoId, card.href, card.dataset.match || null);
+      });
+
+      document.addEventListener('click', e => {
+        const card = e.target.closest('a.participant-card[data-runner-profile]');
+        if (!card) return;
+        e.preventDefault();
+        window._openRunnerProfile && window._openRunnerProfile(decodeURIComponent(card.dataset.runnerProfile));
       });
     })();
 

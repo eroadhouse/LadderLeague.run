@@ -268,7 +268,7 @@
 
         //Splits table
         const sob = fastest.reduce((sum, e) => sum + (e ? e.ms : 0), 0);
-        let html = `<div class="stats-layout" style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start"><div class="stats-tables-col" style="display:flex;flex-direction:column;gap:2rem"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} SPLITS</div><div class="stats-table-scroll"><table style="border-collapse:collapse">
+        let html = `<div class="stats-layout" style="display:flex;flex-wrap:wrap;gap:3rem;align-items:flex-start;justify-content:center;"><div class="stats-tables-col" style="display:flex;flex-direction:column;gap:2rem"><div><div style="color:var(--accent);font-weight:700;font-size:1.1rem;letter-spacing:.15em;margin-bottom:1rem">BEST ${sectionWord.toUpperCase()} SPLITS</div><div class="stats-table-scroll"><table style="border-collapse:collapse">
           <thead><tr>
             <th style="${thStyle}">SPLIT</th>
             <th style="${thStyle}">RUNNER</th>

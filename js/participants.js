@@ -25,11 +25,18 @@
       fetch('/data/results.json',       { cache: 'no-store' }).then(r => r.json()),
       fetch('/data/past_seasons.json',  { cache: 'no-store' }).then(r => r.json()).catch(() => ({})),
       fetch('https://www.speedrun.com/api/v1/leaderboards/46w33l1r/category/9d8p7ylk?embed=players&platform=PC&top=150&var-j84pew89=0q5v2grl').then(r => r.json()).catch(() => null),
-    ]).then(([allParticipants, ladderResults, pastSeasons, lbData]) => {
+      fetch('/data/runners.json', { cache: 'no-store' }).then(r => r.json()).catch(() => []),
+    ]).then(([allParticipants, ladderResults, pastSeasons, lbData, runnersList]) => {
       const _runParticipantsRender = () => {
       const participants = allParticipants.season3 || [];
 
-      //season tab switching (hardcoding previous seasons cuz its easier)
+      const runnerProfileNames = new Set((runnersList || []).filter(r => !r.hidden).map(r => r.name.toLowerCase()));
+      function participantCardAttrs(name, srUser) {
+        return runnerProfileNames.has(name.toLowerCase())
+          ? `href="#" data-runner-profile="${encodeURIComponent(name)}"`
+          : `href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener"`;
+      }
+
       let activeSeason = 'season3';
       document.querySelectorAll('.participants-season-tab[data-season]').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -112,7 +119,7 @@
 
           //making participant card
           grid.innerHTML += `
-            <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
+            <a class="participant-card" ${participantCardAttrs(p.name, srUser)}>
               <div class="p-avatar" ${avatarStyle}>${avatarContent}</div>
               <div class="p-handle"><span class="fi fi-${iso}"></span><span ${nameStyle}>${p.name}</span></div>
               <div class="p-role">Seed ${p.seed}</div>
@@ -439,7 +446,7 @@
         }
 
         grid.innerHTML += `
-          <a class="participant-card" href="https://www.speedrun.com/users/${encodeURIComponent(srUser)}" target="_blank" rel="noopener">
+          <a class="participant-card" ${participantCardAttrs(p.name, srUser)}>
             <div class="p-avatar" ${avatarStyle}>${srcEntry?.imageUri ? `<img src="${srcEntry.imageUri}" alt="${p.name}" loading="lazy">` : DEFAULT_AVATAR_ICON}</div>
             <div class="p-handle"><span class="fi fi-${iso}"></span><span ${nameStyle}>${p.name}</span></div>
             <div class="p-role">Seed ${p.seed}</div>

@@ -555,6 +555,10 @@
         return Infinity;
       }
 
+      function sortSecsOf(p) {
+        return p.sortSecs != null ? p.sortSecs : toSecs(p.time);
+      }
+
       async function buildMatchIndex() {
         const [pastSeasons, lls3, participants] = await Promise.all([
           fetch('/data/past_seasons.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({})),
@@ -576,7 +580,7 @@
           for (let w = 1; w <= 8; w++) {
             const r = resultsDict[`${w}_1`];
             if (!r || !r.places || !r.places.length) continue;
-            const winner = [...r.places].sort((a, b) => toSecs(a.time) - toSecs(b.time))[0];
+            const winner = [...r.places].sort((a, b) => sortSecsOf(a) - sortSecsOf(b))[0];
             if (winner && winner.name) seed[winner.name.toLowerCase()] = w;
           }
           return seed;
@@ -589,7 +593,8 @@
           Object.entries(ev.runner_state || {}).forEach(([id, rs]) => {
             const name = normalize(lls3.people?.[id]?.name);
             const time = rs.result?.SingleScore?.score?.final_result ?? rs.result?.SplitTimes?.final_result;
-            if (name && time) places.push({ name, time });
+            const precise = rs.result?.SplitTimes?.final_result_precise;
+            if (name && time) places.push({ name, time, sortSecs: precise ? toSecs(precise) : toSecs(time) });
           });
           if (places.length) s3LadderResults[`${parsed.w}_${parsed.r}`] = { places };
         });
@@ -607,7 +612,7 @@
 
         function processHeat({ season, sortOrder, label, vod, date, places, isBracket, matchKey }) {
           const valid = places.filter(p => p && p.name);
-          const sorted = [...valid].sort((a, b) => toSecs(a.time) - toSecs(b.time));
+          const sorted = [...valid].sort((a, b) => sortSecsOf(a) - sortSecsOf(b));
           const seedMap = isBracket ? (qualSeedLookup[season] || {}) : (seedLookup[season] || {});
           const withSeed = valid.map(p => ({
             name: p.name,
@@ -676,7 +681,8 @@
           Object.entries(ev.runner_state || {}).forEach(([id, rs]) => {
             const name = normalize(lls3.people?.[id]?.name);
             const time = rs.result?.SingleScore?.score?.final_result ?? rs.result?.SplitTimes?.final_result;
-            if (name && time) places.push({ name, time });
+            const precise = rs.result?.SplitTimes?.final_result_precise;
+            if (name && time) places.push({ name, time, sortSecs: precise ? toSecs(precise) : toSecs(time) });
           });
           if (!places.length) return;
 
@@ -871,6 +877,15 @@
 
       backBtn.addEventListener('click', showGrid);
 
+      window._resetRunnersView = () => {
+        if (!activeRunner) return;
+        activeRunner = null;
+        detail.style.display = 'none';
+        grid.style.display = 'grid';
+        if (pageTitle) pageTitle.style.display = '';
+        if (pageDivider) pageDivider.style.display = '';
+      };
+
       function renderGrid() {
         grid.innerHTML = '';
         runnersData.filter(runner => !runner.hidden).forEach(runner => {
@@ -955,11 +970,21 @@
         }
       });
 
-      fetch('/data/runners.json', { cache: 'no-store' })
+      const runnersDataPromise = fetch('/data/runners.json', { cache: 'no-store' })
         .then(r => r.json())
         .then(runners => {
           runnersData = runners;
           window._runWhenIdle ? window._runWhenIdle(renderGrid) : renderGrid();
+          return runners;
         })
-        .catch(e => console.error('Could not load runners.json', e));
+        .catch(e => { console.error('Could not load runners.json', e); return []; });
+
+      window._openRunnerProfile = function(name) {
+        runnersDataPromise.then(runners => {
+          const runner = (runners || []).find(r => r.name.toLowerCase() === String(name).toLowerCase());
+          if (!runner || runner.hidden) return;
+          showPage('runners', true);
+          showDetail(runner);
+        });
+      };
     })();
