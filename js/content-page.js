@@ -17,6 +17,8 @@
       const closeBtn = panel.querySelector('.content-expand-close');
       let activeCard = null, openToken = 0;
 
+      let contentSeason = 3;
+
       function positionCaret() {
         if (!activeCard) return;
         const cardRect = activeCard.getBoundingClientRect();
@@ -81,29 +83,62 @@
         `).join('');
       }
 
-      fetch('/data/content.json')
-        .then(r => r.json())
-        .then(data => {
-          const sections = data.sections || [];
-          const unsectioned = data.unsectioned || [];
-          let html = sections.map(sec => `
-            <div class="content-section">
-              <div class="content-section-title">${sec.name}</div>
-              <div class="content-grid">${cardsHtml(sec.videos)}</div>
-            </div>
-          `).join('');
-          if (unsectioned.length) {
-            html += `<div class="content-section"><div class="content-grid">${cardsHtml(unsectioned)}</div></div>`;
-          }
-          sectionsEl.innerHTML = html;
-          sectionsEl.appendChild(panel);
-          sectionsEl.querySelectorAll('.content-card').forEach(card => {
-            card.addEventListener('click', () => {
-              card === activeCard ? closePanel() : openPanel(card);
-            });
+      const contentSeasonDropdown = document.getElementById('content-season-dropdown');
+      if (contentSeasonDropdown) {
+        const seasonDropBtn = contentSeasonDropdown.querySelector('.season-dropdown-btn');
+        const seasonLabel   = document.getElementById('content-season-label');
+        seasonDropBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          const isOpen = contentSeasonDropdown.classList.toggle('open');
+          seasonDropBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+        contentSeasonDropdown.querySelectorAll('.season-dropdown-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const season = parseInt(item.dataset.sseason);
+            contentSeasonDropdown.classList.remove('open');
+            seasonDropBtn.setAttribute('aria-expanded', 'false');
+            if (season === contentSeason) return;
+            contentSeason = season;
+            seasonLabel.textContent = `Season ${season}`;
+            contentSeasonDropdown.querySelectorAll('.season-dropdown-item').forEach(el => el.classList.toggle('active', el === item));
+            renderContent()
           });
-          if (typeof observeAll === 'function') observeAll();
-        })
-        .catch(err => console.error('Failed to load content.json', err));
+        });
+        document.addEventListener('click', () => {
+          if (contentSeasonDropdown.classList.contains('open')) {
+            contentSeasonDropdown.classList.remove('open');
+            seasonDropBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      async function renderContent() {
+        fetch('/data/content.json')
+          .then(r => r.json())
+          .then(data => {
+            const sections = data.sections || [];
+            const unsectioned = data.unsectioned || [];
+            let html = sections.filter(sec => parseInt(sec.season) == contentSeason).map(sec => `
+              <div class="content-section">
+                <div class="content-section-title">${sec.name}</div>
+                <div class="content-grid">${cardsHtml(sec.videos)}</div>
+              </div>
+            `).join('');
+            if (unsectioned.length) {
+              html += `<div class="content-section"><div class="content-grid">${cardsHtml(unsectioned)}</div></div>`;
+            }
+            sectionsEl.innerHTML = html;
+            sectionsEl.appendChild(panel);
+            sectionsEl.querySelectorAll('.content-card').forEach(card => {
+              card.addEventListener('click', () => {
+                card === activeCard ? closePanel() : openPanel(card);
+              });
+            });
+            if (typeof observeAll === 'function') observeAll();
+          })
+          .catch(err => console.error('Failed to load content.json', err));
+      }
+      
+      renderContent();
     })();
 

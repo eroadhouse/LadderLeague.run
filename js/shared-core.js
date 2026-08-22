@@ -658,7 +658,20 @@
           if (!badge) return '';
           return `<img class="vod-chat-badge" src="${badge.url}" alt="${escapeHtml(badge.title)}" title="${escapeHtml(badge.title)}">`;
         }).join('');
+
+        let hostMessage = false;
+        let numRaiders = 0;
+        let raiderName = "";
+        const hostMessageRegex = /^(\d+)\s+raiders\s+from\s+([a-zA-Z]+)\s+have\s+joined!$/;
+
         const textHtml = c.fragments.map(f => {
+          const match = f?.text?.trim().match(hostMessageRegex);
+          if (match) {
+            numRaiders = parseInt(match[1]);
+            raiderName = match[2];
+            hostMessage = true;
+          }
+          
           const id = f.emoticon && f.emoticon.emoticon_id;
           if (id) {
             const url = chatState.emoteMap[id] || `https://static-cdn.jtvnw.net/emoticons/v2/${encodeURIComponent(id)}/default/dark/1.0`;
@@ -666,6 +679,12 @@
           }
           return renderTextFragment(f.text, chatState.sevenTvMap);
         }).join('');
+        
+        if(hostMessage)
+        {
+          return `<div class="vod-chat-message host-highlight"><b>${raiderName}</b> is raiding with a party of <b>${numRaiders}</b>.</div>`;
+        }
+
         return `<div class="vod-chat-message"><span class="vod-chat-namegroup">${badgesHtml}<span class="vod-chat-author" style="color:${escapeHtml(c.color)}">${escapeHtml(c.name)}:</span></span>${textHtml}</div>`;
       }
 

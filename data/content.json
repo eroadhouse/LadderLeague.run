@@ -7,7 +7,8 @@
         { "id": "rlhK078LswM", "title": "Just One More...", "duration": "2:43", "featuring": "Anorak, Chimkin, Mello & Wazzip" },
         { "id": "TCu7eEqEw1o", "title": "Parched", "duration": "2:20", "featuring": "Dragon, Chess & Patton" },
         { "id": "C2jy4b-jUUY", "title": "Podrace Lessons", "duration": "4:48", "featuring": "Zac, Lazer & Jared" }
-      ]
+      ],
+      "season": "3"
     },
     {
       "name": "CONTENT PIECES",
@@ -17,7 +18,8 @@
         { "id": "6E2UzmojgAM", "title": "Can You Guess the LEGO Star Wars Speedrunner?", "duration": "16:15", "featuring": "Anonymous, Justin, Anorak, Scynor, Jared & Dragon" },
         { "id": "bJCf4MxNWyw", "title": "LEGO Speedrunners Rank Every Fast Food Restaurant", "duration": "11:56", "featuring": "Evan, Cap, Wazzip & Saber" },
         { "id": "QwcVTp6SK9Q", "title": "LEGO Speedrunners Try Building Sets Blindfolded", "duration": "8:54", "featuring": "Jav, Anorak, Bricko, Saber & Dragon" }
-      ]
+      ],
+      "season": "3"
     },
     {
       "name": "PRE/POST-MATCH VIDEOS",
@@ -28,10 +30,53 @@
         { "id": "ramG8wah8IA", "title": "SCYNOR vs ZAC | TCS Any% - LADDER LEAGUE QUARTERFINAL MATCH INTRO", "duration": "3:25" },
         { "id": "Kd4OTppPNkU", "title": "Breathe In. | TCS Any% - LADDER LEAGUE SEASON 3 TOP 8 INTRO", "duration": "5:46" },
         { "id": "i9UiFfcc3kk", "title": "One Spot Left. | TCS Any% - LADDER LEAGUE SEASON 3 WILDCARD MATCH INTRO", "duration": "4:14" },
-        { "id": "GwNjZ_ObB3Y", "title": "TCS Any% - LADDER LEAGUE S3 INTRODUCTION", "duration": "2:53" },
+        { "id": "GwNjZ_ObB3Y", "title": "TCS Any% - LADDER LEAGUE S3 INTRODUCTION", "duration": "2:53" }
+      ],
+      "season": "3"
+    },
+    {
+      "name": "PRESEASON",
+      "videos": [
         { "id": "gzEySc7UURE", "title": "TCS Any% - LADDER LEAGUE EXPLAINED - SEASON 3", "duration": "7:21" },
         { "id": "YRdSRPHcc2w", "title": "TCS Any% - LADDER LEAGUE SEASON 3", "duration": "1:25" }
-      ]
+      ],
+      "season": "3"
+    },
+    {
+      "name": "PRE/POST-MATCH VIDEOS",
+      "videos": [
+        { "id": "bw-YAJifAt8", "title": "TCS ANY%: LADDER LEAGUE S2 GRAND FINALS INTRO", "duration": "4:31" },
+        { "id": "y08agCgsVTE", "title": "TCS ANY%: LADDER LEAGUE S2 SCYNOR vs WIISUPER INTRO", "duration": "3:29" },
+        { "id": "laBBogjsRgY", "title": "TCS ANY%: LADDER LEAGUE S2 INTRO", "duration": "1:00" }
+      ],
+      "season": "2"
+    },
+    {
+      "name": "PRESEASON",
+      "videos": [
+        { "id": "wGYD7AehBDw", "title": "TCS ANY%: LADDER LEAGUE SEASON 2 LINEUP REVEAL", "duration": "4:27" },
+        { "id": "c5j6bJ8o8pA", "title": "TCS ANY%: LADDER LEAGUE SEASON 2", "duration": "5:11" }
+      ],
+      "season": "2"
+    },
+    {
+      "name": "PRE/POST-MATCH VIDEOS",
+      "videos": [
+        { "id": "46laILw7LIo", "title": "TCS ANY%: LADDER LEAGUE CREDITS", "duration": "3:23" },
+        { "id": "2b0iotHaTp8", "title": "TCS ANY%: LADDER LEAGUE RECAP", "duration": "5:42" },
+        { "id": "7Ea7yAB8a_4", "title": "TCS ANY%: LADDER LEAGUE GRAND FINALS INTRO", "duration": "5:14" },
+        { "id": "iHJiHRlrAa8", "title": "TCS Any%: LADDER LEAGUE TOP 8 REVEAL", "duration": "3:28" }
+      ],
+      "season": "1"
+    },
+    {
+      "name": "PRESEASON",
+      "videos": [
+        { "id": "XhY57d2jsIc", "title": "TCS ANY%: LADDER LEAGUE PREDICTIONS EXPLANATION", "duration": "4:15" },
+        { "id": "n56bvFgRD0M", "title": "TCS ANY%: LADDER LEAGUE LINEUP REVEAL", "duration": "1:42" },
+        { "id": "UcPjyO9kpUM", "title": "TCS ANY%: LADDER LEAGUE EXPLAINED", "duration": "5:38" }
+      ],
+      "season": "1"
     }
   ]
 }

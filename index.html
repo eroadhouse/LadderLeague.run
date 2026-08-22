@@ -426,8 +426,21 @@
   <div class="page" id="content">
     <div class="section" style="max-width:1300px">
       <div class="page-title reveal">CON<span>TENT</span></div>
-      <div class="page-subtitle reveal" style="transition-delay:.15s">SEASON 3 CONTENT</div>
       <div class="divider"></div>
+      <div style="display:flex;justify-content:center;margin:1.75rem 0 .5rem">
+        <div id="content-season-dropdown" class="season-dropdown">
+            <button class="season-dropdown-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span id="content-season-label">Season 3</span>
+              <svg class="season-dropdown-chevron" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <ul class="season-dropdown-menu" role="listbox">
+              <li class="season-dropdown-item" data-sseason="1" role="option">Season 1</li>
+              <li class="season-dropdown-item" data-sseason="2" role="option">Season 2</li>
+              <li class="season-dropdown-item active" data-sseason="3" role="option">Season 3</li>
+            </ul>
+        </div>
+      </div>
+      <!--<div class="page-subtitle reveal" style="transition-delay:.15s">SEASON 3 CONTENT</div>-->
 
       <div id="content-sections" style="margin-top:3rem"></div>
     </div>

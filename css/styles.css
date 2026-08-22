@@ -12,6 +12,7 @@
       --bg:        #07080f;
       --bg2:       #0a0c16;
       --surface:   #0f111c;
+      --surface-brighter:   #1f212c;
       --border:    #1a1e30;
       --accent:    #9aaabb;
       --accent2:   #c0cad8;
@@ -3204,6 +3205,16 @@
       word-break: break-word;
       color: #8896a6;
     }
+
+    .vod-chat-message.host-highlight{
+      border-left: 4px solid rgb(255, 163, 238);
+      padding-left: 0.65em;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+      background: var(--surface-brighter);
+      color: #a8b6c6;
+    }
+    
     .vod-chat-namegroup {
       display: inline-flex;
       align-items: center;
