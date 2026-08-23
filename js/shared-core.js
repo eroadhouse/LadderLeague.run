@@ -519,7 +519,8 @@
         '1_2': { file: W1R2_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
         '1_3': { file: W1R356_FILE, segments: [{ streamStart: 6 * 3600 + 9 * 60, videoStart: 0 }] },     // 6:09:00
         '1_4': { file: W1R4_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
-        '1_5': { file: W1R356_FILE, segments: [{ streamStart: 2 * 3600 + 50 * 60 + 47, videoStart: 0 }] }, // 2:50:47
+        '1_5': { file: W1R356_FILE, segments: [{ streamStart: 2 * 3600 + 50 * 60 + 47, videoStart: 0 }] }, // 2:50:47 
+        '1_6': { file: W1R356_FILE, segments: [{ streamStart: 0, videoStart: 0 }] }, //1778939470000 stream start from timer 1778939476000 chat start.
         '1_7': { file: W1R7_FILE, segments: [{ streamStart: 0, videoStart: 0 }] },
         '2_1': { file: W2R51_FILE, segments: [{ streamStart: 3 * 3600 + 5 * 60 + 30, videoStart: 0 }] }, // 3:05:30
         '2_3': { file: W2R3_FILE, segments: [{ streamStart: 27 * 60 + 53, videoStart: 0 }] },            // 0:27:53
@@ -664,12 +665,55 @@
         let raiderName = "";
         const hostMessageRegex = /^(\d+)\s+raiders\s+from\s+([a-zA-Z]+)\s+have\s+joined!$/;
 
+        let giftMessage = 0;
+        let gifter = "";
+        let tierSub = 0;
+        let giftee = "";
+        let totalGifted = 0;
+
+        const giftRegex = /^(.+) gifted a Tier (\d+) sub to (.+)!$/i;
+        const extendedGiftRegex = /^(.+) gifted a Tier (\d+) sub to (.+)! They have given (\d+) Gift Subs in the channel!$/i;
+
+        const giftHeader = /^(.+) is gifting (\d+) Tier (\d+) Subs to (.+)'s community! They've gifted a total of (\d+) in the channel!$/i;
+
         const textHtml = c.fragments.map(f => {
-          const match = f?.text?.trim().match(hostMessageRegex);
+          var match = f?.text?.trim().match(hostMessageRegex);
           if (match) {
             numRaiders = parseInt(match[1]);
             raiderName = match[2];
             hostMessage = true;
+          }else{
+
+            match = f?.text?.trim().match(extendedGiftRegex);
+
+            if (match) {
+              gifter = match[1];
+              tierSub = parseInt(match[2]);
+              giftee = match[3];
+              numGifted = parseInt(match[4]);
+              giftMessage = 2;
+            }else{
+
+              match = f?.text?.trim().match(giftRegex);
+
+              if (match) {
+                gifter = match[1];
+                tierSub = parseInt(match[2]);
+                giftee = match[3];
+                giftMessage = 1;
+              } else {
+                match = f?.text?.trim().match(giftHeader);
+
+                if (match) {
+                    gifter = match[1];
+                    numGifted = match[2];
+                    tierSub = parseInt(match[3]);
+                    giftee = match[4];
+                    totalGifted = parseInt(match[5]);
+                    giftMessage = 3;
+                }
+              }
+            }
           }
           
           const id = f.emoticon && f.emoticon.emoticon_id;
@@ -683,6 +727,28 @@
         if(hostMessage)
         {
           return `<div class="vod-chat-message host-highlight"><b>${raiderName}</b> is raiding with a party of <b>${numRaiders}</b>.</div>`;
+        }
+
+        if(giftMessage > 0)
+        {
+          if(giftMessage == 3){
+            return `<div class="vod-chat-message gift-highlight">
+              <div style="display: flex;flex-direction: column;justify-content: flex-start; height: 100%;">
+                <img src="/assets/gift-illus.png" style="width: 2.7em; height: 2.7em;">
+              </div>
+              <div style="display: flex; flex-direction: column;">
+                <span>
+                  <b>${gifter}</b>
+                </span>
+                <span>
+                is gifting ${numGifted} Tier ${tierSub} Subs to ${giftee}'s community. They've gifted a total of ${totalGifted} in the channel!
+                </span>
+              </div>
+            </div>`;
+          }
+          return `<div class="vod-chat-message gift-highlight">
+          <b><svg class="gift-svg" width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5 5.192V7H2v8h1v7h18v-7h1V7h-3V5.192a3.192 3.192 0 0 0-5.93-1.642L12 5.333 10.93 3.55A3.193 3.193 0 0 0 5 5.192ZM17 7V5.192a1.192 1.192 0 0 0-2.215-.613L13.332 7H17Zm-6.332 0L9.215 4.579A1.192 1.192 0 0 0 7 5.192V7h3.668ZM11 9v4H4V9h7Zm2 0v4h7V9h-7Zm-8 6h6v5H5v-5Zm8 0v5h6v-5h-6Z" clip-rule="evenodd"></path></svg></b>
+          <span><b>${gifter}</b> gifted a Tier ${tierSub} Sub to <b>${giftee}</b>!${giftMessage == 2 ? ` They've given ${numGifted} gift subs in the channel!`: ""}</span></div>`;
         }
 
         return `<div class="vod-chat-message"><span class="vod-chat-namegroup">${badgesHtml}<span class="vod-chat-author" style="color:${escapeHtml(c.color)}">${escapeHtml(c.name)}:</span></span>${textHtml}</div>`;

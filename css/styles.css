@@ -3214,6 +3214,26 @@
       background: var(--surface-brighter);
       color: #a8b6c6;
     }
+
+    .vod-chat-message.gift-highlight{
+      border-left: 4px solid rgb(243, 211, 117);
+      padding-left: 0.65em;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+      background: var(--surface-brighter);
+      color: #a8b6c6;
+      display: flex;
+      align-items: center;
+      gap: 0.65em;
+    }
+
+    .gift-svg{
+      width: 1.8em;
+      height: 1.8em;
+      object-fit: contain; 
+      fill: currentColor; 
+      stroke: currentColor; 
+    }
     
     .vod-chat-namegroup {
       display: inline-flex;
